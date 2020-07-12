@@ -54,15 +54,20 @@ public abstract class DungeonLoader {
             dungeon.setPlayer(player);
             onLoad(player);
             entity = player;
+            //TODO REMOVE THIS WHEN YOU FINISHED ADDING ENTITIES
+            dungeon.addEntity(entity);
             break;
         case "wall":
             Wall wall = new Wall(x, y);
             onLoad(wall);
             entity = wall;
+            // TODO REMOVE THIS WHEN YOU FINISHED ADDING ENTITIES
+            dungeon.addEntity(entity);
             break;
         // TODO Handle other possible entities
         }
-        dungeon.addEntity(entity);
+        //TODO CHANGE BACK WHEN FINISHED ADDING OTHER ENTITIES
+        //dungeon.addEntity(entity);
     }
 
     public abstract void onLoad(Entity player);

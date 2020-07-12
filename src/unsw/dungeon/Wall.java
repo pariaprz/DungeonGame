@@ -6,4 +6,8 @@ public class Wall extends Entity {
         super(x, y);
     }
 
+    @Override
+    public String toString() {   
+        return "wall";
+    }
 }

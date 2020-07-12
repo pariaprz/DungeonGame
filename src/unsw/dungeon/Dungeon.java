@@ -47,4 +47,8 @@ public class Dungeon {
     public void addEntity(Entity entity) {
         entities.add(entity);
     }
+
+    public List<Entity> getEntities(){
+        return entities;
+    }
 }
