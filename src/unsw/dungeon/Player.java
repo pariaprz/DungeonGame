@@ -19,6 +19,8 @@ public class Player extends Entity {
         this.dungeon = dungeon;
     }
 
+
+
     public void moveUp() {
         if (getY() > 0)
             y().set(getY() - 1);
