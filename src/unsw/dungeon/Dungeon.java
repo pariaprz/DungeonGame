@@ -5,6 +5,8 @@ package unsw.dungeon;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * A dungeon in the interactive dungeon player.
@@ -48,7 +50,22 @@ public class Dungeon {
         entities.add(entity);
     }
 
-    public List<Entity> getEntities(){
+    public List<Entity> getEntities() {
         return entities;
+    }
+
+    public List<Entity> getEntitiesAt(Position p) {
+        return getEntitiesAt(p.x, p.y);
+    }
+
+    public void removeEntity(Entity entity) {
+        entities.remove(entity);
+    }
+
+    public List<Entity> getEntitiesAt(int x, int y) {
+        return entities
+                .stream()
+                .filter(entity -> entity.getX() == x && entity.getY() == y)
+                .collect(Collectors.toList());
     }
 }

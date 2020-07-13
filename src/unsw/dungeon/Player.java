@@ -1,13 +1,18 @@
 package unsw.dungeon;
 
+import javafx.scene.input.KeyCode;
+
+import java.util.List;
+
 /**
  * The player entity
  * @author Robert Clifton-Everest
  *
  */
-public class Player extends Entity {
+public class Player extends Moveable {
 
-    private Dungeon dungeon;
+    private int treausureCount = 0;
+    private String key = null;
 
     /**
      * Create a player positioned in square (x,y)
@@ -15,49 +20,54 @@ public class Player extends Entity {
      * @param y
      */
     public Player(Dungeon dungeon, int x, int y) {
-        super(x, y);
-        this.dungeon = dungeon;
+        super(x, y, dungeon);
     }
 
-
-
-    public void moveUp() {
-        if (noObstacles(getY()-1, getX())){
-            if (getY() > 0)
-                y().set(getY() - 1);
+    public void handleDirectionKey(KeyCode keyCode) {
+        Direction direction = Direction.fromKeyCode(keyCode);
+        if (direction == null) {
+            return;
         }
-    }
-    
-    public void moveDown() {
-        if (noObstacles(getY()+1, getX())){
-            if (getY() < dungeon.getHeight() - 1)
-                y().set(getY() + 1);
-            }
-        }
+        Position nextPos = direction.fromPosition(x().get(), y().get());
+        List<Entity> entities = getDungeon().getEntitiesAt(nextPos);
 
-    public void moveLeft() {
-        if (noObstacles(getY(), getX()-1)){
-            if (getX() > 0)
-                x().set(getX() - 1);
-            }
-    }
-
-    public void moveRight() {
-        if (noObstacles(getY(), getX()+1)){
-            if (getX() < dungeon.getWidth() - 1)
-                x().set(getX() + 1);
-            }
-    }
-
-    //Goes through and finds out if any obstacles (Wall/Boulder/Closed Door) are above the players coordinates
-    public boolean noObstacles(int y, int x){
-        for (Entity e : dungeon.getEntities()){
-            if(e.toString().equals("wall")){
-                if(e.getY() == y && e.getX() == x){
-                    return false;
+        boolean canMove = entities
+                .stream()
+                .allMatch(entity -> entity.canEntityMoveHere(this));
+        if (canMove) {
+            moveToPosition(nextPos);
+            entities.forEach(entity -> {
+                entity.interact(this, keyCode);
+                if (entity instanceof Consumable) {
+                    getDungeon().removeEntity(entity);
                 }
-            }
+            });
+
         }
-        return true;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public boolean holdsKey() {
+        return !(key == null);
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void dropKey() {
+        setKey(null);
+    }
+
+    @Override
+    public void interact(Entity actor, KeyCode keyCode) {
+        super.interact(actor, keyCode); // TODO: Change this for enemies.
+    }
+
+    public void addTreasure() {
+        treausureCount++;
     }
 }
