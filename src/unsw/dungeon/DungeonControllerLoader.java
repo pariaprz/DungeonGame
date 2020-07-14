@@ -26,19 +26,7 @@ public class DungeonControllerLoader extends DungeonLoader {
     private List<ImageView> entities;
 
     //Images
-    private Image keyImage;
-    private Image exitImage;
-    private Image wallImage;
-    private Image swordImage;
-    private Image enemyImage;
-    private Image playerImage;
-    private Image switchImage;
-    private Image portalImage;
-    private Image boulderImage;
     private Image openDoorImage;
-    private Image treasureImage;
-    private Image closedDoorImage;
-    private Image invincibilityImage;
 
     private Map<Class<? extends Entity>, Image> imageMap;
 

@@ -2,8 +2,6 @@ package unsw.dungeon;
 
 import javafx.scene.input.KeyCode;
 
-import java.util.List;
-
 /**
  * The player entity
  * @author Robert Clifton-Everest

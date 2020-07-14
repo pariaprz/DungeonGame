@@ -1,9 +1,5 @@
 package unsw.dungeon;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.scene.input.KeyCode;
-
 /**
  * An entity in the dungeon.
  * @author Robert Clifton-Everest
