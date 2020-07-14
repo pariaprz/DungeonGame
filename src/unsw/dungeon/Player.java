@@ -19,7 +19,7 @@ public class Player extends Moveable {
      * @param x
      * @param y
      */
-    public Player(Dungeon dungeon, int x, int y) {
+    public Player(int x, int y, Dungeon dungeon) {
         super(x, y, dungeon);
     }
 

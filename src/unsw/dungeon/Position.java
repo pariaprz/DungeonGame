@@ -1,8 +1,5 @@
 package unsw.dungeon;
 
-import javafx.scene.input.KeyCode;
-import javafx.util.Pair;
-
 /**
  * An entity in the dungeon.
  * @author Robert Clifton-Everest

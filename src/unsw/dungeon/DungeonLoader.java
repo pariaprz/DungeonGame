@@ -50,7 +50,7 @@ public abstract class DungeonLoader {
         Entity entity = null;
         switch (type) {
         case "player":
-            Player player = new Player(dungeon, x, y);
+            Player player = new Player(x, y, dungeon);
             dungeon.setPlayer(player);
             onLoad(player);
             entity = player;

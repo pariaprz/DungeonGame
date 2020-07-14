@@ -63,6 +63,9 @@ public class Dungeon {
     }
 
     public List<Entity> getEntitiesAt(int x, int y) {
+        if (x >= width || x < 0 || y < 0 || y >= height) {
+            return List.of(new Border(x, y));
+        }
         return entities
                 .stream()
                 .filter(entity -> entity.getX() == x && entity.getY() == y)

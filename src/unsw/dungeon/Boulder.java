@@ -23,8 +23,6 @@ public class Boulder extends Moveable {
 
         Direction pushDirection = Direction.fromPositions(entity.getPosition(), getPosition());
         if (pushDirection == null) return false;
-        System.out.println(getDungeon().getEntitiesAt(pushDirection.fromPosition(getPosition())).size());
-        System.out.println(pushDirection.fromPosition(getPosition()).x + " " + pushDirection.fromPosition(getPosition()).y);
         return getDungeon().getEntitiesAt(pushDirection.fromPosition(getPosition()))
                 .stream()
                 .allMatch(e -> e.canEntityMoveHere(this));
