@@ -2,6 +2,7 @@ package unsw.dungeon;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javafx.beans.value.ChangeListener;
@@ -12,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 import java.io.File;
+import java.util.Map;
 
 /**
  * A DungeonLoader that also creates the necessary ImageViews for the UI,
@@ -24,43 +26,48 @@ public class DungeonControllerLoader extends DungeonLoader {
     private List<ImageView> entities;
 
     //Images
-    private Image playerImage;
+    private Image keyImage;
+    private Image exitImage;
     private Image wallImage;
-    private Image boulderImage;
+    private Image swordImage;
+    private Image enemyImage;
+    private Image playerImage;
     private Image switchImage;
+    private Image portalImage;
+    private Image boulderImage;
+    private Image openDoorImage;
+    private Image treasureImage;
+    private Image closedDoorImage;
+    private Image invincibilityImage;
+
+    private Map<Class<? extends Entity>, Image> imageMap;
 
     public DungeonControllerLoader(String filename)
             throws FileNotFoundException {
         super(filename);
         entities = new ArrayList<>();
-        playerImage = new Image((new File("images/human_new.png")).toURI().toString());
-        wallImage = new Image((new File("images/brick_brown_0.png")).toURI().toString());
-        switchImage = new Image((new File("images/pressure_plate.png")).toURI().toString());
-        boulderImage = new Image((new File("images/boulder.png")).toURI().toString());
+
+        imageMap = new HashMap<>();
+        imageMap.put(Key.class, new Image((new File("images/key.png")).toURI().toString()));
+        imageMap.put(Exit.class, new Image((new File("images/exit.png")).toURI().toString()));
+        imageMap.put(Portal.class, new Image((new File("images/portal.png")).toURI().toString()));
+        imageMap.put(Boulder.class, new Image((new File("images/boulder.png")).toURI().toString()));
+        imageMap.put(Door.class, new Image((new File("images/closed_door.png")).toURI().toString()));
+        imageMap.put(Player.class, new Image((new File("images/human_new.png")).toURI().toString()));
+        imageMap.put(Treasure.class, new Image((new File("images/gold_pile.png")).toURI().toString()));
+        imageMap.put(Wall.class, new Image((new File("images/brick_brown_0.png")).toURI().toString()));
+        imageMap.put(Switch.class, new Image((new File("images/pressure_plate.png")).toURI().toString()));
+        imageMap.put(Sword.class, new Image((new File("images/greatsword_1_new.png")).toURI().toString()));
+        imageMap.put(Enemy.class, new Image((new File("images/deep_elf_master_archer.png")).toURI().toString()));
+        imageMap.put(Invincibility.class, new Image((new File("images/brilliant_blue_new.png")).toURI().toString()));
+
+        openDoorImage = new Image((new File("images/open_door.png")).toURI().toString());
     }
 
     @Override
-    public void onLoad(Player player) {
-        ImageView view = new ImageView(playerImage);
-        addEntity(player, view);
-    }
-
-    @Override
-    public void onLoad(Wall wall) {
-        ImageView view = new ImageView(wallImage);
-        addEntity(wall, view);
-    }
-
-    @Override
-    public void onLoad(Switch switchObj) {
-        ImageView view = new ImageView(switchImage);
-        addEntity(switchObj, view);
-    }
-
-    @Override
-    public void onLoad(Boulder boulder) {
-        ImageView view = new ImageView(boulderImage);
-        addEntity(boulder, view);
+    public void onLoad(Entity entity) {
+        ImageView view = new ImageView(imageMap.get(entity.getClass()));
+        addEntity(entity, view);
     }
 
     private void addEntity(Entity entity, ImageView view) {

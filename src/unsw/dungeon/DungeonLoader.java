@@ -2,6 +2,7 @@ package unsw.dungeon;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -47,48 +48,83 @@ public abstract class DungeonLoader {
         int x = json.getInt("x");
         int y = json.getInt("y");
 
+        // TODO: Uncomment this.
+//        validatePosition(dungeon, new Position(x, y));
+
         Entity entity = null;
         switch (type) {
         case "player":
             Player player = new Player(x, y, dungeon);
             dungeon.setPlayer(player);
-            onLoad(player);
             entity = player;
-            //TODO REMOVE THIS WHEN YOU FINISHED ADDING ENTITIES
-            dungeon.addEntity(entity);
             break;
         case "wall":
-            Wall wall = new Wall(x, y);
-            onLoad(wall);
-            entity = wall;
-            // TODO REMOVE THIS WHEN YOU FINISHED ADDING ENTITIES
-            dungeon.addEntity(entity);
+            entity = new Wall(x, y);
             break;
-        // TODO Handle other possible entities
         case "switch":
-            Switch switchObj = new Switch(x, y, dungeon);
-            onLoad(switchObj);
-            entity = switchObj;
-            dungeon.addEntity(entity);
+            entity = new Switch(x, y, dungeon);
             break;
         case "boulder":
-            Boulder boulder = new Boulder(x, y, dungeon);
-            onLoad(boulder);
-            entity = boulder;
-            dungeon.addEntity(entity);
+            entity = new Boulder(x, y, dungeon);
             break;
+        case "exit":
+            entity = new Exit(x, y, dungeon);
+            break;
+        case "sword":
+            entity = new Exit(x, y, dungeon);
+            break;
+        case "invincibility":
+            entity = new Invincibility(x, y, dungeon);
+            break;
+        case "door":
+            String doorId = json.getString("id");
+            if (doorId == null) {
+                throw new RuntimeException("No ID provided for door");
+            }
+            entity = new Door(x, y, doorId);
+            break;
+        case "key":
+            String keyId = json.getString("id");
+            if (keyId == null) {
+                throw new RuntimeException("No ID provided for key");
+            }
+            entity = new Key(x, y, keyId, dungeon);
+            break;
+        case "portal":
+            String portalId = json.getString("id");
+            if (portalId == null) {
+                throw new RuntimeException("No ID provided for portal");
+            }
+            entity = new Door(x, y, portalId); // TODO: Add portal with same id as linked portal.
+            break;
+        case "enemy":
+            entity = new Enemy(x, y, dungeon); // TODO: Add portal with same id as linked portal.
+            break;
+        case "treasure":
+            entity = new Treasure(x, y, dungeon); // TODO: Add portal with same id as linked portal.
+            break;
+        }
+        if (entity != null) {
+            onLoad(entity);
+            dungeon.addEntity(entity);
+        } else {
+            System.out.println("TYPE not handled: " + type);
         }
         //TODO CHANGE BACK WHEN FINISHED ADDING OTHER ENTITIES
         //dungeon.addEntity(entity);
     }
 
-    public abstract void onLoad(Player player);
+    private void validatePosition(Dungeon dungeon, Position position) {
+        List<Entity> others = dungeon.getEntitiesAt(position);
+        if (position.x >= dungeon.getWidth() || position.x < 0 || position.y >= dungeon.getHeight() || position.y < 0) {
+            throw new RuntimeException("Invalid position for entity (" + position.x + ", " + position.y + ")");
+        }
+        if (!others.isEmpty()) {
+            throw new RuntimeException("Multiple entities placed at (" + position.x + ", " + position.y + ")");
+        }
+    }
 
-    public abstract void onLoad(Wall wall);
-
-    public abstract void onLoad(Switch switchObj);
-
-    public abstract void onLoad(Boulder boulder);
+    public abstract void onLoad(Entity player);
 
     // TODO Create additional abstract methods for the other entities
 

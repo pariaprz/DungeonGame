@@ -1,12 +1,10 @@
 package unsw.dungeon.test;
 
-import javafx.scene.input.KeyCode;
 import org.junit.Before;
 import org.junit.Test;
 import unsw.dungeon.*;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 public class TestPortal {
 
