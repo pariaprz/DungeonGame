@@ -7,7 +7,7 @@ public class Wall extends Entity {
     }
 
     @Override
-    public String toString() {   
-        return "wall";
+    public boolean canEntityMoveHere(Entity entity) {
+        return false;
     }
 }

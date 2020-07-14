@@ -2,6 +2,8 @@ package unsw.dungeon;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 /**
  * An entity in the dungeon.
@@ -40,5 +42,17 @@ public class Entity {
         return x().get();
     }
 
-    
+    public Position getPosition() {
+        return new Position(x().get(), y().get());
+    }
+
+    /**
+     * The method to allow entities to interact with each other.
+     * @param actor The entity attempting an interaction
+     * @param keyCode The action attempted.
+     */
+    public void interact(Entity actor, KeyCode keyCode) {}
+    public boolean canEntityMoveHere(Entity entity) {
+        return true;
+    }
 }
