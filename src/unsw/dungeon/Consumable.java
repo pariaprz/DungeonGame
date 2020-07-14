@@ -5,7 +5,7 @@ package unsw.dungeon;
  * @author Robert Clifton-Everest
  *
  */
-public abstract class Consumable extends Entity {
+public class Consumable extends Entity {
 
     private boolean consumed = false;
 

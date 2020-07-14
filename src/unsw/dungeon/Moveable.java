@@ -9,9 +9,9 @@ import javafx.scene.input.KeyCode;
  * @author Robert Clifton-Everest
  *
  */
-public abstract class Moveable extends Entity {
+public class Moveable extends Entity {
 
-    Moveable(int x, int y, Dungeon dungeon) {
+    public Moveable(int x, int y, Dungeon dungeon) {
         super(x, y, dungeon);
     }
 
