@@ -11,10 +11,8 @@ import javafx.scene.input.KeyCode;
  */
 public abstract class Moveable extends Entity {
 
-    private Dungeon dungeon;
     Moveable(int x, int y, Dungeon dungeon) {
-        super(x, y);
-        this.dungeon = dungeon;
+        super(x, y, dungeon);
     }
 
     public void moveToPosition(Position p) {
@@ -25,9 +23,5 @@ public abstract class Moveable extends Entity {
     public void moveToPosition(int x, int y) {
         y().set(y);
         x().set(x);
-    }
-
-    Dungeon getDungeon() {
-        return dungeon;
     }
 }

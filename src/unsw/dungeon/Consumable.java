@@ -8,8 +8,9 @@ package unsw.dungeon;
 public abstract class Consumable extends Entity {
 
     private boolean consumed = false;
-    Consumable(int x, int y) {
-        super(x, y);
+
+    Consumable(int x, int y, Dungeon dungeon) {
+        super(x, y, dungeon);
     }
 
     public boolean isConsumed() {
@@ -18,5 +19,6 @@ public abstract class Consumable extends Entity {
 
     public void consume() {
         consumed = true;
+        getDungeon().removeEntity(this);
     }
 }

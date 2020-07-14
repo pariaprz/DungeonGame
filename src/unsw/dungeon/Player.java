@@ -38,9 +38,6 @@ public class Player extends Moveable {
             moveToPosition(nextPos);
             entities.forEach(entity -> {
                 entity.interact(this, keyCode);
-                if (entity instanceof Consumable) {
-                    getDungeon().removeEntity(entity);
-                }
             });
 
         }
