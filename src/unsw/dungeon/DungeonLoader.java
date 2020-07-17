@@ -71,7 +71,7 @@ public abstract class DungeonLoader {
             entity = new Exit(x, y, dungeon);
             break;
         case "sword":
-            entity = new Exit(x, y, dungeon);
+            entity = new Sword(x, y, dungeon);
             break;
         case "invincibility":
             entity = new Invincibility(x, y, dungeon);

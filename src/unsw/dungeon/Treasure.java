@@ -12,6 +12,8 @@ public class Treasure extends Consumable {
     public void interact(Entity actor, KeyCode keyCode) {
         if (actor instanceof Player) {
             ((Player) actor).addTreasure();
+            ((Player) actor).addToInventory(this);
+            System.out.println(((Player) actor).getInventory());        // TODO BACKEND TESTING, REMOVE LATER
             consume();
         }
     }

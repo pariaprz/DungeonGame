@@ -3,6 +3,7 @@ package unsw.dungeon;
 import javafx.scene.input.KeyCode;
 
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * The player entity
@@ -13,6 +14,7 @@ public class Player extends Moveable {
 
     private int treausureCount = 0;
     private String key = null;
+    private List<Consumable> inventory;
 
     /**
      * Create a player positioned in square (x,y)
@@ -21,6 +23,7 @@ public class Player extends Moveable {
      */
     public Player(int x, int y, Dungeon dungeon) {
         super(x, y, dungeon);
+        this.inventory = new ArrayList<Consumable>();
     }
 
     public void handleDirectionKey(KeyCode keyCode) {
@@ -38,6 +41,7 @@ public class Player extends Moveable {
             moveToPosition(nextPos);
             entities.forEach(entity -> {
                 entity.interact(this, keyCode);
+                
             });
 
         }
@@ -57,6 +61,19 @@ public class Player extends Moveable {
 
     public void dropKey() {
         setKey(null);
+    }
+
+    public List<Consumable> getInventory(){
+        return inventory;
+    }
+
+    public void addToInventory(Consumable c){
+        inventory.add(c);
+    }
+
+    //Removes consumable when the player no longer has the item (Sword after 5 hits, Potion after time expires)
+    public void removeFromInventory(Consumable c){
+        inventory.remove(c);
     }
 
     @Override

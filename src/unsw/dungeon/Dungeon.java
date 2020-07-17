@@ -60,6 +60,7 @@ public class Dungeon {
 
     public void removeEntity(Entity entity) {
         entities.remove(entity);
+        
     }
 
     public List<Entity> getEntitiesAt(int x, int y) {
