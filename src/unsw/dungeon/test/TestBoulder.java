@@ -36,6 +36,8 @@ public class TestBoulder {
         assertEquals(boulder.canEntityMoveHere(new Player(2, 3, dungeon)), true);
     }
 
+
+    //Moved To Wall Tests
     @Test
     public void TestPlayerMovingOnBoulderAgainstWall() {
         assertEquals(new Boulder(3, 4, dungeon).canEntityMoveHere(new Player(2, 4, dungeon)), false);

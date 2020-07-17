@@ -63,6 +63,18 @@ public class Dungeon {
         
     }
 
+    public List<Enemy> getEnemies(){
+        List<Enemy> enemies = new ArrayList<>();
+        for (Entity e: this.entities){
+            if (e instanceof Enemy){
+                enemies.add((Enemy) e);
+            }
+        }
+
+        return enemies;
+    }
+    
+
     public List<Entity> getEntitiesAt(int x, int y) {
         if (x >= width || x < 0 || y < 0 || y >= height) {
             return List.of(new Border(x, y));

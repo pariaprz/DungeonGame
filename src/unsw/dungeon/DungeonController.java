@@ -57,7 +57,12 @@ public class DungeonController {
         case LEFT:
         case RIGHT:
             player.handleDirectionKey(event.getCode());
-        default:
+            
+            for (Enemy e : dungeon.getEnemies()){
+                e.MoveEnemy();
+            }
+            
+        default: 
             break;
         }
     }
