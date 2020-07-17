@@ -63,6 +63,17 @@ public class Player extends Moveable {
 
     public void dropKey() {
         setKey(null);
+        removeFromInventory(findKey());
+        
+    }
+    
+    public Consumable findKey() {
+        for (Consumable c : inventory){
+            if (c instanceof Key){
+                return c;
+            } 
+        }
+        return null;
     }
 
     public List<Consumable> getInventory(){

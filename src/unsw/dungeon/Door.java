@@ -12,7 +12,9 @@ public class Door extends Entity {
 
     @Override
     public boolean canEntityMoveHere(Entity entity) {
-        if (entity instanceof Player) {
+        if (isUnlocked) return true;
+
+        else if (entity instanceof Player) {
             return id.equals(((Player) entity).getKey());
         }
         return false;
