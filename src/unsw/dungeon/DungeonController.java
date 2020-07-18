@@ -1,15 +1,12 @@
 package unsw.dungeon;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.GridPane;
 
-import java.io.File;
 
 /**
  * A JavaFX controller for the dungeon.
@@ -18,35 +15,54 @@ import java.io.File;
  */
 public class DungeonController {
 
-    @FXML
-    private GridPane squares;
+    private List<EntityWrapper> entities;
 
-    private List<ImageView> initialEntities;
+    private DungeonView dungeonView;
 
     private Player player;
 
     private Dungeon dungeon;
 
-    public DungeonController(Dungeon dungeon, List<ImageView> initialEntities) {
+    public DungeonController(Dungeon dungeon) {
         this.dungeon = dungeon;
         this.player = dungeon.getPlayer();
-        this.initialEntities = new ArrayList<>(initialEntities);
+        this.dungeonView = new DungeonView(dungeon.getHeight(), dungeon.getWidth());
+        entities = this.dungeon.getEntities().stream().map(this::onEntityLoad).collect(Collectors.toList());
+    }
+
+    public EntityWrapper onEntityLoad(Entity entity) {
+        EntityWrapper entityWrapper = new EntityWrapper(entity.getClass());
+        entity.x().addListener((ObservableValue<? extends Number> observable,
+                                Number oldValue, Number newValue) -> {
+            if (!isWithinRange(newValue.intValue(), dungeon.getWidth())) {
+                if (isWithinRange(oldValue.intValue(), dungeon.getWidth())) {
+                    entity.x().setValue(oldValue);
+                }
+            } else {
+                entityWrapper.setPosition(entity.getPosition());
+            }
+        });
+        entity.y().addListener((ObservableValue<? extends Number> observable,
+                                Number oldValue, Number newValue) -> {
+            if (!isWithinRange(newValue.intValue(), dungeon.getHeight())) {
+                if (isWithinRange(oldValue.intValue(), dungeon.getHeight())) {
+                    entity.y().setValue(oldValue);
+                }
+            } else {
+                entityWrapper.setPosition(entity.getPosition());
+            }
+        });
+        dungeonView.onEntityLoad(entityWrapper);
+        return entityWrapper;
+    }
+
+    private static boolean isWithinRange(int number, int maxValue) {
+        return number < maxValue && number >= 0;
     }
 
     @FXML
     public void initialize() {
-        Image ground = new Image((new File("images/dirt_0_new.png")).toURI().toString());
-
-        // Add the ground first so it is below all other entities
-        for (int x = 0; x < dungeon.getWidth(); x++) {
-            for (int y = 0; y < dungeon.getHeight(); y++) {
-                squares.add(new ImageView(ground), x, y);
-            }
-        }
-
-        for (ImageView entity : initialEntities)
-            squares.getChildren().add(entity);
-
+        dungeonView.initialize();
     }
 
     @FXML

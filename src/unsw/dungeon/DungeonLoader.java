@@ -17,10 +17,9 @@ import org.json.JSONTokener;
  * @author Robert Clifton-Everest
  *
  */
-public abstract class DungeonLoader {
+public class DungeonLoader {
 
     private JSONObject json;
-
     public DungeonLoader(String filename) throws FileNotFoundException {
         json = new JSONObject(new JSONTokener(new FileReader("dungeons/" + filename)));
     }
@@ -98,14 +97,13 @@ public abstract class DungeonLoader {
             entity = new Door(x, y, portalId); // TODO: Add portal with same id as linked portal.
             break;
         case "enemy":
-            entity = new Enemy(x, y, dungeon); // TODO: Add portal with same id as linked portal.
+            entity = new Enemy(x, y, dungeon);
             break;
         case "treasure":
-            entity = new Treasure(x, y, dungeon); // TODO: Add portal with same id as linked portal.
+            entity = new Treasure(x, y, dungeon);
             break;
         }
         if (entity != null) {
-            onLoad(entity);
             dungeon.addEntity(entity);
         } else {
             System.out.println("TYPE not handled: " + type);
@@ -123,8 +121,6 @@ public abstract class DungeonLoader {
             throw new RuntimeException("Multiple entities placed at (" + position.x + ", " + position.y + ")");
         }
     }
-
-    public abstract void onLoad(Entity player);
 
     // TODO Create additional abstract methods for the other entities
 

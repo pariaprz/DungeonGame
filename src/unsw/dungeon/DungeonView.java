@@ -1,12 +1,11 @@
 package unsw.dungeon;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,20 +20,23 @@ import java.util.Map;
  * @author Robert Clifton-Everest
  *
  */
-public class DungeonControllerLoader extends DungeonLoader {
+public class DungeonView {
 
     private List<ImageView> entities;
 
+    @FXML
+    private GridPane squares;
     //Images
     private Image openDoorImage;
 
     private Map<Class<? extends Entity>, Image> imageMap;
 
-    public DungeonControllerLoader(String filename)
-            throws FileNotFoundException {
-        super(filename);
+    private final int height;
+    private final int width;
+    public DungeonView(int width, int height)  {
+        this.height = height;
+        this.width = width;
         entities = new ArrayList<>();
-
         imageMap = new HashMap<>();
         imageMap.put(Key.class, new Image((new File("images/key.png")).toURI().toString()));
         imageMap.put(Exit.class, new Image((new File("images/exit.png")).toURI().toString()));
@@ -52,8 +54,7 @@ public class DungeonControllerLoader extends DungeonLoader {
         openDoorImage = new Image((new File("images/open_door.png")).toURI().toString());
     }
 
-    @Override
-    public void onLoad(Entity entity) {
+    public void onEntityLoad(Entity entity) {
         ImageView view = new ImageView(imageMap.get(entity.getClass()));
         addEntity(entity, view);
     }
@@ -63,6 +64,19 @@ public class DungeonControllerLoader extends DungeonLoader {
         entities.add(view);
     }
 
+    public void initialize() {
+        Image ground = new Image((new File("images/dirt_0_new.png")).toURI().toString());
+
+        // Add the ground first so it is below all other entities
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                squares.add(new ImageView(ground), x, y);
+            }
+        }
+
+        for (ImageView entity : entities)
+            squares.getChildren().add(entity);
+    };
     /**
      * Set a node in a GridPane to have its position track the position of an
      * entity in the dungeon.
@@ -76,31 +90,15 @@ public class DungeonControllerLoader extends DungeonLoader {
     private void trackPosition(Entity entity, Node node) {
         GridPane.setColumnIndex(node, entity.getX());
         GridPane.setRowIndex(node, entity.getY());
-        entity.x().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable,
-                    Number oldValue, Number newValue) {
+        entity.x().addListener((ObservableValue<? extends Number> observable,
+                    Number oldValue, Number newValue) -> {
                 GridPane.setColumnIndex(node, newValue.intValue());
             }
-        });
-        entity.y().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable,
-                    Number oldValue, Number newValue) {
+        );
+        entity.y().addListener((ObservableValue<? extends Number> observable,
+                    Number oldValue, Number newValue) -> {
                 GridPane.setRowIndex(node, newValue.intValue());
             }
-        });
+        );
     }
-
-    /**
-     * Create a controller that can be attached to the DungeonView with all the
-     * loaded entities.
-     * @return
-     * @throws FileNotFoundException
-     */
-    public DungeonController loadController() throws FileNotFoundException {
-        return new DungeonController(load(), entities);
-    }
-
-
 }

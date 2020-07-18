@@ -73,7 +73,6 @@ public class Dungeon {
 
         return enemies;
     }
-    
 
     public List<Entity> getEntitiesAt(int x, int y) {
         if (x >= width || x < 0 || y < 0 || y >= height) {

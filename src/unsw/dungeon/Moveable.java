@@ -12,12 +12,10 @@ public class Moveable extends Entity {
     }
 
     public void moveToPosition(Position p) {
-        y().set(p.y);
-        x().set(p.x);
+        setPosition(p);
     }
 
     public void moveToPosition(int x, int y) {
-        y().set(y);
-        x().set(x);
+        moveToPosition(new Position(x, y));
     }
 }

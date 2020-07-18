@@ -14,9 +14,8 @@ public class DungeonApplication extends Application {
     public void start(Stage primaryStage) throws IOException {
         primaryStage.setTitle("Dungeon");
 
-        DungeonControllerLoader dungeonLoader = new DungeonControllerLoader("advanced.json");
-
-        DungeonController controller = dungeonLoader.loadController();
+        DungeonLoader dungeonLoader = new DungeonLoader("advanced.json");
+        DungeonController controller = new DungeonController(dungeonLoader.load());
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("DungeonView.fxml"));
         loader.setController(controller);

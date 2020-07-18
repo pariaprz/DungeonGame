@@ -1,6 +1,8 @@
 package unsw.dungeon;
 
+import javafx.beans.Observable;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.Property;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -14,7 +16,7 @@ public class Entity {
 
     // IntegerProperty is used so that changes to the entities position can be
     // externally observed.
-    private IntegerProperty x, y;
+    private Position position;
     private Dungeon dungeon;
 
     /**
@@ -23,35 +25,28 @@ public class Entity {
      * @param y
      */
     public Entity(int x, int y, Dungeon dungeon) {
-        this.x = new SimpleIntegerProperty(x);
-        this.y = new SimpleIntegerProperty(y);
+        this.position = new Position(x, y);
         this.dungeon = dungeon;
     }
 
     public Entity(int x, int y) {
-        this.x = new SimpleIntegerProperty(x);
-        this.y = new SimpleIntegerProperty(y);
-        this.dungeon = null;
-    }
-
-    public IntegerProperty x() {
-        return x;
-    }
-
-    public IntegerProperty y() {
-        return y;
-    }
-
-    public int getY() {
-        return y().get();
-    }
-
-    public int getX() {
-        return x().get();
+        this(x, y, null);
     }
 
     public Position getPosition() {
-        return new Position(x().get(), y().get());
+        return position;
+    }
+
+    public int getY() {
+        return position.y;
+    }
+
+    public int getX() {
+        return position.x;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
     }
 
     Dungeon getDungeon() {

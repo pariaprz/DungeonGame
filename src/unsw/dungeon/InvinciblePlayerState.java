@@ -1,13 +1,13 @@
 package unsw.dungeon;
 
 
-public class InvincibleState implements PlayerState{
+public class InvinciblePlayerState implements PlayerState{
     private String state;
 
-    public InvincibleState(){
+    public InvinciblePlayerState(){
         state = "Invincible";
     }
-    
+
     @Override
     public void toInvincibleState(Player p) {
     }

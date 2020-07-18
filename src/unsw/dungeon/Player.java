@@ -25,7 +25,7 @@ public class Player extends Moveable {
     public Player(int x, int y, Dungeon dungeon) {
         super(x, y, dungeon);
         this.inventory = new ArrayList<Consumable>();
-        this.state = new DefaultState();
+        this.state = new DefaultPlayerState();
     }
 
     public void handleDirectionKey(KeyCode keyCode) {
@@ -33,7 +33,7 @@ public class Player extends Moveable {
         if (direction == null) {
             return;
         }
-        Position nextPos = direction.fromPosition(x().get(), y().get());
+        Position nextPos = direction.fromPosition(getPosition());
         List<Entity> entities = getDungeon().getEntitiesAt(nextPos);
 
         boolean canMove = entities

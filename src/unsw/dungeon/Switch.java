@@ -7,7 +7,7 @@ public class Switch extends Entity {
     }
 
     public boolean isTriggered() {
-        return getDungeon().getEntitiesAt(x().get(), y().get())
+        return getDungeon().getEntitiesAt(getX(), getY())
                 .stream()
                 .anyMatch(entity -> entity instanceof Boulder);
     }
