@@ -60,11 +60,15 @@ public class Enemy extends Moveable {
             if (((Player) actor).getSwordCount() != -1){
                 ((Player) actor).setSwordIncrement();
                 System.out.println(((Player) actor).getSwordCount());
-                getDungeon().removeEntity(this);
+                this.delete();
+            } else if (((Player) actor).getPlayerState().equals("Invincible")){
+                this.delete();
+            } else {
+                ((Player) actor).playerDied();
             }
+        }
        // } else if (((Player) actor).getPlayerState().equals(new InvincibleState())){
        //     getDungeon().removeEntity(this);
-        }
     }
 
 }

@@ -20,6 +20,7 @@ public class Invincibility extends Consumable {
             consume();
 
             ((Player) actor).setPlayerState(new InvinciblePlayerState());
+            System.out.println(((Player) actor).getPlayerState());
 
             Timer timer = new Timer();
             TimerTask t = new TimerTask() {

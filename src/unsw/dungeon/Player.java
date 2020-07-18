@@ -117,12 +117,16 @@ public class Player extends Moveable {
         inventory.remove(c);
     }
 
-    public PlayerState getPlayerState(){
-        return state;
+    public String getPlayerState(){
+        return state.getStateName();
     }
 
     public void setPlayerState(PlayerState playerState){
         state = playerState;
+    }
+
+    public void playerDied(){
+        this.delete();
     }
 
     @Override
