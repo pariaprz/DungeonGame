@@ -11,7 +11,7 @@ public class Exit extends Entity {
     @Override
     public void interact(Entity actor, KeyCode keyCode) {
         if (actor instanceof Player) {
-            getDungeon(); // TODO: End game.
+            setStatus("EXITED"); // TODO: End game.
         }
     }
 }

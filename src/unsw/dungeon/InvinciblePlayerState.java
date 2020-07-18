@@ -1,7 +1,7 @@
 package unsw.dungeon;
 
 
-public class InvinciblePlayerState implements PlayerState{
+public class InvinciblePlayerState implements PlayerState {
     private String state;
 
     public InvinciblePlayerState(){
@@ -9,11 +9,17 @@ public class InvinciblePlayerState implements PlayerState{
     }
 
     @Override
-    public void toInvincibleState(Player p) {
+    public String getStateName() {
+        return state;
+    }
+    @Override
+    public boolean interact(Entity entity) {
+
+        return false;
     }
 
     @Override
-    public void toDefaultState(Player p){
-        p.setPlayerState(new DefaultState());
+    public boolean canInteractWith(Entity entity) {
+        return false;
     }
 }

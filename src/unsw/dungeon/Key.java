@@ -5,8 +5,8 @@ import javafx.scene.input.KeyCode;
 public class Key extends Consumable {
 
     private String id;
-    public Key(int x, int y, String id, Dungeon dungeon) {
-        super(x, y, dungeon);
+    public Key(int x, int y, String id) {
+        super(x, y);
         this.id = id;
     }
 

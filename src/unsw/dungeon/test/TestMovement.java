@@ -18,8 +18,8 @@ public class TestMovement {
     @Before
     public void BeforeEach() {
         dungeon = new Dungeon(10, 10);
-        dungeon.addEntity(new Sword(4,4, dungeon));
-        dungeon.addEntity(new Treasure(5,4, dungeon));
+        dungeon.addEntity(new Sword(4,4));
+        dungeon.addEntity(new Treasure(5,4));
         
         
     }

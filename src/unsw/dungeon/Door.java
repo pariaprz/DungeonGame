@@ -3,6 +3,7 @@ package unsw.dungeon;
 import javafx.scene.input.KeyCode;
 
 public class Door extends Entity {
+    public static String OPEN_STATUS = "open";
     private String id;
     private boolean isUnlocked = false;
     public Door(int x, int y, String id) {

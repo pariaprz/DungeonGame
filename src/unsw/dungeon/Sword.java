@@ -4,8 +4,8 @@ import javafx.scene.input.KeyCode;
 
 public class Sword extends Consumable {
 
-    public Sword(int x, int y, Dungeon dungeon) {
-        super(x, y, dungeon);
+    public Sword(int x, int y) {
+        super(x, y);
     }
 
     @Override

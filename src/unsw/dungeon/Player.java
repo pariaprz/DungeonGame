@@ -12,7 +12,9 @@ import java.util.ArrayList;
  */
 public class Player extends Moveable {
 
-    private int treausureCount = 0;
+    public static String INVINCIBLE_STATUS = "invincible";
+    public static String ARMED_STATUS = "armed";
+    public static String DEFAULT_STATUS = null;
     private int swordCount = -1;
     private String key = null;
     private List<Consumable> inventory;
@@ -103,8 +105,12 @@ public class Player extends Moveable {
     }
 
     public void addToInventory(Consumable c){
-            getInventory().add(c);
-        }
+        getInventory().add(c);
+    }
+
+    public int getTreasureCount(){
+        return (int)getInventory().stream().filter(c -> c instanceof Treasure).count();
+    }
 
     //Removes consumable when the player no longer has the item (Sword after 5 hits, Potion after time expires)
     public void removeFromInventory(Consumable c){
@@ -123,10 +129,4 @@ public class Player extends Moveable {
     public void interact(Entity actor, KeyCode keyCode) {
         super.interact(actor, keyCode); // TODO: Change this for enemies.
     }
-
-    public void addTreasure() {
-        treausureCount++;
-    }
-
-    
 }

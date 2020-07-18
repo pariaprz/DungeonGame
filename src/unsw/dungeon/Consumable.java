@@ -9,8 +9,8 @@ public class Consumable extends Entity {
 
     private boolean consumed = false;
 
-    Consumable(int x, int y, Dungeon dungeon) {
-        super(x, y, dungeon);
+    Consumable(int x, int y) {
+        super(x, y);
     }
 
     public boolean isConsumed() {
@@ -19,6 +19,6 @@ public class Consumable extends Entity {
 
     public void consume() {
         consumed = true;
-        getDungeon().removeEntity(this);
+        this.delete();
     }
 }

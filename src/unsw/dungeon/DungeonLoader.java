@@ -61,7 +61,7 @@ public class DungeonLoader {
             entity = new Wall(x, y);
             break;
         case "switch":
-            entity = new Switch(x, y, dungeon);
+            entity = new Switch(x, y);
             break;
         case "boulder":
             entity = new Boulder(x, y, dungeon);
@@ -70,10 +70,10 @@ public class DungeonLoader {
             entity = new Exit(x, y, dungeon);
             break;
         case "sword":
-            entity = new Sword(x, y, dungeon);
+            entity = new Sword(x, y);
             break;
         case "invincibility":
-            entity = new Invincibility(x, y, dungeon);
+            entity = new Invincibility(x, y);
             break;
         case "door":
             String doorId = json.getString("id");
@@ -87,7 +87,7 @@ public class DungeonLoader {
             if (keyId == null) {
                 throw new RuntimeException("No ID provided for key");
             }
-            entity = new Key(x, y, keyId, dungeon);
+            entity = new Key(x, y, keyId);
             break;
         case "portal":
             String portalId = json.getString("id");
@@ -100,7 +100,7 @@ public class DungeonLoader {
             entity = new Enemy(x, y, dungeon);
             break;
         case "treasure":
-            entity = new Treasure(x, y, dungeon);
+            entity = new Treasure(x, y);
             break;
         }
         if (entity != null) {

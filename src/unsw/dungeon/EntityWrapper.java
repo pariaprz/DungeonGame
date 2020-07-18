@@ -2,6 +2,7 @@ package unsw.dungeon;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.Arrays;
 
 public class EntityWrapper {
     public static String POSITION_EVENT = "Position";
@@ -10,12 +11,12 @@ public class EntityWrapper {
 
     public final Class<? extends Entity> entityClass;
     private Position position;
-    private Object state;
 
     private final PropertyChangeSupport changeSupport;
 
-    public EntityWrapper(Class<? extends Entity> entityClass) {
-        this.entityClass = entityClass;
+    public EntityWrapper(Entity entity) {
+        this.entityClass = entity.getClass();
+        this.position = entity.getPosition();
         this.changeSupport = new PropertyChangeSupport(this);
     }
 
@@ -24,13 +25,16 @@ public class EntityWrapper {
         this.position = position;
     }
 
+    public Position getPosition() {
+        return this.position;
+    }
+
     public void setDeleted() {
         changeSupport.firePropertyChange(DELETED_EVENT, null, null);
     }
 
-    public void setState(Object state) {
-        changeSupport.firePropertyChange(DELETED_EVENT, this.state, state);
-        this.state = state;
+    public void publishStatusUpdate(String status) {
+        changeSupport.firePropertyChange(DELETED_EVENT, null, status);
     }
 
     public void addDeleteObserver(PropertyChangeListener listener) {
@@ -43,13 +47,21 @@ public class EntityWrapper {
         changeSupport.addPropertyChangeListener(STATE_EVENT, listener);
     }
 
-    public void removeDeleteObserver(PropertyChangeListener listener) {
+    public void unsubscribeDelete(PropertyChangeListener listener) {
         changeSupport.removePropertyChangeListener(DELETED_EVENT, listener);
     }
-    public void removePositionObserver(PropertyChangeListener listener) {
+    public void unsubscribePosition(PropertyChangeListener listener) {
         changeSupport.removePropertyChangeListener(POSITION_EVENT, listener);
     }
-    public void removeStateObserver(PropertyChangeListener listener) {
+    public void unsubscribeState(PropertyChangeListener listener) {
         changeSupport.removePropertyChangeListener(STATE_EVENT, listener);
+    }
+    public void dropAllSubscribers() {
+        Arrays.stream(this.changeSupport.getPropertyChangeListeners(DELETED_EVENT))
+                .forEach(this::unsubscribeDelete);
+        Arrays.stream(this.changeSupport.getPropertyChangeListeners(STATE_EVENT))
+                .forEach(this::unsubscribeState);
+        Arrays.stream(this.changeSupport.getPropertyChangeListeners(POSITION_EVENT))
+                .forEach(this::unsubscribePosition);
     }
 }

@@ -6,8 +6,8 @@ import java.util.TimerTask;
 
 public class Invincibility extends Consumable {
 
-    public Invincibility(int x, int y, Dungeon dungeon) {
-        super(x, y, dungeon);
+    public Invincibility(int x, int y) {
+        super(x, y);
     }
 
     @Override
@@ -19,14 +19,13 @@ public class Invincibility extends Consumable {
             System.out.println("I AM INVINCIBLE");
             consume();
 
-            ((Player) actor).getPlayerState().toInvincibleState((Player) actor);
+            ((Player) actor).setPlayerState(new InvinciblePlayerState());
 
             Timer timer = new Timer();
             TimerTask t = new TimerTask() {
                 public void run(){
-                    ((Player) actor).getPlayerState().toDefaultState((Player) actor);
+                    ((Player) actor).setPlayerState(new DefaultPlayerState());
                     System.out.println("No longer invincible");
-
                 }
             };
             timer.schedule(t, 10000);                   //Time in milliseconds

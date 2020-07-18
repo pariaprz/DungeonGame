@@ -1,11 +1,12 @@
 package unsw.dungeon;
 
 import javafx.beans.Observable;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.Property;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 /**
  * An entity in the dungeon.
@@ -14,10 +15,13 @@ import javafx.scene.input.KeyEvent;
  */
 public class Entity {
 
-    // IntegerProperty is used so that changes to the entities position can be
-    // externally observed.
-    private Position position;
+    public static String DEFAULT_STATUS = "";
+
+    private IntegerProperty x, y;
+    private BooleanProperty isDeleted;
+    private StringProperty status;
     private Dungeon dungeon;
+    private PropertyChangeSupport changeSupport;
 
     /**
      * Create an entity positioned in square (x,y)
@@ -25,28 +29,67 @@ public class Entity {
      * @param y
      */
     public Entity(int x, int y, Dungeon dungeon) {
-        this.position = new Position(x, y);
+        this.x = new SimpleIntegerProperty(x);
+        this.y = new SimpleIntegerProperty(y);
+        this.isDeleted = new SimpleBooleanProperty(false);
+        this.status = new SimpleStringProperty(DEFAULT_STATUS);
+
         this.dungeon = dungeon;
+        this.changeSupport = new PropertyChangeSupport(this);
     }
 
     public Entity(int x, int y) {
         this(x, y, null);
     }
 
+    public BooleanProperty isDeletedProperty() {
+        return isDeleted;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted.get();
+    }
+
+    public void delete() {
+        isDeleted.setValue(true);
+    }
+
+    public StringProperty status() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status.setValue(status);
+    }
+
+    public IntegerProperty x() {
+        return x;
+    }
+
+    public IntegerProperty y() {
+        return y;
+    }
+
     public Position getPosition() {
-        return position;
+        return new Position(getX(), getY());
     }
 
     public int getY() {
-        return position.y;
+        return y.get();
     }
 
     public int getX() {
-        return position.x;
+        return x.get();
     }
 
     public void setPosition(Position position) {
-        this.position = position;
+        this.x.setValue(position.x);
+        this.y.setValue(position.y);
+    }
+
+    public void setPosition(int x, int y) {
+        this.x.setValue(x);
+        this.y.setValue(y);
     }
 
     Dungeon getDungeon() {
