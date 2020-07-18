@@ -13,6 +13,7 @@ import java.util.ArrayList;
 public class Player extends Moveable {
 
     private int treausureCount = 0;
+    private int swordCount = -1;
     private String key = null;
     private List<Consumable> inventory;
     private PlayerState state;
@@ -68,7 +69,7 @@ public class Player extends Moveable {
     }
     
     public Consumable findKey() {
-        for (Consumable c : inventory){
+        for (Consumable c : getInventory()){
             if (c instanceof Key){
                 return c;
             } 
@@ -76,13 +77,34 @@ public class Player extends Moveable {
         return null;
     }
 
+    public Consumable findSword() {        
+        for (Consumable s : getInventory()){
+            if (s instanceof Sword){
+                return s;
+            } 
+        }
+        return null;
+    }
+
+    public void setSwordIncrement(){
+        swordCount += 1;
+    }
+
+    public void resetSword(){
+        swordCount = -1;
+    }
+
+    public int getSwordCount(){
+        return swordCount;
+    }
+    
     public List<Consumable> getInventory(){
         return inventory;
     }
 
     public void addToInventory(Consumable c){
-        inventory.add(c);
-    }
+            getInventory().add(c);
+        }
 
     //Removes consumable when the player no longer has the item (Sword after 5 hits, Potion after time expires)
     public void removeFromInventory(Consumable c){
@@ -105,4 +127,6 @@ public class Player extends Moveable {
     public void addTreasure() {
         treausureCount++;
     }
+
+    
 }

@@ -56,6 +56,15 @@ public class Enemy extends Moveable {
     @Override
     public void interact(Entity actor, KeyCode keyCode) {
         super.interact(actor, keyCode); // TODO: Make it work.
+        if (actor instanceof Player){
+            if (((Player) actor).getSwordCount() != -1){
+                ((Player) actor).setSwordIncrement();
+                System.out.println(((Player) actor).getSwordCount());
+                getDungeon().removeEntity(this);
+            }
+       // } else if (((Player) actor).getPlayerState().equals(new InvincibleState())){
+       //     getDungeon().removeEntity(this);
+        }
     }
 
 }
