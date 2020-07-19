@@ -17,7 +17,8 @@ public class Player extends Moveable {
     public static String DEFAULT_STATUS = null;
     private int swordCount = -1;
     private String key = null;
-    private List<Consumable> inventory;
+    private int treasureCount = 0;    //Keep here for the meantime. If have time, remove and just check if there's any more treasure in dungeon
+    //private List<Consumable> inventory;
     private PlayerState state;
 
     /**
@@ -27,7 +28,7 @@ public class Player extends Moveable {
      */
     public Player(int x, int y, Dungeon dungeon) {
         super(x, y, dungeon);
-        this.inventory = new ArrayList<Consumable>();
+      //  this.inventory = new ArrayList<Consumable>();
         this.state = new DefaultPlayerState();
     }
 
@@ -66,27 +67,27 @@ public class Player extends Moveable {
 
     public void dropKey() {
         setKey(null);
-        removeFromInventory(findKey());
+  //      removeFromInventory(findKey());
         
     }
     
-    public Consumable findKey() {
-        for (Consumable c : getInventory()){
-            if (c instanceof Key){
-                return c;
-            } 
-        }
-        return null;
-    }
+ //   public Consumable findKey() {
+ //       for (Consumable c : getInventory()){
+ //           if (c instanceof Key){
+ //               return c;
+ //           } 
+ //       }
+ //       return null;
+ //   }
 
-    public Consumable findSword() {        
-        for (Consumable s : getInventory()){
-            if (s instanceof Sword){
-                return s;
-            } 
-        }
-        return null;
-    }
+ //   public Consumable findSword() {        
+ //       for (Consumable s : getInventory()){
+ //           if (s instanceof Sword){
+ //               return s;
+  //          } 
+  //      }
+  //      return null;
+  //  }
 
     public void setSwordIncrement(){
         swordCount += 1;
@@ -100,22 +101,26 @@ public class Player extends Moveable {
         return swordCount;
     }
     
-    public List<Consumable> getInventory(){
-        return inventory;
-    }
+ //   public List<Consumable> getInventory(){
+ //       return inventory;
+ //   }
 
-    public void addToInventory(Consumable c){
-        getInventory().add(c);
-    }
+ //   public void addToInventory(Consumable c){
+ //       getInventory().add(c);
+  //  }
 
     public int getTreasureCount(){
-        return (int)getInventory().stream().filter(c -> c instanceof Treasure).count();
+        return treasureCount;
+    }
+
+    public void incrementTreasureCount(){
+        treasureCount += 1;
     }
 
     //Removes consumable when the player no longer has the item (Sword after 5 hits, Potion after time expires)
-    public void removeFromInventory(Consumable c){
-        inventory.remove(c);
-    }
+ //   public void removeFromInventory(Consumable c){
+ //       inventory.remove(c);
+ //   }
 
     public String getPlayerState(){
         return state.getStateName();

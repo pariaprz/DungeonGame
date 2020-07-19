@@ -57,18 +57,16 @@ public class Enemy extends Moveable {
     public void interact(Entity actor, KeyCode keyCode) {
         super.interact(actor, keyCode); // TODO: Make it work.
         if (actor instanceof Player){
-            if (((Player) actor).getSwordCount() != -1){
+            if (((Player) actor).getPlayerState().equals("Invincible")){
+                this.delete();
+            } else if (((Player) actor).getSwordCount() != -1){
                 ((Player) actor).setSwordIncrement();
                 System.out.println(((Player) actor).getSwordCount());
                 this.delete();
-            } else if (((Player) actor).getPlayerState().equals("Invincible")){
-                this.delete();
             } else {
-                ((Player) actor).playerDied();
+                //((Player) actor).playerDied();  //Mainly for backend testing purposes at the moment. If player dies, the front end will restart
             }
         }
-       // } else if (((Player) actor).getPlayerState().equals(new InvincibleState())){
-       //     getDungeon().removeEntity(this);
     }
 
 }

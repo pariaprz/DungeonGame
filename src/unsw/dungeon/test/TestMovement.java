@@ -3,6 +3,8 @@ package unsw.dungeon.test;
 import org.junit.Before;
 import org.junit.Test;
 import unsw.dungeon.Dungeon;
+import unsw.dungeon.Invincibility;
+import unsw.dungeon.Key;
 import unsw.dungeon.Player;
 import unsw.dungeon.Sword;
 import unsw.dungeon.Treasure;
@@ -20,6 +22,8 @@ public class TestMovement {
         dungeon = new Dungeon(10, 10);
         dungeon.addEntity(new Sword(4,4));
         dungeon.addEntity(new Treasure(5,4));
+        dungeon.addEntity(new Invincibility(6, 4));
+        dungeon.addEntity(new Key(7, 4, "0"));
         
         
     }
@@ -47,15 +51,24 @@ public class TestMovement {
     }
 
     @Test
-    public void TestInventoryCollection(){
+    public void TestSuccessfulPlayerCollection(){                      //TODO FIX UP THE UNIT TESTS
         Player p = new Player(3,4, dungeon);
-        assertEquals(0, p.getInventory().size());               //Checks inventory is empty at beginning
+        assertEquals(-1, p.getSwordCount());               //Checks potion/key/sword/treasure default values
+        assertEquals(null, p.getKey());
+        assertEquals("Default", p.getPlayerState());
+        assertEquals(0, p.getTreasureCount());
+
+        p.handleDirectionKey(KeyCode.RIGHT);                //swordCount Defaulted to -1 when no sword             
+        assertEquals(0, p.getSwordCount());                 //when sword obtained, count goes to 0 and counts up to 5 when enemy is it
 
         p.handleDirectionKey(KeyCode.RIGHT);
-        assertEquals(1, p.getInventory().size());               //Checks that the sword has successfully gone into inventory
+        assertEquals(1, p.getTreasureCount());              //Checks that the treasure count increases when picked up
 
-        p.handleDirectionKey(KeyCode.RIGHT);
-        assertEquals(2, p.getInventory().size());               //Checks that the treasure also made it into inventory
-    }
+        p.handleDirectionKey(KeyCode.RIGHT);                //Checks player's state has been changed
+        assertEquals("Invincible", p.getPlayerState());
+
+        p.handleDirectionKey(KeyCode.RIGHT);                //Checks keys field has been set properly
+        assertEquals("0", p.getKey());
+      }
 
     }

@@ -12,15 +12,19 @@ public class Sword extends Consumable {
     public void interact(Entity actor, KeyCode keyCode) {
         if (actor instanceof Player) {
             // TODO: Add sword to player.
-            try {
-                ((Player) actor).findSword().equals(null);
-            } catch (NullPointerException e) {
+            if (((Player) actor).getSwordCount() == -1){
                 consume();
-                ((Player) actor).addToInventory(this);
                 ((Player) actor).setSwordIncrement();
             }
+       //     try {
+       //         ((Player) actor).getSwordCount() ;
+       //     } catch (NullPointerException e) {
+       //         consume();
+       //         ((Player) actor).addToInventory(this);
+        //        ((Player) actor).setSwordIncrement();
+       //     }
             
-            System.out.println(((Player) actor).getInventory());        // TODO BACKEND TESTING, REMOVE LATER
+           // System.out.println(((Player) actor).getInventory());        // TODO BACKEND TESTING, REMOVE LATER
             
         }
     }

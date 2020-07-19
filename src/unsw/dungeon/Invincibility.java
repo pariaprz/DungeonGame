@@ -14,13 +14,12 @@ public class Invincibility extends Consumable {
     public void interact(Entity actor, KeyCode keyCode) {
         if (actor instanceof Player) {
             // TODO: Add invincibility to player.
-            ((Player) actor).addToInventory(this);                  //Check if we actually want it in inventory because we just use it and then it's gone
-            System.out.println(((Player) actor).getInventory());    // TODO BACKEND TESTING, REMOVE LATER
+   //         ((Player) actor).addToInventory(this);                  //Check if we actually want it in inventory because we just use it and then it's gone
+   //         System.out.println(((Player) actor).getInventory());    // TODO BACKEND TESTING, REMOVE LATER
             System.out.println("I AM INVINCIBLE");
             consume();
 
             ((Player) actor).setPlayerState(new InvinciblePlayerState());
-            System.out.println(((Player) actor).getPlayerState());
 
             Timer timer = new Timer();
             TimerTask t = new TimerTask() {
