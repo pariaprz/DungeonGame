@@ -7,6 +7,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
 
@@ -17,10 +18,12 @@ import javafx.util.Duration;
  */
 public class DungeonController {
 
-    private final DungeonView dungeonView;
+    private DungeonView dungeonView;
     private final Dungeon dungeon;
     private final Goal goal;
+    private boolean isGameComplete = false;
     private final Timeline timeline;
+    private final List<EntityWrapper> initialEntities;
 
     public DungeonController(Dungeon dungeon, Goal goal) {
         this.dungeon = dungeon;
@@ -28,8 +31,7 @@ public class DungeonController {
         timeline = new Timeline(2);
         timeline.setCycleCount(Timeline.INDEFINITE);
 
-        System.out.println(this.dungeon);
-        List<EntityWrapper> initialEntities = this.dungeon
+        initialEntities = this.dungeon
                 .getEntities()
                 .stream()
                 .map(this::onEntityLoad)
@@ -37,10 +39,12 @@ public class DungeonController {
 
         goal.getCompleteProperty().addListener((ObservableValue<? extends Boolean> observable,
                                                 Boolean oldValue, Boolean newValue) -> {
-            if (newValue) System.out.println("Level Complete");
+            if (newValue) {
+                System.out.println("Level Complete");
+                timeline.stop();
+                isGameComplete = true;
+            }
         });
-        this.dungeonView = new DungeonView(dungeon.getHeight(), dungeon.getWidth(), this, initialEntities);
-        timeline.play();
     }
 
     public EntityWrapper onEntityLoad(Entity entity) {
@@ -92,18 +96,21 @@ public class DungeonController {
         return number < maxValue && number >= 0;
     }
 
-    @FXML
-    public void handleKeyPress(KeyEvent event) {
+    public boolean isGameComplete() {
+        return isGameComplete;
+    }
+
+    public void handleKeyPress(KeyCode keyCode) {
         Player player = dungeon.getPlayer();
-        if (goal.computeComplete(dungeon) || player == null) {
+        if (goal.computeComplete(dungeon) || isGameComplete || player == null) {
             return;
         }
-        switch (event.getCode()) {
+        switch (keyCode) {
         case UP:
         case DOWN:
         case LEFT:
         case RIGHT:
-            player.handleDirectionKey(event.getCode());
+            player.handleDirectionKey(keyCode);
             break;
         case SPACE:
             System.out.println("Swinging sword");
@@ -114,7 +121,17 @@ public class DungeonController {
         }
     }
 
-    public DungeonView getDungeonView() {
+    public List<EntityWrapper> getInitialEntities() {
+        return initialEntities;
+    }
+
+    public Goal getGoal() {
+        return goal;
+    }
+
+    public DungeonView loadDungeonView() {
+        dungeonView = new DungeonView(dungeon.getHeight(), dungeon.getWidth(), this, initialEntities);
+        timeline.play();
         return dungeonView;
     }
 }

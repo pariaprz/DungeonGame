@@ -6,10 +6,10 @@ package unsw.dungeon;
  *
  */
 public class Position {
-    public int x;
-    public int y;
+    public final int x;
+    public final int y;
 
-    Position(int x, int y) {
+    public Position(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -24,6 +24,11 @@ public class Position {
             return ((Position) obj).x == x && ((Position) obj).y == y;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Position(" + x + ", " + y + ")";
     }
 }
 

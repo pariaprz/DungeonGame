@@ -72,17 +72,17 @@ public class DungeonView {
     private void track(EntityWrapper entity, ImageView node) {
         GridPane.setColumnIndex(node, entity.getPosition().x);
         GridPane.setRowIndex(node, entity.getPosition().y);
-        entity.addPositionObserver((PropertyChangeEvent evt) -> {
-            Position newPosition = (Position)evt.getNewValue();
+        entity.addPositionObserver((PropertyChangeEvent event) -> {
+            Position newPosition = (Position)event.getNewValue();
             GridPane.setColumnIndex(node, newPosition.x);
             GridPane.setRowIndex(node, newPosition.y);
         });
-        entity.addDeleteObserver((PropertyChangeEvent evt) -> {
+        entity.addDeleteObserver((PropertyChangeEvent event) -> {
             squares.getChildren().remove(node);
             entity.dropAllSubscribers();
         });
-        entity.addStatusObserver((PropertyChangeEvent evt) -> {
-            String update = Optional.of((String)(evt.getNewValue())).orElse(DEFAULT_IMG);
+        entity.addStatusObserver((PropertyChangeEvent event) -> {
+            String update = Optional.of((String)(event.getNewValue())).orElse(DEFAULT_IMG);
             Image defaultImg = imageMap.get(entity.entityClass).get(DEFAULT_IMG);
             System.out.println("Getting img: " + update);
             node.setImage(imageMap.get(entity.entityClass).getOrDefault(update, defaultImg));
@@ -91,7 +91,7 @@ public class DungeonView {
 
     @FXML
     public void handleKeyPress(KeyEvent event) {
-        controller.handleKeyPress(event);
+        controller.handleKeyPress(event.getCode());
     }
 
     private static Map<Class<? extends Entity>, Map<String, Image>> initialiseImageMap() {

@@ -54,8 +54,6 @@ public class Enemy extends Moveable {
 
     @Override
     public void interact(Entity actor, KeyCode keyCode) {
-        System.out.println("Enemy Interact called: " + actor);
-
         if (actor instanceof Player){
             actor.interact(this, keyCode);
         }
