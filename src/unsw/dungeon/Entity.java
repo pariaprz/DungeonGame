@@ -92,7 +92,7 @@ public class Entity {
         this.y.setValue(y);
     }
 
-    Dungeon getDungeon() {
+    public Dungeon getDungeon() {
         return dungeon;
     }
 
