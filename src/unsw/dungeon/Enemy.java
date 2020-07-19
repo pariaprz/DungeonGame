@@ -59,12 +59,19 @@ public class Enemy extends Moveable {
         if (actor instanceof Player){
             if (((Player) actor).getPlayerState().equals("Invincible")){
                 this.delete();
+
             } else if (((Player) actor).getSwordCount() != -1){
                 ((Player) actor).setSwordIncrement();
                 System.out.println(((Player) actor).getSwordCount());
                 this.delete();
-            } else {
+
+            } else{
                 //((Player) actor).playerDied();  //Mainly for backend testing purposes at the moment. If player dies, the front end will restart
+            }
+            
+            if (((Player) actor).getSwordCount() == 5){
+                ((Player) actor).resetSword();
+                System.out.println("Player's Sword has crumbled");
             }
         }
     }
