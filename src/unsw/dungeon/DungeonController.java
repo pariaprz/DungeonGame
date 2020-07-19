@@ -3,9 +3,12 @@ package unsw.dungeon;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.input.KeyEvent;
+import javafx.util.Duration;
 
 /**
  * A JavaFX controller for the dungeon.
@@ -17,20 +20,26 @@ public class DungeonController {
     private DungeonView dungeonView;
     private Dungeon dungeon;
     private Goal goal;
+    private Timeline timeline;
 
     public DungeonController(Dungeon dungeon) {
         this.dungeon = dungeon;
         this.goal = dungeon.getGoal();
+        timeline = new Timeline(2);
+        timeline.setCycleCount(Timeline.INDEFINITE);
+
         List<EntityWrapper> initialEntities = this.dungeon
                 .getEntities()
                 .stream()
                 .map(this::onEntityLoad)
                 .collect(Collectors.toUnmodifiableList());
 
-        goal.getCompleteProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+        goal.getCompleteProperty().addListener((ObservableValue<? extends Boolean> observable,
+                                                Boolean oldValue, Boolean newValue) -> {
             if (newValue) System.out.println("Level Complete");
         });
         this.dungeonView = new DungeonView(dungeon.getHeight(), dungeon.getWidth(), this, initialEntities);
+        timeline.play();
     }
 
     public EntityWrapper onEntityLoad(Entity entity) {
@@ -58,7 +67,6 @@ public class DungeonController {
         entity.isDeletedProperty().addListener((ObservableValue<? extends Boolean> observable,
                                                 Boolean oldValue, Boolean newValue) -> {
             if (newValue) {
-                System.out.println("Class deleted: " + entity.getClass());
                 this.dungeon.removeEntity(entity);
                 entityWrapper.setDeleted();
                 if (entityWrapper.entityClass.equals(Player.class)) {
@@ -70,6 +78,11 @@ public class DungeonController {
                                      String oldValue, String newValue) -> {
             entityWrapper.publishStatusUpdate(newValue);
         });
+        if (entity instanceof Enemy) {
+            timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(1),
+                    actionEvent -> ((Enemy) entity).moveEnemy()
+            ));
+        }
         goal.attachListener(entityWrapper, dungeon);
         return entityWrapper;
     }
@@ -89,9 +102,6 @@ public class DungeonController {
         case DOWN:
         case LEFT:
         case RIGHT:
-            for (Enemy e : dungeon.getEnemies()){
-                e.moveEnemy();
-            }
             player.handleDirectionKey(event.getCode());
             break;
         case SPACE:
