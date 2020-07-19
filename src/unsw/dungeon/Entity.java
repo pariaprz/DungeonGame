@@ -1,27 +1,22 @@
 package unsw.dungeon;
 
-import javafx.beans.Observable;
 import javafx.beans.property.*;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 
 /**
  * An entity in the dungeon.
- * @author Robert Clifton-Everest
- *
+ * It has a position and is either deleted or not.
+ * Each entity has a canMoveHere() to highlight if other entities can move to the same position.
+ * Each entity can use interact() and change the state of other entities in the dungeon.
  */
 public class Entity {
 
     public static String DEFAULT_STATUS = "";
 
-    private IntegerProperty x, y;
-    private BooleanProperty isDeleted;
-    private StringProperty status;
-    private Dungeon dungeon;
-    private PropertyChangeSupport changeSupport;
+    private final IntegerProperty x, y;
+    private final BooleanProperty isDeleted;
+    private final StringProperty status;
+    private final Dungeon dungeon;
 
     /**
      * Create an entity positioned in square (x,y)
@@ -35,7 +30,6 @@ public class Entity {
         this.status = new SimpleStringProperty(DEFAULT_STATUS);
 
         this.dungeon = dungeon;
-        this.changeSupport = new PropertyChangeSupport(this);
     }
 
     public Entity(int x, int y) {

@@ -4,6 +4,10 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.Arrays;
 
+/**
+ * This class is used to provide updates to any listeners.
+ * This is intended to supply any updates approved by the controller to any subscribers.
+ */
 public class EntityWrapper {
     public static String POSITION_EVENT = "Position";
     public static String DELETED_EVENT = "Deleted";

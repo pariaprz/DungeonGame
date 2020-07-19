@@ -4,12 +4,6 @@ import javafx.util.Pair;
 
 import java.util.List;
 
-/**
- * This class represents the border of the map.
- * Ensures that no entity can escape the map.
- * Pretty much identical to a wall,
- * but is a different class so wall can change without introducing new bugs
- */
 public class SwitchesGoalEngine extends GoalEngine {
     public SwitchesGoalEngine() {
         super();

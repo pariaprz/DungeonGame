@@ -1,8 +1,7 @@
 package unsw.dungeon;
 
 /**
- * An entity in the dungeon.
- * @author Robert Clifton-Everest
+ * A helper for making position updates easier.
  *
  */
 public class Position {

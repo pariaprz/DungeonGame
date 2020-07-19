@@ -3,10 +3,8 @@ package unsw.dungeon;
 import java.util.List;
 
 /**
- * This class represents the border of the map.
- * Ensures that no entity can escape the map.
- * Pretty much identical to a wall,
- * but is a different class so wall can change without introducing new bugs
+ * This class represents Multiple goals AND'd together.
+ * i.e. goal1 && goal2 && goal3.
  */
 public class ORGoalEngine extends ComplexGoalEngine {
     public ORGoalEngine(List<Goal> childGoals) {

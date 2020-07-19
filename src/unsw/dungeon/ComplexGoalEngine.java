@@ -7,10 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * This class represents the border of the map.
- * Ensures that no entity can escape the map.
- * Pretty much identical to a wall,
- * but is a different class so wall can change without introducing new bugs
+ * Complex goals are composed of one or more smaller goals.
  */
 public abstract class ComplexGoalEngine extends GoalEngine {
     private List<Goal> childGoals;

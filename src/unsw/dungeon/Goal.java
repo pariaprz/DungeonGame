@@ -6,10 +6,9 @@ import javafx.beans.property.SimpleBooleanProperty;
 import java.beans.PropertyChangeEvent;
 
 /**
- * This class represents the border of the map.
- * Ensures that no entity can escape the map.
- * Pretty much identical to a wall,
- * but is a different class so wall can change without introducing new bugs
+ * This class is a wrapper for a GoalEngine.
+ * It enables other classes to subscribe to a change in state.
+ * attachListener() subscribes to all topics the goalEngine would like to subscribe to.
  */
 public class Goal {
 

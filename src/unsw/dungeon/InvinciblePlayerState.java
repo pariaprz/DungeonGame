@@ -4,24 +4,29 @@ package unsw.dungeon;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Entity consumed only by the player. Makes the player invincible.
+ * It is deleted once it is consumed.
+ */
 public class InvinciblePlayerState implements PlayerState {
     private Player player;
+    private TimerTask task;
 
     public static String STATE_NAME = "Invincible";
     public InvinciblePlayerState(Player player) {
         this.player = player;
     }
 
-    public static void startInvincibility(Player player) {
-        InvinciblePlayerState newState = new InvinciblePlayerState(player);
-        player.setState(newState);
+    public void startInvincibility() {
+        player.setState(this);
         Timer timer = new Timer();
-        TimerTask t = new TimerTask() {
+        InvinciblePlayerState thisState = this;
+        task = new TimerTask() {
             public void run(){
-                newState.expireState();
+                thisState.expireState();
             }
         };
-        timer.schedule(t, 10*1000);                   //Time in milliseconds
+        timer.schedule(task, 10*1000);                   //Time in milliseconds
     }
 
     @Override
@@ -36,6 +41,9 @@ public class InvinciblePlayerState implements PlayerState {
 
     @Override
     public void expireState() {
+        if (this.task != null) {
+            this.task.cancel();
+        }
         this.player.setState(new DefaultPlayerState(player));
     }
 
