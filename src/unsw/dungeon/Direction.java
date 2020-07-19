@@ -61,15 +61,6 @@ public enum Direction {
     }
 
     /**
-     * @param x
-     * @param y
-     * @return The position obtained by moving 'this' direction.
-     */
-    public Position fromPosition(int x, int y) {
-        return new Position(x + this.x, y + this.y);
-    }
-
-    /**
      *
      * @param p
      * @return The position obtained by moving 'this' direction.

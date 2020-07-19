@@ -9,11 +9,11 @@ import java.util.List;
  * but is a different class so wall can change without introducing new bugs
  */
 public class ORGoalEngine extends ComplexGoalEngine {
-    ORGoalEngine(List<Goal> childGoals) {
+    public ORGoalEngine(List<Goal> childGoals) {
         super(childGoals);
     }
 
-    ORGoalEngine() {
+    public ORGoalEngine() {
             super();
     }
 

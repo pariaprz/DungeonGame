@@ -144,5 +144,8 @@ public class TestDungeonController {
         DungeonController controller = new DungeonController(dungeon, new Goal(new ExitGoalEngine()));
         controller.handleKeyPress(KeyCode.LEFT);
         assertEquals(dungeon.getPlayer().getPosition(), new Position(1, 2));
+        dungeon.getPlayer().armSword();
+        controller.handleKeyPress(KeyCode.SPACE);
+        assertEquals(4, dungeon.getPlayer().getSwordCount());
     }
 }

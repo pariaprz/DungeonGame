@@ -84,7 +84,7 @@ public class DungeonLoader {
             entity = new Wall(x, y);
             break;
         case "switch":
-            entity = new Switch(x, y);
+            entity = new Switch(x, y, dungeon);
             break;
         case "boulder":
             entity = new Boulder(x, y, dungeon);

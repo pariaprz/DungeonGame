@@ -13,7 +13,7 @@ public class Exit extends Entity {
     @Override
     public void interact(Entity actor, KeyCode keyCode) {
         if (actor instanceof Player) {
-            setStatus(EXIT_STATUS); // TODO: End game.
+            setStatus(EXIT_STATUS);
         }
     }
 }

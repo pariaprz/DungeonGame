@@ -102,7 +102,7 @@ public class DungeonController {
 
     public void handleKeyPress(KeyCode keyCode) {
         Player player = dungeon.getPlayer();
-        if (goal.computeComplete(dungeon) || isGameComplete || player == null) {
+        if (isGameComplete || player == null) {
             return;
         }
         switch (keyCode) {

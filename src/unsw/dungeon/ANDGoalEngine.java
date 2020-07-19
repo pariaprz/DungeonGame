@@ -9,11 +9,11 @@ import java.util.List;
  * but is a different class so wall can change without introducing new bugs
  */
 public class ANDGoalEngine extends ComplexGoalEngine {
-    ANDGoalEngine(List<Goal> childGoals) {
+    public ANDGoalEngine(List<Goal> childGoals) {
         super(childGoals);
     }
 
-    ANDGoalEngine() {
+    public ANDGoalEngine() {
         super();
     }
 

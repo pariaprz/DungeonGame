@@ -29,6 +29,6 @@ public class SwitchesGoalEngine extends GoalEngine {
 
     @Override
     public List<Pair<Class<? extends Entity>, String>> getSubscriptionTopics() {
-        return List.of(new Pair<>(Switch.class, EntityWrapper.STATUS_EVENT));
+        return List.of(new Pair<>(Boulder.class, EntityWrapper.POSITION_EVENT));
     }
 }

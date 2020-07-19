@@ -11,12 +11,6 @@ public class Portal extends Entity {
         this.id = id;
     }
 
-    public Portal(int x, int y, String id, Portal linkedPortal) {
-        super(x, y);
-        this.id = id;
-        this.linkedPortal = linkedPortal;
-    }
-
     public void setLinkedPortal(Portal linkedPortal) {
         this.linkedPortal = linkedPortal;
     }
