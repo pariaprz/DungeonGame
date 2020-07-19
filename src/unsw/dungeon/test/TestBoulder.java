@@ -18,6 +18,7 @@ public class TestBoulder {
         dungeon = new Dungeon(10, 10);
         dungeon.addEntity(new Wall(4, 4));
     }
+
     @Test
     public void TestBoulderMovingOnBoulderFromAllDirections() {
         Boulder boulder = new Boulder(1, 2, dungeon);

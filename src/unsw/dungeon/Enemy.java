@@ -28,7 +28,7 @@ public class Enemy extends Moveable {
     if (direction == null) {
         return;
     }
-    Position nextPos = direction.fromPosition(x().get(), y().get());
+    Position nextPos = direction.fromPosition(getPosition());
     List<Entity> entities = getDungeon().getEntitiesAt(nextPos);
 
     boolean canMove = entities
@@ -60,7 +60,7 @@ public class Enemy extends Moveable {
             if (((Player) actor).getSwordCount() != -1){
                 ((Player) actor).setSwordIncrement();
                 System.out.println(((Player) actor).getSwordCount());
-                getDungeon().removeEntity(this);
+                delete();
             }
        // } else if (((Player) actor).getPlayerState().equals(new InvincibleState())){
        //     getDungeon().removeEntity(this);

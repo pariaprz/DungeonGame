@@ -1,16 +1,11 @@
 package unsw.dungeon;
 
-import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.GridPane;
 
 /**
  * A JavaFX controller for the dungeon.
@@ -19,19 +14,22 @@ import javafx.scene.layout.GridPane;
  */
 public class DungeonController {
 
-    private List<EntityWrapper> initialEntities;
     private DungeonView dungeonView;
-    private Player player;
     private Dungeon dungeon;
+    private Goal goal;
 
     public DungeonController(Dungeon dungeon) {
         this.dungeon = dungeon;
-        this.player = dungeon.getPlayer();
-        initialEntities = this.dungeon
+        this.goal = dungeon.getGoal();
+        List<EntityWrapper> initialEntities = this.dungeon
                 .getEntities()
                 .stream()
                 .map(this::onEntityLoad)
                 .collect(Collectors.toUnmodifiableList());
+
+        goal.getProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            if (newValue) System.out.println("Level Complete");
+        });
         this.dungeonView = new DungeonView(dungeon.getHeight(), dungeon.getWidth(), this, initialEntities);
     }
 
@@ -54,7 +52,6 @@ public class DungeonController {
                     entity.y().setValue(oldValue);
                 }
             } else {
-                System.out.println("Changing position");
                 entityWrapper.setPosition(entity.getPosition());
             }
         });
@@ -69,6 +66,7 @@ public class DungeonController {
                                      String oldValue, String newValue) -> {
             entityWrapper.publishStatusUpdate(newValue);
         });
+        goal.attachListener(entityWrapper, dungeon);
         return entityWrapper;
     }
 
@@ -78,12 +76,16 @@ public class DungeonController {
 
     @FXML
     public void handleKeyPress(KeyEvent event) {
+        Player player = dungeon.getPlayer();
+        if (goal.isComplete(dungeon) || player == null) {
+            return;
+        }
         switch (event.getCode()) {
         case UP:
         case DOWN:
         case LEFT:
         case RIGHT:
-            player.handleDirectionKey(event.getCode());
+            dungeon.getPlayer().handleDirectionKey(event.getCode());
 
             for (Enemy e : dungeon.getEnemies()){
                 e.MoveEnemy();

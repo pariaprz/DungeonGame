@@ -2,6 +2,8 @@ package unsw.dungeon;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -32,7 +34,13 @@ public class DungeonLoader {
         int width = json.getInt("width");
         int height = json.getInt("height");
 
-        Dungeon dungeon = new Dungeon(width, height);
+        JSONObject goalCondition = json.getJSONObject("goal-condition");
+        String goalTopic = goalCondition.getString("goal");
+        JSONArray subgoals = goalCondition.has("subgoals") ?
+                goalCondition.getJSONArray("subgoals") : null;
+        Goal goal = getGoal(goalTopic, subgoals);
+
+        Dungeon dungeon = new Dungeon(width, height, goal);
 
         JSONArray jsonEntities = json.getJSONArray("entities");
 
@@ -54,7 +62,7 @@ public class DungeonLoader {
         switch (type) {
         case "player":
             Player player = new Player(x, y, dungeon);
-            dungeon.setPlayer(player);
+//            dungeon.setPlayer(player);
             entity = player;
             break;
         case "wall":
@@ -110,6 +118,33 @@ public class DungeonLoader {
         }
         //TODO CHANGE BACK WHEN FINISHED ADDING OTHER ENTITIES
         //dungeon.addEntity(entity);
+    }
+
+    private Goal getGoal(String goalTopic, JSONArray subgoals) {
+        switch (goalTopic) {
+            case "exit":
+                return new Goal(new ExitGoalEngine());
+            case "enemies":
+                return new Goal(new EnemyGoalEngine());
+            case "boulders":
+                return new Goal(new SwitchesGoalEngine());
+            case "treasure":
+                return new Goal(new TreasureGoalEngine());
+            case "AND":
+            case "OR":
+                List<Goal> children = new ArrayList<>();
+                for (int i = 0; i < subgoals.length(); i++) {
+                    String childTopic = subgoals.getJSONObject(i).getString("goal");
+                    JSONArray subSubgoals = subgoals.getJSONObject(i).has("subgoals") ?
+                            subgoals.getJSONObject(i).getJSONArray("subgoals") : null;
+                    children.add(getGoal(childTopic, subSubgoals));
+                }
+                if (goalTopic.equals("AND")) return new Goal(new ANDGoalEngine(children));
+                else return new Goal(new ORGoalEngine(children));
+            default:
+                System.out.println("Unsupported goal: " + goalTopic);
+        }
+        return null;
     }
 
     private void validatePosition(Dungeon dungeon, Position position) {

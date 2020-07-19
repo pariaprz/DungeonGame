@@ -47,6 +47,10 @@ public class EntityWrapper {
         changeSupport.addPropertyChangeListener(STATE_EVENT, listener);
     }
 
+    public void addObserver(String topic, PropertyChangeListener listener) {
+        changeSupport.addPropertyChangeListener(topic, listener);
+    }
+
     public void unsubscribeDelete(PropertyChangeListener listener) {
         changeSupport.removePropertyChangeListener(DELETED_EVENT, listener);
     }
