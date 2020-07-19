@@ -36,6 +36,13 @@ public class TestPortal {
     }
 
     @Test
+    public void TestLinkedPortals() {
+        assertEquals(portal1.getPortalID(), portal2.getPortalID());
+        assertEquals(portal1.getLinkedPortal(), portal2);
+        assertEquals(portal2.getLinkedPortal(), portal1);
+    }
+
+    @Test
     public void TestUnlinkedPortal() {
         Portal portal = new Portal(0, 0, "P");
         Exception exception = assertThrows(RuntimeException.class, () ->

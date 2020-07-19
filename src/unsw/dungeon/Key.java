@@ -15,8 +15,6 @@ public class Key extends Consumable {
         if (actor instanceof Player) {
             if (!((Player) actor).holdsKey()) {
                 ((Player) actor).setKey(this.id);
-      //          ((Player) actor).addToInventory(this);
-      //          System.out.println(((Player) actor).getInventory());    // TODO BACKEND TESTING, REMOVE LATER
                 consume();
             }
         }

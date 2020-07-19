@@ -21,11 +21,11 @@ public class Portal extends Entity {
         this.linkedPortal = linkedPortal;
     }
 
-    public Portal getLinkedPortal(){
+    public Portal getLinkedPortal() {
         return linkedPortal;
     }
     
-    public String getPortalID(){
+    public String getPortalID() {
         return id;
     }
 

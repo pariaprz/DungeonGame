@@ -71,7 +71,7 @@ public class DungeonLoader {
         int y = json.getInt("y");
 
         // TODO: Uncomment this.
-//        validatePosition(dungeon, new Position(x, y));
+        validatePosition(dungeon, new Position(x, y));
 
         Entity entity = null;
         switch (type) {
@@ -131,8 +131,6 @@ public class DungeonLoader {
         } else {
             System.out.println("TYPE not handled: " + type);
         }
-        //TODO CHANGE BACK WHEN FINISHED ADDING OTHER ENTITIES
-        //dungeon.addEntity(entity);
     }
 
     private Goal getGoal(String goalTopic, JSONArray subgoals) {
