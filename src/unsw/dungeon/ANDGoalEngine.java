@@ -1,11 +1,6 @@
 package unsw.dungeon;
 
-import javafx.util.Pair;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * This class represents the border of the map.
@@ -23,6 +18,6 @@ public class ANDGoalEngine extends ComplexGoalEngine {
     }
 
     public boolean isComplete(Dungeon dungeon) {
-        return getChildGoals().stream().allMatch(goal -> goal.isComplete(dungeon));
+        return getChildGoals().stream().allMatch(goal -> goal.computeComplete(dungeon));
     }
 }

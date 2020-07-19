@@ -1,8 +1,6 @@
 package unsw.dungeon;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import javafx.scene.input.KeyCode;
 
@@ -24,47 +22,42 @@ public class Enemy extends Moveable {
 
 
     public void handleMovement(KeyCode keyCode) {
-    Direction direction = Direction.fromKeyCode(keyCode);
-    if (direction == null) {
-        return;
+        Direction direction = Direction.fromKeyCode(keyCode);
+        if (direction == null) {
+            return;
+        }
+        Position nextPos = direction.fromPosition(getPosition());
+        List<Entity> entities = getDungeon().getEntitiesAt(nextPos);
+
+        boolean canMove = entities
+                .stream()
+                .allMatch(entity -> entity.canEntityMoveHere(this));
+        if (canMove) {
+            moveToPosition(nextPos);
+            entities.forEach(entity -> {
+                entity.interact(this, keyCode);
+            });
+
+        }
     }
-    Position nextPos = direction.fromPosition(getPosition());
-    List<Entity> entities = getDungeon().getEntitiesAt(nextPos);
 
-    boolean canMove = entities
-            .stream()
-            .allMatch(entity -> entity.canEntityMoveHere(this));
-    if (canMove) {
-        moveToPosition(nextPos);
-        entities.forEach(entity -> {
-            entity.interact(this, keyCode);
-            
-        });
+    public void moveEnemy() {
+        Player player = getDungeon().getPlayer();
+        if (player == null) return;
 
-    }
-    }
-
-    public void MoveEnemy(){
-        List<KeyCode> directionsList = Arrays.asList(KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN);
-        Random rand = new Random();
-
-        KeyCode direction = directionsList.get(rand.nextInt(directionsList.size()));
-        handleMovement(direction);
+        Direction towardsPlayer = Direction.fromPositions(getPosition(), player.getPosition());
+        Direction nextDirection = player.attractEnemies() || towardsPlayer == null ?
+                towardsPlayer : towardsPlayer.invert();
+        handleMovement(Direction.toKeyCode(nextDirection)); // TODO: Run away.
     }
 
 
     @Override
     public void interact(Entity actor, KeyCode keyCode) {
-        super.interact(actor, keyCode); // TODO: Make it work.
+        System.out.println("Enemy Interact called: " + actor);
+
         if (actor instanceof Player){
-            if (((Player) actor).getSwordCount() != -1){
-                ((Player) actor).setSwordIncrement();
-                System.out.println(((Player) actor).getSwordCount());
-                delete();
-            }
-       // } else if (((Player) actor).getPlayerState().equals(new InvincibleState())){
-       //     getDungeon().removeEntity(this);
+            actor.interact(this, keyCode);
         }
     }
-
 }

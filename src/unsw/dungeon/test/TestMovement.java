@@ -2,14 +2,12 @@ package unsw.dungeon.test;
 
 import org.junit.Before;
 import org.junit.Test;
-import unsw.dungeon.Dungeon;
-import unsw.dungeon.Player;
-import unsw.dungeon.Sword;
-import unsw.dungeon.Treasure;
+import unsw.dungeon.*;
 
 import javafx.scene.input.KeyCode;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class TestMovement {
 
@@ -20,6 +18,8 @@ public class TestMovement {
         dungeon = new Dungeon(10, 10);
         dungeon.addEntity(new Sword(4,4));
         dungeon.addEntity(new Treasure(5,4));
+        dungeon.addEntity(new Invincibility(6, 4));
+        dungeon.addEntity(new Key(7, 4, "0"));
         
         
     }
@@ -47,15 +47,28 @@ public class TestMovement {
     }
 
     @Test
-    public void TestInventoryCollection(){
+    public void TestSuccessfulPlayerCollection(){                      //TODO FIX UP THE UNIT TESTS
         Player p = new Player(3,4, dungeon);
-        assertEquals(0, p.getInventory().size());               //Checks inventory is empty at beginning
+        assertEquals(0, p.getSwordCount());               //Checks potion/key/sword/treasure default values
+        assertNull( p.getKey());
+        assertEquals(new DefaultPlayerState(p).getStateName(), p.getPlayerState().getStateName());
+
+        p.handleDirectionKey(KeyCode.RIGHT);                //swordCount Defaulted to -1 when no sword             
+        assertEquals(Player.NUM_SWORD_SWINGS, p.getSwordCount());                 //when sword obtained, count goes to 0 and counts up to 5 when enemy is it
 
         p.handleDirectionKey(KeyCode.RIGHT);
-        assertEquals(1, p.getInventory().size());               //Checks that the sword has successfully gone into inventory
+        long numDeleted = dungeon.getEntities()
+                .stream()
+                .filter((entity -> entity instanceof Treasure))
+                .map(treasure -> ((Treasure)treasure).isDeleted())
+                .filter(bool -> bool).count();
+        assertEquals(1, numDeleted);
 
-        p.handleDirectionKey(KeyCode.RIGHT);
-        assertEquals(2, p.getInventory().size());               //Checks that the treasure also made it into inventory
-    }
+        p.handleDirectionKey(KeyCode.RIGHT);                //Checks player's state has been changed
+        assertEquals("Invincible", p.getPlayerState().getStateName());
+
+        p.handleDirectionKey(KeyCode.RIGHT);                //Checks keys field has been set properly
+        assertEquals("0", p.getKey());
+      }
 
     }

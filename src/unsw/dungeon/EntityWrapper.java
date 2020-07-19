@@ -7,7 +7,7 @@ import java.util.Arrays;
 public class EntityWrapper {
     public static String POSITION_EVENT = "Position";
     public static String DELETED_EVENT = "Deleted";
-    public static String STATE_EVENT = "State";
+    public static String STATUS_EVENT = "State";
 
     public final Class<? extends Entity> entityClass;
     private Position position;
@@ -34,7 +34,7 @@ public class EntityWrapper {
     }
 
     public void publishStatusUpdate(String status) {
-        changeSupport.firePropertyChange(DELETED_EVENT, null, status);
+        changeSupport.firePropertyChange(STATUS_EVENT, null, status);
     }
 
     public void addDeleteObserver(PropertyChangeListener listener) {
@@ -43,8 +43,8 @@ public class EntityWrapper {
     public void addPositionObserver(PropertyChangeListener listener) {
         changeSupport.addPropertyChangeListener(POSITION_EVENT, listener);
     }
-    public void addStateObserver(PropertyChangeListener listener) {
-        changeSupport.addPropertyChangeListener(STATE_EVENT, listener);
+    public void addStatusObserver(PropertyChangeListener listener) {
+        changeSupport.addPropertyChangeListener(STATUS_EVENT, listener);
     }
 
     public void addObserver(String topic, PropertyChangeListener listener) {
@@ -58,12 +58,12 @@ public class EntityWrapper {
         changeSupport.removePropertyChangeListener(POSITION_EVENT, listener);
     }
     public void unsubscribeState(PropertyChangeListener listener) {
-        changeSupport.removePropertyChangeListener(STATE_EVENT, listener);
+        changeSupport.removePropertyChangeListener(STATUS_EVENT, listener);
     }
     public void dropAllSubscribers() {
         Arrays.stream(this.changeSupport.getPropertyChangeListeners(DELETED_EVENT))
                 .forEach(this::unsubscribeDelete);
-        Arrays.stream(this.changeSupport.getPropertyChangeListeners(STATE_EVENT))
+        Arrays.stream(this.changeSupport.getPropertyChangeListeners(STATUS_EVENT))
                 .forEach(this::unsubscribeState);
         Arrays.stream(this.changeSupport.getPropertyChangeListeners(POSITION_EVENT))
                 .forEach(this::unsubscribePosition);

@@ -97,5 +97,18 @@ public enum Direction {
         return null;
     }
 
+    public static KeyCode toKeyCode(Direction direction) {
+        if (direction == UP) {
+            return KeyCode.DOWN;
+        } else if (direction == DOWN) {
+            return KeyCode.UP;
+        } else if (direction == LEFT) {
+            return KeyCode.LEFT;
+        } else if (direction == RIGHT) {
+            return KeyCode.RIGHT;
+        }
+        return null;
+    }
+
 }
 

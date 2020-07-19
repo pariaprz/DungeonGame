@@ -1,6 +1,5 @@
 package unsw.dungeon;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,6 +18,6 @@ public class ORGoalEngine extends ComplexGoalEngine {
     }
 
     public boolean isComplete(Dungeon dungeon) {
-        return getChildGoals().stream().anyMatch(goal -> goal.isComplete(dungeon));
+        return getChildGoals().stream().anyMatch(goal -> goal.computeComplete(dungeon));
     }
 }

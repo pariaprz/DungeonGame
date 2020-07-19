@@ -27,7 +27,7 @@ public class DungeonController {
                 .map(this::onEntityLoad)
                 .collect(Collectors.toUnmodifiableList());
 
-        goal.getProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+        goal.getCompleteProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
             if (newValue) System.out.println("Level Complete");
         });
         this.dungeonView = new DungeonView(dungeon.getHeight(), dungeon.getWidth(), this, initialEntities);
@@ -58,8 +58,12 @@ public class DungeonController {
         entity.isDeletedProperty().addListener((ObservableValue<? extends Boolean> observable,
                                                 Boolean oldValue, Boolean newValue) -> {
             if (newValue) {
+                System.out.println("Class deleted: " + entity.getClass());
                 this.dungeon.removeEntity(entity);
                 entityWrapper.setDeleted();
+                if (entityWrapper.entityClass.equals(Player.class)) {
+                    System.out.println("Player Died.");
+                }
             }
         });
         entity.status().addListener((ObservableValue<? extends String> observable,
@@ -77,7 +81,7 @@ public class DungeonController {
     @FXML
     public void handleKeyPress(KeyEvent event) {
         Player player = dungeon.getPlayer();
-        if (goal.isComplete(dungeon) || player == null) {
+        if (goal.computeComplete(dungeon) || player == null) {
             return;
         }
         switch (event.getCode()) {
@@ -85,12 +89,15 @@ public class DungeonController {
         case DOWN:
         case LEFT:
         case RIGHT:
-            dungeon.getPlayer().handleDirectionKey(event.getCode());
-
             for (Enemy e : dungeon.getEnemies()){
-                e.MoveEnemy();
+                e.moveEnemy();
             }
-
+            player.handleDirectionKey(event.getCode());
+            break;
+        case SPACE:
+            System.out.println("Swinging sword");
+            player.swingSword();
+            break;
         default:
             break;
         }

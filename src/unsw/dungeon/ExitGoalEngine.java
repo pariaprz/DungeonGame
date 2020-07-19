@@ -26,6 +26,6 @@ public class ExitGoalEngine extends GoalEngine {
 
     @Override
     public List<Pair<Class<? extends Entity>, String>> getSubscriptionTopics() {
-        return List.of(new Pair<>(Exit.class, EntityWrapper.STATE_EVENT));
+        return List.of(new Pair<>(Exit.class, EntityWrapper.STATUS_EVENT));
     }
 }

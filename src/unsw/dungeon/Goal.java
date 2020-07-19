@@ -25,12 +25,16 @@ public class Goal {
         return goalEngine;
     }
 
-    public boolean isComplete(Dungeon dungeon) {
+    public boolean computeComplete(Dungeon dungeon) {
         isComplete.setValue(isComplete.get() || getGoalEngine().isComplete(dungeon));
         return isComplete.get();
     }
 
-    public BooleanProperty getProperty() {
+    public boolean isComplete() {
+        return isComplete.get();
+    }
+
+    public BooleanProperty getCompleteProperty() {
         return isComplete;
     }
 
@@ -40,7 +44,7 @@ public class Goal {
                 .stream()
                 .filter(entry -> entry.getKey().equals(entity))
                 .forEach(entry ->
-                        entity.addObserver(entry.getValue(), (PropertyChangeEvent event) -> isComplete(dungeon)
+                        entity.addObserver(entry.getValue(), (PropertyChangeEvent event) -> computeComplete(dungeon)
                 ));
     }
 }
