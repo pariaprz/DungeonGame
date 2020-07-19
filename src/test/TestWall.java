@@ -1,23 +1,19 @@
-package unsw.dungeon.test;
+package test;
 
-import org.junit.Before;
-import org.junit.Test;
-import unsw.dungeon.Dungeon;
-import unsw.dungeon.Wall;
-import unsw.dungeon.Boulder;
-import unsw.dungeon.Player;
-import unsw.dungeon.Enemy;
-
-//import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import unsw.dungeon.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class TestWall {
 
     private Dungeon dungeon;
 
-    @Before
+    @BeforeAll
     public void BeforeEach() {
         dungeon = new Dungeon(10, 10);
         dungeon.addEntity(new Wall(4, 4));

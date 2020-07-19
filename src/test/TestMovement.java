@@ -1,19 +1,20 @@
-package unsw.dungeon.test;
-
-import org.junit.Before;
-import org.junit.Test;
-import unsw.dungeon.*;
+package test;
 
 import javafx.scene.input.KeyCode;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import unsw.dungeon.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class TestMovement {
 
     private Dungeon dungeon;
 
-    @Before
+    @BeforeAll
     public void BeforeEach() {
         dungeon = new Dungeon(10, 10);
         dungeon.addEntity(new Sword(4,4));

@@ -1,4 +1,4 @@
-package unsw.dungeon.test;
+package test;
 
 public class TestTreasure {
     

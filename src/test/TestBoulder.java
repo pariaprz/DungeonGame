@@ -1,26 +1,28 @@
-package unsw.dungeon.test;
+package test;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import unsw.dungeon.Boulder;
 import unsw.dungeon.Dungeon;
 import unsw.dungeon.Player;
 import unsw.dungeon.Wall;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class TestBoulder {
 
     private Dungeon dungeon;
 
-    @Before
-    public void BeforeEach() {
+    @BeforeAll
+    void BeforeEach() {
         dungeon = new Dungeon(10, 10);
         dungeon.addEntity(new Wall(4, 4));
     }
 
     @Test
-    public void TestBoulderMovingOnBoulderFromAllDirections() {
+    void TestBoulderMovingOnBoulderFromAllDirections() {
         Boulder boulder = new Boulder(1, 2, dungeon);
         assertEquals(boulder.canEntityMoveHere(new Boulder(0, 2, dungeon)), false);
         assertEquals(boulder.canEntityMoveHere(new Boulder(2, 2, dungeon)), false);
@@ -29,7 +31,7 @@ public class TestBoulder {
     }
 
     @Test
-    public void TestPlayerMovingOnBoulderFromAllDirections() {
+    void TestPlayerMovingOnBoulderFromAllDirections() {
         Boulder boulder = new Boulder(1, 2, dungeon);
         assertEquals(boulder.canEntityMoveHere(new Player(0, 2, dungeon)), true);
         assertEquals(boulder.canEntityMoveHere(new Player(2, 2, dungeon)), true);
@@ -40,7 +42,7 @@ public class TestBoulder {
 
     //Moved To Wall Tests
     @Test
-    public void TestPlayerMovingOnBoulderAgainstWall() {
+    void TestPlayerMovingOnBoulderAgainstWall() {
         assertEquals(new Boulder(3, 4, dungeon).canEntityMoveHere(new Player(2, 4, dungeon)), false);
         assertEquals(new Boulder(5, 4, dungeon).canEntityMoveHere(new Player(6, 4, dungeon)), false);
         assertEquals(new Boulder(4, 3, dungeon).canEntityMoveHere(new Player(4, 2, dungeon)), false);
@@ -48,7 +50,7 @@ public class TestBoulder {
     }
 
     @Test
-    public void TestPlayerMovingOnBoulderAgainstEdge() {
+    void TestPlayerMovingOnBoulderAgainstEdge() {
         assertEquals(new Boulder(0, 0, dungeon).canEntityMoveHere(new Player(0, 1, dungeon)), false);
         assertEquals(new Boulder(0, 0, dungeon).canEntityMoveHere(new Player(1, 0, dungeon)), false);
         assertEquals(new Boulder(9, 9, dungeon).canEntityMoveHere(new Player(8, 9, dungeon)), false);
