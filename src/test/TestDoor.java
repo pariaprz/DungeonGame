@@ -13,22 +13,14 @@ public class TestDoor {
     private Dungeon dungeon;
     private Door door1, door2;
 
-    private static String DOOR_1_ID = "A";
-    private static String DOOR_2_ID = "Door 2";
+    private static final String DOOR_1_ID = "A";
+    private static final String DOOR_2_ID = "Door 2";
     @BeforeAll
     public void BeforeEach() {
         dungeon = new Dungeon(10, 10);
 
         door1 = new Door(1, 2, DOOR_1_ID);
         door2 = new Door(7, 7, DOOR_2_ID);
-    }
-
-    @Test
-    public void TestEntitiesMovingOnLockedDoor() {
-        Player player = new Player(1, 1, dungeon);
-        assertFalse(door1.canEntityMoveHere(player));
-        assertFalse(door1.canEntityMoveHere(new Entity(1, 2)));
-        assertFalse(door1.canEntityMoveHere(new Entity(2, 2)));
     }
 
     @Test

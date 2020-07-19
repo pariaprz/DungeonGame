@@ -4,7 +4,7 @@ import javafx.scene.input.KeyCode;
 
 public class Door extends Entity {
     public static String OPEN_STATUS = "open";
-    private String id;
+    final private String id;
     private boolean isUnlocked = false;
     public Door(int x, int y, String id) {
         super(x, y);
@@ -16,6 +16,8 @@ public class Door extends Entity {
         if (isUnlocked) {
             return true;
         } else if (entity instanceof Player) {
+            System.out.println("AAAAAAA" + ((Player) entity).getKey());
+            System.out.println("BBBBB" + id);
             return id.equals(((Player) entity).getKey());
         }
         return false;
