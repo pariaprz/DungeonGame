@@ -7,6 +7,7 @@ import java.util.TimerTask;
 public class InvinciblePlayerState implements PlayerState {
     private Player player;
 
+    public static String STATE_NAME = "Invincible";
     public InvinciblePlayerState(Player player) {
         this.player = player;
     }
@@ -25,7 +26,7 @@ public class InvinciblePlayerState implements PlayerState {
 
     @Override
     public String getStateName() {
-        return "Invincible";
+        return STATE_NAME;
     }
 
     @Override
