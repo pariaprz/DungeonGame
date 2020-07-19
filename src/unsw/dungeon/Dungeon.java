@@ -89,12 +89,5 @@ public class Dungeon {
                 .filter(entity -> entity.getX() == x && entity.getY() == y)
                 .collect(Collectors.toList());
     }
-
-    public void linkPortals(Portal p){
-        for (Entity e : getEntities()){
-            System.out.println("hello there");
-            
-            
-        }
-    }
+    
 }
