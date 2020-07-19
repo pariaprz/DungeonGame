@@ -12,11 +12,7 @@ import org.json.JSONTokener;
 
 /**
  * Loads a dungeon from a .json file.
- *
- * By extending this class, a subclass can hook into entity creation. This is
- * useful for creating UI elements with corresponding entities.
- *
- * @author Robert Clifton-Everest
+ * The class is only responsible for creating a Dungeon layout and goal.
  *
  */
 public class DungeonLoader {

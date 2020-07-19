@@ -14,8 +14,6 @@ import java.util.stream.Collectors;
  * A dungeon can contain many entities, each occupy a square. More than one
  * entity can occupy the same square.
  *
- * @author Robert Clifton-Everest
- *
  */
 public class Dungeon {
 

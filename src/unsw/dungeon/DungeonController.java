@@ -12,9 +12,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
 
 /**
- * A JavaFX controller for the dungeon.
- * @author Robert Clifton-Everest
- *
+ * A controller for the dungeon.
+ * It is responsible for managing entities,
+ * publishing entity changes through entity wrappers to the view, or other subscribers,
+ * and it is responsible for listening to goal completion.
  */
 public class DungeonController {
 
@@ -47,6 +48,12 @@ public class DungeonController {
         });
     }
 
+    /**
+     * Wraps listners around an entity that validate changes in entity state.
+     * It also publishes changes in entity state to listeners.
+     * @param entity: The entity to be processed
+     * @return A wrapped entity that can be subscribed to.
+     */
     public EntityWrapper onEntityLoad(Entity entity) {
         EntityWrapper entityWrapper = new EntityWrapper(entity);
         entity.x().addListener((ObservableValue<? extends Number> observable,

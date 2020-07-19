@@ -4,6 +4,9 @@ import javafx.scene.input.KeyCode;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Invincibility potion that sets InvinciblePlayerState on Player.
+ */
 public class Invincibility extends Consumable {
 
     public Invincibility(int x, int y) {
@@ -16,7 +19,7 @@ public class Invincibility extends Consumable {
             System.out.println("I AM INVINCIBLE");
             consume();
 
-            InvinciblePlayerState.startInvincibility((Player) actor);
+            new InvinciblePlayerState((Player) actor).startInvincibility();
         }
     }
 }

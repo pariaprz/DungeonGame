@@ -110,6 +110,7 @@ public class Player extends Moveable {
         } else {
             setStatus(DEFAULT_STATUS);
         }
+        playerState.expireState();
         state = playerState;
     }
 
