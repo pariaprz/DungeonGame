@@ -11,10 +11,11 @@ public class Sword extends Consumable {
     @Override
     public void interact(Entity actor, KeyCode keyCode) {
         if (actor instanceof Player) {
-            if (((Player) actor).getSwordCount() == -1){
+            // TODO: Add sword to player.
+            if (!((Player) actor).hasSword()){
                 consume();
-                ((Player) actor).setSwordIncrement();
-            } 
+                ((Player) actor).armSword();
+            }
        //     try {
        //         ((Player) actor).getSwordCount() ;
        //     } catch (NullPointerException e) {

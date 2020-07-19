@@ -3,7 +3,9 @@
 hs_err_pid*
 /bin/
 /lib/
-/.vscode/
+.vscode/
 *.iml
 *.idea/
 out/*
+/build/
+build.gradle

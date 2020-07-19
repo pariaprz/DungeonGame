@@ -1,19 +1,25 @@
 package unsw.dungeon;
 
-public class DefaultPlayerState implements PlayerState{
+public class DefaultPlayerState implements PlayerState {
+    private Player player;
+    public DefaultPlayerState(Player player) {
+        this.player = player;
+    }
     @Override
     public String getStateName() {
         return "Default";
     }
 
     @Override
-    public boolean interact(Entity entity) {
-
-        return false;
+    public void interactWithEnemy(Enemy enemy) {
+        player.playerDied();
     }
 
     @Override
-    public boolean canInteractWith(Entity entity) {
-        return false;
+    public void expireState() { }
+
+    @Override
+    public boolean attractsEnemies() {
+        return true;
     }
 }

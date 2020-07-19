@@ -1,18 +1,24 @@
-package unsw.dungeon.test;
+package test;
 
-import org.junit.Before;
-import org.junit.Test;
-import unsw.dungeon.*;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import unsw.dungeon.Dungeon;
+import unsw.dungeon.Entity;
+import unsw.dungeon.Moveable;
+import unsw.dungeon.Portal;
+;import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class TestPortal {
 
     private Dungeon dungeon;
     private Portal portal1;
     private Portal portal2;
 
-    @Before
+    @BeforeAll
     public void BeforeEach() {
         dungeon = new Dungeon(10, 10);
         portal1 = new Portal(1, 2, "A");
@@ -29,10 +35,14 @@ public class TestPortal {
         assertEquals(portal1.canEntityMoveHere(new Entity(2, 3)), true);
     }
 
-    @Test(expected = RuntimeException.class)
     public void TestUnlinkedPortal() {
         Portal portal = new Portal(0, 0, "P");
-        portal.interact(new Entity(0, 0), null);
+        Exception exception = assertThrows(RuntimeException.class, () ->
+                portal.interact(new Entity(0, 0), null)
+        );
+
+        assertEquals("No linked portal for ID: P", exception.getMessage());
+
     }
 
     @Test

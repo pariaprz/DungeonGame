@@ -1,9 +1,7 @@
 package unsw.dungeon;
 
 import java.beans.PropertyChangeEvent;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
@@ -12,7 +10,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 
 import java.io.File;
-import java.util.Map;
 
 /**
  * A DungeonLoader that also creates the necessary ImageViews for the UI,
@@ -84,9 +81,10 @@ public class DungeonView {
             squares.getChildren().remove(node);
             entity.dropAllSubscribers();
         });
-        entity.addStateObserver((PropertyChangeEvent evt) -> {
-            String update = (String)(evt.getNewValue());
+        entity.addStatusObserver((PropertyChangeEvent evt) -> {
+            String update = Optional.of((String)(evt.getNewValue())).orElse(DEFAULT_IMG);
             Image defaultImg = imageMap.get(entity.entityClass).get(DEFAULT_IMG);
+            System.out.println("Getting img: " + update);
             node.setImage(imageMap.get(entity.entityClass).getOrDefault(update, defaultImg));
         });
     }
@@ -114,8 +112,8 @@ public class DungeonView {
         ));
         imageMap.put(Player.class, Map.of(
                 DEFAULT_IMG, new Image((new File("images/human_new.png")).toURI().toString()),
-                Player.INVINCIBLE_STATUS, new Image((new File("images/pacman.png")).toURI().toString()),
-                Player.ARMED_STATUS, new Image((new File("images/armed_player.png")).toURI().toString())
+                Player.INVINCIBLE_STATUS, new Image((new File("images/gnome.png")).toURI().toString()),
+                Player.ARMED_STATUS, new Image((new File("images/human_new.png")).toURI().toString())
         ));
         return imageMap;
     }

@@ -21,13 +21,21 @@ public class Dungeon {
 
     private int width, height;
     private List<Entity> entities;
-    private Player player;
+    private Goal goal;
 
-    public Dungeon(int width, int height) {
+    public Dungeon(int width, int height, Goal goal) {
         this.width = width;
         this.height = height;
         this.entities = new ArrayList<>();
-        this.player = null;
+        this.goal = goal;
+    }
+
+    public Dungeon(int width, int height) {
+        this(width, height, null);
+    }
+
+    public Goal getGoal() {
+        return goal;
     }
 
     public int getWidth() {
@@ -39,11 +47,10 @@ public class Dungeon {
     }
 
     public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
+        return (Player) getEntities()
+                .stream()
+                .filter(entity -> entity instanceof Player)
+                .findFirst().orElse(null);
     }
 
     public void addEntity(Entity entity) {
@@ -70,7 +77,6 @@ public class Dungeon {
                 enemies.add((Enemy) e);
             }
         }
-
         return enemies;
     }
 

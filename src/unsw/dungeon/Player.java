@@ -3,7 +3,6 @@ package unsw.dungeon;
 import javafx.scene.input.KeyCode;
 
 import java.util.List;
-import java.util.ArrayList;
 
 /**
  * The player entity
@@ -14,11 +13,12 @@ public class Player extends Moveable {
 
     public static String INVINCIBLE_STATUS = "invincible";
     public static String ARMED_STATUS = "armed";
-    public static String DEFAULT_STATUS = null;
-    private int swordCount = -1;
+    public static String DEFAULT_STATUS = "default";
+    public static int NUM_SWORD_SWINGS = 5;
+
+    private int swordCount = 0;
     private String key = null;
-    private int treasureCount = 0;    //Keep here for the meantime. If have time, remove and just check if there's any more treasure in dungeon
-    //private List<Consumable> inventory;
+
     private PlayerState state;
 
     /**
@@ -28,8 +28,7 @@ public class Player extends Moveable {
      */
     public Player(int x, int y, Dungeon dungeon) {
         super(x, y, dungeon);
-      //  this.inventory = new ArrayList<Consumable>();
-        this.state = new DefaultPlayerState();
+        this.state = new DefaultPlayerState(this);
     }
 
     public void handleDirectionKey(KeyCode keyCode) {
@@ -47,9 +46,7 @@ public class Player extends Moveable {
             moveToPosition(nextPos);
             entities.forEach(entity -> {
                 entity.interact(this, keyCode);
-                
             });
-
         }
     }
 
@@ -67,75 +64,67 @@ public class Player extends Moveable {
 
     public void dropKey() {
         setKey(null);
-  //      removeFromInventory(findKey());
-        
-    }
-    
- //   public Consumable findKey() {
- //       for (Consumable c : getInventory()){
- //           if (c instanceof Key){
- //               return c;
- //           } 
- //       }
- //       return null;
- //   }
-
- //   public Consumable findSword() {        
- //       for (Consumable s : getInventory()){
- //           if (s instanceof Sword){
- //               return s;
-  //          } 
-  //      }
-  //      return null;
-  //  }
-
-    public void setSwordIncrement(){
-        swordCount += 1;
     }
 
-    public void resetSword(){
-        swordCount = -1;
+    public void armSword() {
+        swordCount = NUM_SWORD_SWINGS;
+        setStatus(ARMED_STATUS);
     }
 
-    public int getSwordCount(){
+    public boolean hasSword() {
+        return swordCount > 0;
+    }
+
+    public int getSwordCount() {
         return swordCount;
     }
-    
- //   public List<Consumable> getInventory(){
- //       return inventory;
- //   }
 
- //   public void addToInventory(Consumable c){
- //       getInventory().add(c);
-  //  }
-
-    public int getTreasureCount(){
-        return treasureCount;
+    public void swingSword() {
+        if (!hasSword()) return;
+        List<Position> areaOfEffect = List.of(
+                Direction.UP.fromPosition(getPosition()),
+                Direction.DOWN.fromPosition(getPosition()),
+                Direction.RIGHT.fromPosition(getPosition()),
+                Direction.LEFT.fromPosition(getPosition())
+        );
+        areaOfEffect.forEach(position ->
+                getDungeon().getEntitiesAt(position).forEach(entity -> {
+                    if (entity instanceof Enemy) {
+                        entity.delete();
+                    }
+                })
+        );
+        swordCount--;
+        if (swordCount == 0) setStatus(DEFAULT_STATUS);
     }
 
-    public void incrementTreasureCount(){
-        treasureCount += 1;
+    public PlayerState getPlayerState() {
+        return state;
     }
 
-    //Removes consumable when the player no longer has the item (Sword after 5 hits, Potion after time expires)
- //   public void removeFromInventory(Consumable c){
- //       inventory.remove(c);
- //   }
-
-    public String getPlayerState(){
-        return state.getStateName();
-    }
-
-    public void setPlayerState(PlayerState playerState){
+    public void setState(PlayerState playerState) {
+        if (playerState instanceof InvinciblePlayerState) {
+            setStatus(INVINCIBLE_STATUS);
+        } else if (hasSword()) {
+            setStatus(ARMED_STATUS);
+        } else {
+            setStatus(DEFAULT_STATUS);
+        }
         state = playerState;
     }
 
-    public void playerDied(){
+    public void playerDied() {
         this.delete();
+    }
+
+    public boolean attractEnemies() {
+        return getPlayerState().attractsEnemies();
     }
 
     @Override
     public void interact(Entity actor, KeyCode keyCode) {
-        super.interact(actor, keyCode); // TODO: Change this for enemies.
+        if (actor instanceof Enemy) {
+            getPlayerState().interactWithEnemy((Enemy) actor);
+        }
     }
 }

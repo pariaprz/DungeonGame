@@ -1,23 +1,20 @@
-package unsw.dungeon.test;
-
-import org.junit.Before;
-import org.junit.Test;
-import unsw.dungeon.Dungeon;
-import unsw.dungeon.Invincibility;
-import unsw.dungeon.Key;
-import unsw.dungeon.Player;
-import unsw.dungeon.Sword;
-import unsw.dungeon.Treasure;
+package test;
 
 import javafx.scene.input.KeyCode;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import unsw.dungeon.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class TestMovement {
 
     private Dungeon dungeon;
 
-    @Before
+    @BeforeAll
     public void BeforeEach() {
         dungeon = new Dungeon(10, 10);
         dungeon.addEntity(new Sword(4,4));
@@ -53,19 +50,23 @@ public class TestMovement {
     @Test
     public void TestSuccessfulPlayerCollection(){                      //TODO FIX UP THE UNIT TESTS
         Player p = new Player(3,4, dungeon);
-        assertEquals(-1, p.getSwordCount());               //Checks potion/key/sword/treasure default values
-        assertEquals(null, p.getKey());
-        assertEquals("Default", p.getPlayerState());
-        assertEquals(0, p.getTreasureCount());
+        assertEquals(0, p.getSwordCount());               //Checks potion/key/sword/treasure default values
+        assertNull( p.getKey());
+        assertEquals(new DefaultPlayerState(p).getStateName(), p.getPlayerState().getStateName());
 
         p.handleDirectionKey(KeyCode.RIGHT);                //swordCount Defaulted to -1 when no sword             
-        assertEquals(0, p.getSwordCount());                 //when sword obtained, count goes to 0 and counts up to 5 when enemy is it
+        assertEquals(Player.NUM_SWORD_SWINGS, p.getSwordCount());                 //when sword obtained, count goes to 0 and counts up to 5 when enemy is it
 
         p.handleDirectionKey(KeyCode.RIGHT);
-        assertEquals(1, p.getTreasureCount());              //Checks that the treasure count increases when picked up
+        long numDeleted = dungeon.getEntities()
+                .stream()
+                .filter((entity -> entity instanceof Treasure))
+                .map(treasure -> ((Treasure)treasure).isDeleted())
+                .filter(bool -> bool).count();
+        assertEquals(1, numDeleted);
 
         p.handleDirectionKey(KeyCode.RIGHT);                //Checks player's state has been changed
-        assertEquals("Invincible", p.getPlayerState());
+        assertEquals("Invincible", p.getPlayerState().getStateName());
 
         p.handleDirectionKey(KeyCode.RIGHT);                //Checks keys field has been set properly
         assertEquals("0", p.getKey());
