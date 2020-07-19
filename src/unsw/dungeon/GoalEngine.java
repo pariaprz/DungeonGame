@@ -13,7 +13,7 @@ import java.util.List;
  * but is a different class so wall can change without introducing new bugs
  */
 public abstract class GoalEngine {
-    GoalEngine() { }
+    public GoalEngine() { }
 
     public abstract List<Pair<Class<? extends Entity>, String>> getSubscriptionTopics();
     public abstract boolean isComplete(Dungeon dungeon);

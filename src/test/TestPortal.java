@@ -2,6 +2,7 @@ package test;
 
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import unsw.dungeon.Dungeon;
@@ -18,7 +19,7 @@ public class TestPortal {
     private Portal portal1;
     private Portal portal2;
 
-    @BeforeAll
+    @BeforeEach
     public void BeforeEach() {
         dungeon = new Dungeon(10, 10);
         portal1 = new Portal(1, 2, "A");

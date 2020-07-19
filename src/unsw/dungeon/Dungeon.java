@@ -21,21 +21,11 @@ public class Dungeon {
 
     private int width, height;
     private List<Entity> entities;
-    private Goal goal;
 
-    public Dungeon(int width, int height, Goal goal) {
+    public Dungeon(int width, int height) {
         this.width = width;
         this.height = height;
         this.entities = new ArrayList<>();
-        this.goal = goal;
-    }
-
-    public Dungeon(int width, int height) {
-        this(width, height, null);
-    }
-
-    public Goal getGoal() {
-        return goal;
     }
 
     public int getWidth() {

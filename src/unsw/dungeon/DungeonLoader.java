@@ -26,6 +26,14 @@ public class DungeonLoader {
         json = new JSONObject(new JSONTokener(new FileReader("dungeons/" + filename)));
     }
 
+    public Goal loadGoal() {
+        JSONObject goalCondition = json.getJSONObject("goal-condition");
+        String goalTopic = goalCondition.getString("goal");
+        JSONArray subgoals = goalCondition.has("subgoals") ?
+                goalCondition.getJSONArray("subgoals") : null;
+        return getGoal(goalTopic, subgoals);
+    }
+
     /**
      * Parses the JSON to create a dungeon.
      * @return
@@ -34,13 +42,7 @@ public class DungeonLoader {
         int width = json.getInt("width");
         int height = json.getInt("height");
 
-        JSONObject goalCondition = json.getJSONObject("goal-condition");
-        String goalTopic = goalCondition.getString("goal");
-        JSONArray subgoals = goalCondition.has("subgoals") ?
-                goalCondition.getJSONArray("subgoals") : null;
-        Goal goal = getGoal(goalTopic, subgoals);
-
-        Dungeon dungeon = new Dungeon(width, height, goal);
+        Dungeon dungeon = new Dungeon(width, height);
 
         JSONArray jsonEntities = json.getJSONArray("entities");
 
@@ -71,14 +73,12 @@ public class DungeonLoader {
         int y = json.getInt("y");
 
         // TODO: Uncomment this.
-        validatePosition(dungeon, new Position(x, y));
+//        validatePosition(dungeon, new Position(x, y));
 
         Entity entity = null;
         switch (type) {
         case "player":
-            Player player = new Player(x, y, dungeon);
-//            dungeon.setPlayer(player);
-            entity = player;
+            entity =  new Player(x, y, dungeon);;
             break;
         case "wall":
             entity = new Wall(x, y);

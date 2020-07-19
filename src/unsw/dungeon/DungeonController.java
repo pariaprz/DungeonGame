@@ -17,17 +17,18 @@ import javafx.util.Duration;
  */
 public class DungeonController {
 
-    private DungeonView dungeonView;
-    private Dungeon dungeon;
-    private Goal goal;
-    private Timeline timeline;
+    private final DungeonView dungeonView;
+    private final Dungeon dungeon;
+    private final Goal goal;
+    private final Timeline timeline;
 
-    public DungeonController(Dungeon dungeon) {
+    public DungeonController(Dungeon dungeon, Goal goal) {
         this.dungeon = dungeon;
-        this.goal = dungeon.getGoal();
+        this.goal = goal;
         timeline = new Timeline(2);
         timeline.setCycleCount(Timeline.INDEFINITE);
 
+        System.out.println(this.dungeon);
         List<EntityWrapper> initialEntities = this.dungeon
                 .getEntities()
                 .stream()

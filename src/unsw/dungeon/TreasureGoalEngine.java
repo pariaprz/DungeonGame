@@ -11,7 +11,7 @@ import java.util.List;
  * but is a different class so wall can change without introducing new bugs
  */
 public class TreasureGoalEngine extends GoalEngine {
-    TreasureGoalEngine() {
+    public TreasureGoalEngine() {
         super();
     }
 

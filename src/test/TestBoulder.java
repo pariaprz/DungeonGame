@@ -1,6 +1,7 @@
 package test;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import unsw.dungeon.Boulder;
@@ -15,7 +16,7 @@ public class TestBoulder {
 
     private Dungeon dungeon;
 
-    @BeforeAll
+    @BeforeEach
     void BeforeEach() {
         dungeon = new Dungeon(10, 10);
         dungeon.addEntity(new Wall(4, 4));

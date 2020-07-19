@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class ExitGoalEngine extends GoalEngine {
 
-    ExitGoalEngine() {
+    public ExitGoalEngine() {
         super();
     }
 

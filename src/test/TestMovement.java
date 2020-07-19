@@ -2,6 +2,7 @@ package test;
 
 import javafx.scene.input.KeyCode;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import unsw.dungeon.*;
@@ -14,7 +15,7 @@ public class TestMovement {
 
     private Dungeon dungeon;
 
-    @BeforeAll
+    @BeforeEach
     public void BeforeEach() {
         dungeon = new Dungeon(10, 10);
         dungeon.addEntity(new Sword(4,4));

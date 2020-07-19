@@ -11,8 +11,8 @@ import java.util.List;
  * but is a different class so wall can change without introducing new bugs
  */
 public class EnemyGoalEngine extends GoalEngine {
-    EnemyGoalEngine() {
-
+    public EnemyGoalEngine() {
+        super();
     }
 
     @Override
