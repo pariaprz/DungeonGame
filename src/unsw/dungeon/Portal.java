@@ -21,6 +21,15 @@ public class Portal extends Entity {
         this.linkedPortal = linkedPortal;
     }
 
+    public Portal getLinkedPortal(){
+        return linkedPortal;
+    }
+    
+    public String getPortalID(){
+        return id;
+    }
+
+    
     @Override
     public void interact(Entity actor, KeyCode keyCode) {
         if (linkedPortal == null) {

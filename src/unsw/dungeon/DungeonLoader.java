@@ -39,6 +39,21 @@ public class DungeonLoader {
         for (int i = 0; i < jsonEntities.length(); i++) {
             loadEntity(dungeon, jsonEntities.getJSONObject(i));
         }
+
+        for (Entity e : dungeon.getEntities()){
+            if (e instanceof Portal){                               //Goes through and finds a portal instance
+                for (Entity f: dungeon.getEntities()){              //Has a second loop going to compare with first portal
+                    if (f instanceof Portal){
+                        if (f.equals(e)){                           //If its the same portal, we dont want to link together; just continue
+                            continue;
+                        } else if (((Portal) f).getPortalID().equals(((Portal) e).getPortalID())){  //If portal id's are the same, connect them
+                            ((Portal) e).setLinkedPortal((Portal) f);
+                            ((Portal) f).setLinkedPortal((Portal) e);
+                        }
+                    }
+                }
+            }
+        }
         return dungeon;
     }
 
@@ -94,7 +109,7 @@ public class DungeonLoader {
             if (portalId == null) {
                 throw new RuntimeException("No ID provided for portal");
             }
-            entity = new Door(x, y, portalId); // TODO: Add portal with same id as linked portal.
+            entity = new Portal(x, y, portalId); // TODO: Add portal with same id as linked portal.
             break;
         case "enemy":
             entity = new Enemy(x, y, dungeon);

@@ -257,24 +257,28 @@
       "type": "enemy"
     },
     {
-      "x": 5,
-      "y": 5,
-      "type": "enemy"
-    },
-    {
-      "x": 6,
-      "y": 5,
-      "type": "enemy"
-    },
-    {
-      "x": 7,
-      "y": 5,
-      "type": "enemy"
+      "x": 1,
+      "y": 4,
+      "type": "portal",
+      "id": "0"
     },
     {
       "x": 10,
-      "y": 5,
-      "type": "enemy"
+      "y": 4,
+      "type": "portal",
+      "id": "0"
+    },
+    {
+      "x": 16,
+      "y": 1,
+      "type": "portal",
+      "id": "1"
+    },
+    {
+      "x": 1,
+      "y": 14,
+      "type": "portal",
+      "id": "1"
     },
     {
       "x": 8,
