@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
  */
 public class Dungeon {
 
-    private int width, height;
-    private List<Entity> entities;
+    private final int width, height;
+    private final List<Entity> entities;
 
     public Dungeon(int width, int height) {
         this.width = width;
@@ -37,10 +37,7 @@ public class Dungeon {
     }
 
     public Player getPlayer() {
-        return (Player) getEntities()
-                .stream()
-                .filter(entity -> entity instanceof Player)
-                .findFirst().orElse(null);
+        return getEntities(Player.class).stream().findFirst().orElse(null);
     }
 
     public void addEntity(Entity entity) {
@@ -49,6 +46,13 @@ public class Dungeon {
 
     public List<Entity> getEntities() {
         return entities;
+    }
+
+    public<T extends Entity> List<T> getEntities(Class<T> objClass) {
+        return entities.stream()
+                .filter(objClass::isInstance)
+                .map(objClass::cast)
+                .collect(Collectors.toList());
     }
 
     public List<Entity> getEntitiesAt(Position p) {

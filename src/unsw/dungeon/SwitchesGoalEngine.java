@@ -17,14 +17,9 @@ public class SwitchesGoalEngine extends GoalEngine {
 
     public  boolean isComplete(Dungeon dungeon) {
         return dungeon
-                .getEntities()
+                .getEntities(Switch.class)
                 .stream()
-                .filter(entity -> entity instanceof Switch)
-                .allMatch(switchEntity -> dungeon
-                        .getEntitiesAt(switchEntity.getPosition())
-                        .stream().anyMatch(entity -> entity instanceof Boulder)
-
-                );
+                .allMatch(Switch::isTriggered);
     }
 
     @Override

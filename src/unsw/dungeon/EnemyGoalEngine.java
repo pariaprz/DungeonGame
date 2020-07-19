@@ -18,9 +18,7 @@ public class EnemyGoalEngine extends GoalEngine {
     @Override
     public  boolean isComplete(Dungeon dungeon) {
         return dungeon
-                .getEntities()
-                .stream()
-                .noneMatch(entity -> entity instanceof Enemy);
+                .getEntities(Enemy.class).isEmpty();
     }
 
     @Override

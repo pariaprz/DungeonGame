@@ -17,9 +17,7 @@ public class TreasureGoalEngine extends GoalEngine {
 
     public  boolean isComplete(Dungeon dungeon) {
         return dungeon
-                .getEntities()
-                .stream()
-                .noneMatch(entity -> entity instanceof Treasure);
+                .getEntities(Treasure.class).isEmpty();
     }
 
     @Override

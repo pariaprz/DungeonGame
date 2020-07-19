@@ -85,7 +85,11 @@ public class DungeonController {
         });
         if (entity instanceof Enemy) {
             timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(1),
-                    actionEvent -> ((Enemy) entity).moveEnemy()
+                    actionEvent -> {
+                        if (!entity.isDeleted()) {
+                            ((Enemy) entity).moveEnemy();
+                        }
+                    }
             ));
         }
         goal.attachListener(entityWrapper, dungeon);

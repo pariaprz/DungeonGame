@@ -59,10 +59,9 @@ public class TestMovement {
         assertEquals(Player.NUM_SWORD_SWINGS, p.getSwordCount());                 //when sword obtained, count goes to 0 and counts up to 5 when enemy is it
 
         p.handleDirectionKey(KeyCode.RIGHT);
-        long numDeleted = dungeon.getEntities()
+        long numDeleted = dungeon.getEntities(Treasure.class)
                 .stream()
-                .filter((entity -> entity instanceof Treasure))
-                .map(treasure -> ((Treasure)treasure).isDeleted())
+                .map(Entity::isDeleted)
                 .filter(bool -> bool).count();
         assertEquals(1, numDeleted);
 
