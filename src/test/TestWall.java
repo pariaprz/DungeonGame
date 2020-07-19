@@ -48,17 +48,17 @@ public class TestWall {
         Enemy e3 = new Enemy(4, 3, dungeon);      //Test movement from above the wall into the wall
         Enemy e4 = new Enemy(4, 5, dungeon);      //Test movement from below the wall into the wall
 
-        e1.handleMovement(KeyCode.RIGHT);
+        e1.handleMovement(Direction.RIGHT);
         assertEquals(3, e1.getX());
 
-        e2.handleMovement(KeyCode.LEFT);
+        e2.handleMovement(Direction.LEFT);
         assertEquals(5, e2.getX());
 
-        e3.handleMovement(KeyCode.DOWN);
-        assertEquals(3, e3.getY());
+        e3.handleMovement(Direction.DOWN);
+        assertEquals(2, e3.getY());
 
-        e4.handleMovement(KeyCode.UP);
-        assertEquals(5, e4.getY());
+        e4.handleMovement(Direction.UP);
+        assertEquals(6, e4.getY());
     }
 
     @Test

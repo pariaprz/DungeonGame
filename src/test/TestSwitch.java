@@ -19,7 +19,7 @@ public class TestSwitch {
     }
 
     @Test
-    public void TestEntitiesMovingOnKey() {
+    public void TestEntitiesMovingOnSwitch() {
         Switch switchObj = new Switch(1, 2, dungeon);
         Player player = new Player(1, 1, dungeon);
         assertTrue(switchObj.canEntityMoveHere(player));
@@ -28,8 +28,19 @@ public class TestSwitch {
     }
 
     @Test
-    public void TestEntitiesInteractingWithKey() {
-        
+    public void TestEntitiesIsSwitchTriggered() {
+        Switch switchObj = new Switch(1, 1, dungeon);
+        assertFalse(switchObj.isTriggered());
+
+        dungeon.addEntity(new Boulder(1, 1, dungeon));
+        assertTrue(switchObj.isTriggered());
+
+        dungeon.removeEntity(dungeon.getEntities().get(0));
+        dungeon.addEntity(new Player(1, 1, dungeon));
+        assertFalse(switchObj.isTriggered());
+
+        dungeon.addEntity(new Boulder(1, 1, dungeon));
+        assertTrue(switchObj.isTriggered());
     }
 }
 

@@ -80,9 +80,7 @@ public class DungeonController {
             }
         });
         entity.status().addListener((ObservableValue<? extends String> observable,
-                                     String oldValue, String newValue) -> {
-            entityWrapper.publishStatusUpdate(newValue);
-        });
+                                     String oldValue, String newValue) -> entityWrapper.publishStatusUpdate(newValue));
         if (entity instanceof Enemy) {
             timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(1),
                     actionEvent -> {

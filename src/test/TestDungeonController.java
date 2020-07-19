@@ -101,6 +101,7 @@ public class TestDungeonController {
         assertEquals(0, numCalls[0]);
         dungeon.getEntities().get(2).delete();
         assertEquals(1, numCalls[0]);
+        enemy.unsubscribeDelete(changeListener);
     }
 
     @Test

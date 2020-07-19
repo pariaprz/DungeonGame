@@ -1,13 +1,15 @@
 package unsw.dungeon;
 
 public class DefaultPlayerState implements PlayerState {
+    public static String STATE_NAME = "Default";
+
     private Player player;
     public DefaultPlayerState(Player player) {
         this.player = player;
     }
     @Override
     public String getStateName() {
-        return "Default";
+        return STATE_NAME;
     }
 
     @Override

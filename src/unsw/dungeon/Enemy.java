@@ -21,8 +21,7 @@ public class Enemy extends Moveable {
     }
 
 
-    public void handleMovement(KeyCode keyCode) {
-        Direction direction = Direction.fromKeyCode(keyCode);
+    public void handleMovement(Direction direction) {
         if (direction == null) {
             return;
         }
@@ -35,7 +34,7 @@ public class Enemy extends Moveable {
         if (canMove) {
             moveToPosition(nextPos);
             entities.forEach(entity -> {
-                entity.interact(this, keyCode);
+                entity.interact(this, Direction.toKeyCode(direction));
             });
 
         }
@@ -48,7 +47,7 @@ public class Enemy extends Moveable {
         Direction towardsPlayer = Direction.fromPositions(getPosition(), player.getPosition());
         Direction nextDirection = player.attractEnemies() || towardsPlayer == null ?
                 towardsPlayer : towardsPlayer.invert();
-        handleMovement(Direction.toKeyCode(nextDirection)); // TODO: Run away.
+        handleMovement(nextDirection); // TODO: Run away.
     }
 
 
