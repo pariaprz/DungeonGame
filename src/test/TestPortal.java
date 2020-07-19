@@ -35,6 +35,7 @@ public class TestPortal {
         assertEquals(portal1.canEntityMoveHere(new Entity(2, 3)), true);
     }
 
+    @Test
     public void TestUnlinkedPortal() {
         Portal portal = new Portal(0, 0, "P");
         Exception exception = assertThrows(RuntimeException.class, () ->
