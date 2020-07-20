@@ -451,6 +451,11 @@
       "type": "invincibility"
     },
     {
+      "x": 13,
+      "y": 11,
+      "type": "invincibility"
+    },
+    {
       "x": 17,
       "y": 10,
       "type": "wall"

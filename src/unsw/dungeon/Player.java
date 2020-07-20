@@ -103,6 +103,7 @@ public class Player extends Moveable {
     }
 
     public void setState(PlayerState playerState) {
+        this.state.expireState();
         if (playerState instanceof InvinciblePlayerState) {
             setStatus(INVINCIBLE_STATUS);
         } else if (hasSword()) {
@@ -110,7 +111,7 @@ public class Player extends Moveable {
         } else {
             setStatus(DEFAULT_STATUS);
         }
-        playerState.expireState();
+        System.out.println("Setting instance: " + playerState);
         state = playerState;
     }
 

@@ -18,8 +18,8 @@ import org.json.JSONTokener;
 public class DungeonLoader {
 
     private JSONObject json;
-    public DungeonLoader(String filename) throws FileNotFoundException {
-        json = new JSONObject(new JSONTokener(new FileReader("dungeons/" + filename)));
+    public DungeonLoader(JSONObject json) {
+        this.json = json;
     }
 
     public Goal loadGoal() {
@@ -156,16 +156,14 @@ public class DungeonLoader {
         return null;
     }
 
-    private void validatePosition(Dungeon dungeon, Position position) {
-        List<Entity> others = dungeon.getEntitiesAt(position);
-        if (position.x >= dungeon.getWidth() || position.x < 0 || position.y >= dungeon.getHeight() || position.y < 0) {
-            throw new RuntimeException("Invalid position for entity (" + position.x + ", " + position.y + ")");
-        }
-        if (!others.isEmpty()) {
-            throw new RuntimeException("Multiple entities placed at (" + position.x + ", " + position.y + ")");
-        }
-    }
-
-    // TODO Create additional abstract methods for the other entities
+//    private void validatePosition(Dungeon dungeon, Position position) {
+//        List<Entity> others = dungeon.getEntitiesAt(position);
+//        if (position.x >= dungeon.getWidth() || position.x < 0 || position.y >= dungeon.getHeight() || position.y < 0) {
+//            throw new RuntimeException("Invalid position for entity (" + position.x + ", " + position.y + ")");
+//        }
+//        if (!others.isEmpty()) {
+//            throw new RuntimeException("Multiple entities placed at (" + position.x + ", " + position.y + ")");
+//        }
+//    }
 
 }

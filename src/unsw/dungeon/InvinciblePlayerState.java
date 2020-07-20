@@ -9,8 +9,8 @@ import java.util.TimerTask;
  * It is deleted once it is consumed.
  */
 public class InvinciblePlayerState implements PlayerState {
-    private Player player;
-    private TimerTask task;
+    private final Player player;
+    private Timer taskTimer;
 
     public static String STATE_NAME = "Invincible";
     public InvinciblePlayerState(Player player) {
@@ -19,14 +19,14 @@ public class InvinciblePlayerState implements PlayerState {
 
     public void startInvincibility() {
         player.setState(this);
-        Timer timer = new Timer();
+        taskTimer = new Timer();
         InvinciblePlayerState thisState = this;
-        task = new TimerTask() {
+        TimerTask task = new TimerTask() {
             public void run(){
                 thisState.expireState();
             }
         };
-        timer.schedule(task, 10*1000);                   //Time in milliseconds
+        taskTimer.schedule(task, 10*1000);                   //Time in milliseconds
     }
 
     @Override
@@ -41,10 +41,11 @@ public class InvinciblePlayerState implements PlayerState {
 
     @Override
     public void expireState() {
-        if (this.task != null) {
-            this.task.cancel();
+        if (this.taskTimer != null) {
+            this.taskTimer.cancel();
+            this.taskTimer = null;
+            this.player.setState(new DefaultPlayerState(player));
         }
-        this.player.setState(new DefaultPlayerState(player));
     }
 
     @Override
