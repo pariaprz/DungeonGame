@@ -1,5 +1,6 @@
 package unsw.dungeon;
 
+import java.io.FileReader;
 import java.io.IOException;
 
 import javafx.application.Application;
@@ -7,6 +8,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 public class DungeonApplication extends Application {
 
@@ -14,7 +17,8 @@ public class DungeonApplication extends Application {
     public void start(Stage primaryStage) throws IOException {
         primaryStage.setTitle("Dungeon");
 
-        DungeonLoader dungeonLoader = new DungeonLoader("boulders.json");
+        JSONObject json = new JSONObject(new JSONTokener(new FileReader("dungeons/" + "advanced.json")));
+        DungeonLoader dungeonLoader = new DungeonLoader(json);
         DungeonController controller = new DungeonController(dungeonLoader.load(), dungeonLoader.loadGoal());
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("DungeonView.fxml"));

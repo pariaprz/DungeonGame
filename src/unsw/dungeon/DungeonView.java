@@ -20,10 +20,10 @@ import java.io.File;
 public class DungeonView {
     private static String DEFAULT_IMG = "DEFAULT_IMAGE";
 
-    private Map<Class<? extends Entity>, Map<String, Image>> imageMap;
-    private DungeonController controller;
-    private List<EntityWrapper> initialEntities;
-    private List<ImageView> entities;
+    private final Map<Class<? extends Entity>, Map<String, Image>> imageMap;
+    private final DungeonController controller;
+    private final List<EntityWrapper> initialEntities;
+    private final List<ImageView> entities;
     private final int height, width;
 
     @FXML
@@ -84,6 +84,7 @@ public class DungeonView {
         entity.addStatusObserver((PropertyChangeEvent event) -> {
             String update = Optional.of((String)(event.getNewValue())).orElse(DEFAULT_IMG);
             Image defaultImg = imageMap.get(entity.entityClass).get(DEFAULT_IMG);
+            System.out.println("getting img: " + update);
             node.setImage(imageMap.get(entity.entityClass).getOrDefault(update, defaultImg));
         });
     }
