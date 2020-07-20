@@ -42,7 +42,8 @@ public class TestPlayer {
 
     @Test
     void TestInvincibleState() {
-        player.setState(new InvinciblePlayerState(player));
+        new InvinciblePlayerState(player).startInvincibility();     
+
         assertFalse(player.attractEnemies());
         assertFalse(player.isDeleted());
 
