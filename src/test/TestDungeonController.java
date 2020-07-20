@@ -10,7 +10,7 @@ import unsw.dungeon.*;
 
 import java.beans.PropertyChangeListener;
 
-;import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class TestDungeonController {
