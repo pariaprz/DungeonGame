@@ -59,6 +59,8 @@ public class DungeonView {
         for (ImageView entity : entities) {
             squares.getChildren().add(entity);
         }
+
+        squares.add(new ImageView(inv_1sec), 4, 0);
     }
     /**
      * Set a node in a GridPane to have its position track the position of an
