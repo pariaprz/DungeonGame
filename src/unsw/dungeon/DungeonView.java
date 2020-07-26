@@ -47,6 +47,7 @@ public class DungeonView {
     @FXML
     public void initialize() {
         Image ground = new Image((new File("images/dirt_0_new.png")).toURI().toString());
+        Image inv_1sec = new Image((new File("images/Invincibility_Time_Icons/invincibility_1sec.png")).toURI().toString());
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -117,6 +118,7 @@ public class DungeonView {
                 Player.ARMED_STATUS, new Image((new File("images/player_with_sword.png")).toURI().toString()),
                 Player.WALLWALKER_STATUS, new Image((new File("images/wallwalker_player.png")).toURI().toString())
         ));
+
         return imageMap;
     }
 }

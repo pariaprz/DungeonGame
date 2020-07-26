@@ -13,12 +13,17 @@ public class InvinciblePlayerState implements PlayerState {
     private Timer taskTimer;
 
     public static String STATE_NAME = "Invincible";
+    public static int TIME_LEFT = 5;
+
     public InvinciblePlayerState(Player player) {
         this.player = player;
     }
 
     public void startInvincibility() {
         player.setState(this);
+        int delay = 1000;
+        int period = 1000;
+
         taskTimer = new Timer();
         InvinciblePlayerState thisState = this;
         TimerTask task = new TimerTask() {
@@ -26,7 +31,15 @@ public class InvinciblePlayerState implements PlayerState {
                 thisState.expireState();
             }
         };
-        taskTimer.schedule(task, 10*1000);                   //Time in milliseconds
+        taskTimer.schedule(task, 5*1000);                   //Time in milliseconds
+        
+        taskTimer.scheduleAtFixedRate(new TimerTask(){
+            public void run(){
+                TIME_LEFT--;
+                System.out.println(TIME_LEFT);
+            }
+        }, delay, period);
+    
     }
 
     @Override
