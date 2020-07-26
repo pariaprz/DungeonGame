@@ -106,6 +106,7 @@ public class DungeonView {
         imageMap.put(Sword.class, Map.of(DEFAULT_IMG, new Image((new File("images/greatsword_1_new.png")).toURI().toString())));
         imageMap.put(Enemy.class, Map.of(DEFAULT_IMG, new Image((new File("images/deep_elf_master_archer.png")).toURI().toString())));
         imageMap.put(Invincibility.class, Map.of(DEFAULT_IMG, new Image((new File("images/brilliant_blue_new.png")).toURI().toString())));
+        imageMap.put(WallWalker.class, Map.of(DEFAULT_IMG, new Image((new File("images/wallwalker.png")).toURI().toString())));
         imageMap.put(Door.class, Map.of(
                 DEFAULT_IMG, new Image((new File("images/closed_door.png")).toURI().toString()),
                 Door.OPEN_STATUS, new Image((new File("images/open_door.png")).toURI().toString())
@@ -113,7 +114,8 @@ public class DungeonView {
         imageMap.put(Player.class, Map.of(
                 DEFAULT_IMG, new Image((new File("images/human_new.png")).toURI().toString()),
                 Player.INVINCIBLE_STATUS, new Image((new File("images/gnome.png")).toURI().toString()),
-                Player.ARMED_STATUS, new Image((new File("images/human_new.png")).toURI().toString())
+                Player.ARMED_STATUS, new Image((new File("images/player_with_sword.png")).toURI().toString()),
+                Player.WALLWALKER_STATUS, new Image((new File("images/wallwalker_player.png")).toURI().toString())
         ));
         return imageMap;
     }

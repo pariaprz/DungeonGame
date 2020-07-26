@@ -17,7 +17,7 @@ public class TestBoulder {
     @BeforeEach
     void BeforeEach() {
         dungeon = new Dungeon(10, 10);
-        dungeon.addEntity(new Wall(4, 4));
+        dungeon.addEntity(new Wall(4, 4, dungeon));
     }
 
     @Test

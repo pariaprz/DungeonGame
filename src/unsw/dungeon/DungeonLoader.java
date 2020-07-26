@@ -77,7 +77,7 @@ public class DungeonLoader {
             entity =  new Player(x, y, dungeon);;
             break;
         case "wall":
-            entity = new Wall(x, y);
+            entity = new Wall(x, y, dungeon);
             break;
         case "switch":
             entity = new Switch(x, y, dungeon);
@@ -120,6 +120,10 @@ public class DungeonLoader {
             break;
         case "treasure":
             entity = new Treasure(x, y);
+            break;
+        
+        case "wallwalker":
+            entity = new WallWalker(x,y);
             break;
         }
         if (entity != null) {
