@@ -28,7 +28,6 @@ public class Entity {
         this.y = new SimpleIntegerProperty(y);
         this.isDeleted = new SimpleBooleanProperty(false);
         this.status = new SimpleStringProperty(DEFAULT_STATUS);
-
         this.dungeon = dungeon;
     }
 
@@ -90,6 +89,13 @@ public class Entity {
         return dungeon;
     }
 
+    public int getDungeonWidth(){
+        return dungeon.getWidth();
+    }
+
+    public int getDungeonHeight(){
+        return dungeon.getHeight();
+    }
     /**
      * The method to allow entities to interact with each other.
      * @param actor The entity attempting an interaction

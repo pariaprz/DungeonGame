@@ -14,6 +14,7 @@ public class Player extends Moveable {
     public static String INVINCIBLE_STATUS = "invincible";
     public static String ARMED_STATUS = "armed";
     public static String DEFAULT_STATUS = "default";
+    public static String WALLWALKER_STATUS = "wallwalker";
     public static int NUM_SWORD_SWINGS = 5;
 
     private int swordCount = 0;
@@ -102,12 +103,18 @@ public class Player extends Moveable {
         return state;
     }
 
+    public String getPlayerStateName(){
+        return state.getStateName();
+    }
+    
     public void setState(PlayerState playerState) {
         this.state.expireState();
         if (playerState instanceof InvinciblePlayerState) {
             setStatus(INVINCIBLE_STATUS);
         } else if (hasSword()) {
             setStatus(ARMED_STATUS);
+        } else if (playerState instanceof WallWalkerPlayerState){
+            setStatus(WALLWALKER_STATUS);
         } else {
             setStatus(DEFAULT_STATUS);
         }
