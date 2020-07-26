@@ -666,6 +666,11 @@
       "type": "wall"
     },
     {
+      "x": 14,
+      "y": 14,
+      "type": "exit"
+    },
+    {
       "x": 17,
       "y": 15,
       "type": "wall"
@@ -679,6 +684,9 @@
       },
       {
         "goal": "treasure"
+      },
+      {
+        "goal": "exit"
       }
     ]
   }
