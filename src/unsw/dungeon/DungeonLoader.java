@@ -121,9 +121,11 @@ public class DungeonLoader {
         case "treasure":
             entity = new Treasure(x, y);
             break;
-        
         case "wallwalker":
             entity = new WallWalker(x,y);
+            break;
+        case "bow":
+            entity = new Bow(x,y);
             break;
         }
         if (entity != null) {

@@ -10,6 +10,9 @@ import javafx.fxml.FXML;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
+import javafx.scene.image.Image;
+
+import java.io.File;
 
 /**
  * A controller for the dungeon.
@@ -24,13 +27,18 @@ public class DungeonController {
     private final Goal goal;
     private boolean isGameComplete = false;
     private final Timeline timeline;
+    private final Timeline timelineArrow;
     private final List<EntityWrapper> initialEntities;
+    private Direction prevDirection = null;
 
     public DungeonController(Dungeon dungeon, Goal goal) {
         this.dungeon = dungeon;
         this.goal = goal;
-        timeline = new Timeline(2);
+        timeline = new Timeline(1);
         timeline.setCycleCount(Timeline.INDEFINITE);
+        
+        timelineArrow = new Timeline(40);
+        timelineArrow.setCycleCount(Timeline.INDEFINITE);
 
         initialEntities = this.dungeon
                 .getEntities()
@@ -96,7 +104,19 @@ public class DungeonController {
                         }
                     }
             ));
-        }
+        } else if (entity instanceof Arrow){
+            timelineArrow.getKeyFrames().add(new KeyFrame(Duration.millis(25),
+                    actionEvent -> {
+                            ((Arrow) entity).moveArrow(directionFacing());
+                            System.out.println((entity.getPosition()));
+                            
+                        
+       //                 }
+       //             }
+       //     ));
+                    }
+            ));
+    }
         goal.attachListener(entityWrapper, dungeon);
         return entityWrapper;
     }
@@ -120,14 +140,27 @@ public class DungeonController {
         case LEFT:
         case RIGHT:
             player.handleDirectionKey(keyCode);
+            prevDirection = Direction.fromKeyCode(keyCode);
             break;
         case SPACE:
-            System.out.println("Swinging sword");
-            player.swingSword();
+            if (player.hasSword()){
+                System.out.println("Swinging sword");
+                player.swingSword();
+            } else if(player.hasBow() && player.getArrowCount() > 0){
+                System.out.println("Shooting arrow");
+                player.shootArrow(prevDirection);
+                
+                Arrow arrow = new Arrow(player.getX()+1, player.getY(), player.getDungeon());
+                EntityWrapper wrappedArrow = onEntityLoad(arrow);
+
+                thisDungeonView().updateSquares(arrow, wrappedArrow, new Image((new File("images/arrow.png")).toURI().toString()));
+                timelineArrow.play();
+            }
             break;
         default:
             break;
         }
+        System.out.println("Facing" + prevDirection);
     }
 
     public List<EntityWrapper> getInitialEntities() {
@@ -136,6 +169,14 @@ public class DungeonController {
 
     public Goal getGoal() {
         return goal;
+    }
+
+    public Direction directionFacing(){
+        return prevDirection;
+    }
+
+    public DungeonView thisDungeonView(){
+        return dungeonView;
     }
 
     public DungeonView loadDungeonView() {

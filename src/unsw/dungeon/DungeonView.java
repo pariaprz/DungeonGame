@@ -38,7 +38,7 @@ public class DungeonView {
         entities = new ArrayList<>();
     }
 
-    private void onEntityLoad(EntityWrapper entity) {
+    public void onEntityLoad(EntityWrapper entity) {
         ImageView view = new ImageView(imageMap.get(entity.entityClass).get(DEFAULT_IMG));
         track(entity, view);
         entities.add(view);
@@ -62,6 +62,14 @@ public class DungeonView {
 
         squares.add(new ImageView(inv_1sec), 4, 0);
     }
+
+    @FXML
+    public void updateSquares(Entity entity, EntityWrapper wrappedEntity, Image image){
+        ImageView newEntity = new ImageView(image);
+        squares.getChildren().add(newEntity);
+        track(wrappedEntity, newEntity);
+        entities.add(newEntity);
+    }
     /**
      * Set a node in a GridPane to have its position track the position of an
      * entity in the dungeon.
@@ -72,7 +80,7 @@ public class DungeonView {
      * @param entity
      * @param node
      */
-    private void track(EntityWrapper entity, ImageView node) {
+    public void track(EntityWrapper entity, ImageView node) {
         GridPane.setColumnIndex(node, entity.getPosition().x);
         GridPane.setRowIndex(node, entity.getPosition().y);
         entity.addPositionObserver((PropertyChangeEvent event) -> {
@@ -110,6 +118,7 @@ public class DungeonView {
         imageMap.put(Enemy.class, Map.of(DEFAULT_IMG, new Image((new File("images/deep_elf_master_archer.png")).toURI().toString())));
         imageMap.put(Invincibility.class, Map.of(DEFAULT_IMG, new Image((new File("images/brilliant_blue_new.png")).toURI().toString())));
         imageMap.put(WallWalker.class, Map.of(DEFAULT_IMG, new Image((new File("images/wallwalker.png")).toURI().toString())));
+        imageMap.put(Bow.class, Map.of(DEFAULT_IMG, new Image((new File("images/bow.png")).toURI().toString())));
         imageMap.put(Door.class, Map.of(
                 DEFAULT_IMG, new Image((new File("images/closed_door.png")).toURI().toString()),
                 Door.OPEN_STATUS, new Image((new File("images/open_door.png")).toURI().toString())
@@ -118,7 +127,8 @@ public class DungeonView {
                 DEFAULT_IMG, new Image((new File("images/human_new.png")).toURI().toString()),
                 Player.INVINCIBLE_STATUS, new Image((new File("images/gnome.png")).toURI().toString()),
                 Player.ARMED_STATUS, new Image((new File("images/player_with_sword.png")).toURI().toString()),
-                Player.WALLWALKER_STATUS, new Image((new File("images/wallwalker_player.png")).toURI().toString())
+                Player.WALLWALKER_STATUS, new Image((new File("images/wallwalker_player.png")).toURI().toString()),
+                Player.RANGER_STATUS, new Image((new File("images/ranger.png")).toURI().toString())
         ));
 
         return imageMap;

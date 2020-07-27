@@ -15,9 +15,13 @@ public class Player extends Moveable {
     public static String ARMED_STATUS = "armed";
     public static String DEFAULT_STATUS = "default";
     public static String WALLWALKER_STATUS = "wallwalker";
+    public static String RANGER_STATUS = "ranger";
     public static int NUM_SWORD_SWINGS = 5;
+    public static int ARROW_COUNT = 3;
 
     private int swordCount = 0;
+    private int currArrowCount = 0;
+    private boolean hasBow = false;
     private String key = null;
 
     private PlayerState state;
@@ -72,6 +76,32 @@ public class Player extends Moveable {
         setStatus(ARMED_STATUS);
     }
 
+    public boolean hasBow(){
+        return hasBow;
+    }
+
+    public void setBow(boolean bool){
+        hasBow = bool;
+    }
+
+    public void armBow(){
+        currArrowCount = ARROW_COUNT;
+        setStatus(RANGER_STATUS);
+        setBow(true);
+    }
+
+    public void pickUpArrow(){
+        currArrowCount++;
+    }
+
+    public int getArrowCount(){
+        return currArrowCount;
+    }
+
+    public void shootArrow(Direction direction){
+        Arrow arrow = new Arrow(getX()+1, getY()+1, getDungeon());
+    }
+
     public boolean hasSword() {
         return swordCount > 0;
     }
@@ -113,6 +143,8 @@ public class Player extends Moveable {
             setStatus(INVINCIBLE_STATUS);
         } else if (hasSword()) {
             setStatus(ARMED_STATUS);
+        } else if (hasBow() && currArrowCount > 0){
+            setStatus(RANGER_STATUS);
         } else if (playerState instanceof WallWalkerPlayerState){
             setStatus(WALLWALKER_STATUS);
         } else {
