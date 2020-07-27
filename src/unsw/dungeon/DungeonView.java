@@ -9,8 +9,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
-import javafx.util.Pair;
-import org.w3c.dom.Node;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 import java.io.File;
 
@@ -103,6 +105,9 @@ public class DungeonView {
         entity.addDeleteObserver((PropertyChangeEvent event) -> {
             squares.getChildren().remove(node);
             entity.dropAllSubscribers();
+            if (entity.entityClass.equals(Player.class)) {
+                addFinalText("You Died.", "0xF44336");
+            }
         });
         entity.addStatusObserver((PropertyChangeEvent event) -> {
             String update = Optional.of((String)(event.getNewValue())).orElse(DEFAULT_IMG);
@@ -115,6 +120,14 @@ public class DungeonView {
     @FXML
     public void handleKeyPress(KeyEvent event) {
         controller.handleKeyPress(event.getCode());
+    }
+
+    private void addFinalText(String text, String color) {
+        Text completeText = new Text(text);
+        completeText.setFont(new Font("Verdana", 40));
+        completeText.setFill(Color.web(color));
+        completeText.setTextAlignment(TextAlignment.CENTER);
+        squares.add(completeText, Math.max(width/2 - 5, 0), Math.max(height/2-3, height/2), width, 2);
     }
 
     private Map<Class<? extends Entity>, Label> initialiseGoalsMap(Goal goal) {
@@ -142,6 +155,11 @@ public class DungeonView {
             });
             goalMap.get(entry.getKey()).setText(String.valueOf(entry.getValue().get()));
         });
+        goal.getCompleteProperty().addListener(((observableValue, oldValue, newValue) -> {
+            if (newValue) {
+                addFinalText("Level Completed!", "0x408140");
+            }
+        }));
         return goalMap;
     }
 
@@ -171,4 +189,5 @@ public class DungeonView {
 
         return imageMap;
     }
+
 }
