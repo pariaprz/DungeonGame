@@ -98,9 +98,9 @@ public class Player extends Moveable {
         return currArrowCount;
     }
 
-    public void shootArrow(Direction direction){
-        Arrow arrow = new Arrow(getX()+1, getY()+1, getDungeon());
-    }
+    //public void shootArrow(Direction direction){
+    //    new Arrow(getX()+1, getY()+1, getDungeon());
+    //}
 
     public boolean hasSword() {
         return swordCount > 0;

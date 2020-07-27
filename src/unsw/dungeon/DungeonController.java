@@ -30,6 +30,7 @@ public class DungeonController {
     private final Timeline timelineArrow;
     private final List<EntityWrapper> initialEntities;
     private Direction prevDirection = null;
+    private Direction arrowDirection = null;
 
     public DungeonController(Dungeon dungeon, Goal goal) {
         this.dungeon = dungeon;
@@ -107,7 +108,7 @@ public class DungeonController {
         } else if (entity instanceof Arrow){
             timelineArrow.getKeyFrames().add(new KeyFrame(Duration.millis(25),
                     actionEvent -> {
-                            ((Arrow) entity).moveArrow(directionFacing());
+                            ((Arrow) entity).moveArrow(getArrowDirection());
                             System.out.println((entity.getPosition()));
                             
                         
@@ -147,8 +148,9 @@ public class DungeonController {
                 System.out.println("Swinging sword");
                 player.swingSword();
             } else if(player.hasBow() && player.getArrowCount() > 0){
+                arrowDirection = prevDirection;
                 System.out.println("Shooting arrow");
-                player.shootArrow(prevDirection);
+                //player.shootArrow(prevDirection);
                 
                 Arrow arrow = new Arrow(player.getX()+1, player.getY(), player.getDungeon());
                 EntityWrapper wrappedArrow = onEntityLoad(arrow);
@@ -171,8 +173,8 @@ public class DungeonController {
         return goal;
     }
 
-    public Direction directionFacing(){
-        return prevDirection;
+    public Direction getArrowDirection(){
+        return arrowDirection;
     }
 
     public DungeonView thisDungeonView(){
