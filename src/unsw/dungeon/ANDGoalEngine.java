@@ -16,6 +16,6 @@ public class ANDGoalEngine extends ComplexGoalEngine {
     }
 
     public boolean isComplete(Dungeon dungeon) {
-        return getChildGoals().stream().allMatch(goal -> goal.computeComplete(dungeon));
+        return getNumCompleted(dungeon) == getChildGoals().size();
     }
 }

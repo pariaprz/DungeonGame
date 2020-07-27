@@ -4,10 +4,13 @@ import java.beans.PropertyChangeEvent;
 import java.util.*;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.util.Pair;
+import org.w3c.dom.Node;
 
 import java.io.File;
 
@@ -26,6 +29,8 @@ public class DungeonView {
     private final List<ImageView> entities;
     private final int height, width;
 
+    private final Map<Class<? extends Entity>, Label> goals;
+
     @FXML
     private GridPane squares;
 
@@ -35,12 +40,13 @@ public class DungeonView {
         this.controller = controller;
         this.initialEntities = initialEntities;
         imageMap = initialiseImageMap();
+        goals = initialiseGoalsMap(controller.getGoal());
         entities = new ArrayList<>();
     }
 
     private void onEntityLoad(EntityWrapper entity) {
         ImageView view = new ImageView(imageMap.get(entity.entityClass).get(DEFAULT_IMG));
-        track(entity, view);
+        trackEntities(entity, view);
         entities.add(view);
     }
 
@@ -60,8 +66,17 @@ public class DungeonView {
             squares.getChildren().add(entity);
         }
 
+        int[] xPosition = { 0 };
+        int yPosition = height+1;
+        goals.forEach((entity, label) -> {
+            squares.add(new ImageView(imageMap.get(entity).get(DEFAULT_IMG)), xPosition[0]++, yPosition);
+            squares.add(label, xPosition[0], yPosition, entity == Exit.class ? 5 : 2, 1);
+            xPosition[0] += entity == Exit.class ? 5 : 2;
+        });
         squares.add(new ImageView(inv_1sec), 4, 0);
     }
+
+
     /**
      * Set a node in a GridPane to have its position track the position of an
      * entity in the dungeon.
@@ -72,7 +87,7 @@ public class DungeonView {
      * @param entity
      * @param node
      */
-    private void track(EntityWrapper entity, ImageView node) {
+    private void trackEntities(EntityWrapper entity, ImageView node) {
         GridPane.setColumnIndex(node, entity.getPosition().x);
         GridPane.setRowIndex(node, entity.getPosition().y);
         entity.addPositionObserver((PropertyChangeEvent event) -> {
@@ -95,6 +110,36 @@ public class DungeonView {
     @FXML
     public void handleKeyPress(KeyEvent event) {
         controller.handleKeyPress(event.getCode());
+    }
+
+    private Map<Class<? extends Entity>, Label> initialiseGoalsMap(Goal goal) {
+        Map<Class<? extends Entity>, Label> goalMap = new HashMap<>();
+        goal.observeableTopics().forEach((entry) -> {
+            if (goalMap.containsKey(entry.getKey())) {
+                return;
+            }
+
+            goalMap.put(entry.getKey(), new Label(String.valueOf(entry.getValue().get())));
+            if (entry.getKey() == Exit.class) {
+                entry.getValue().addListener((observableValue, oldValue, newValue) ->
+                    goalMap.get(entry.getKey()).setText((int) newValue == 1 ? "Complete" : "Get to the exit!"));
+                goalMap.get(entry.getKey())
+                        .setText(goal.getGoalEngine() instanceof ANDGoalEngine ? "Complete other tasks" : "Get to the exit!");
+                return;
+            }
+            entry.getValue().addListener((observableValue, oldValue, newValue) -> {
+                goalMap.get(entry.getKey()).setText(String.valueOf((int)newValue == 0 ? "Complete" : newValue));
+                boolean onlyExitRemaining = goalMap.get(Exit.class) != null && goalMap.values().stream()
+                        .map(Label::getText)
+                        .filter(text -> !text.equalsIgnoreCase("Complete"))
+                        .count() >= 1;
+                if (onlyExitRemaining) {
+                    goalMap.get(Exit.class).setText("Get to the exit!");
+                }
+            });
+            goalMap.get(entry.getKey()).setText(String.valueOf(entry.getValue().get()));
+        });
+        return goalMap;
     }
 
     private static Map<Class<? extends Entity>, Map<String, Image>> initialiseImageMap() {

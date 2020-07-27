@@ -1,5 +1,6 @@
 package unsw.dungeon;
 
+import javafx.beans.property.IntegerProperty;
 import javafx.util.Pair;
 
 import java.util.List;
@@ -11,12 +12,18 @@ public class TreasureGoalEngine extends GoalEngine {
     }
 
     public  boolean isComplete(Dungeon dungeon) {
-        return dungeon
-                .getEntities(Treasure.class).isEmpty();
+        int uncollected = dungeon.getEntities(Treasure.class).size();
+        progress().setValue(uncollected);
+        return uncollected == 0;
     }
 
     @Override
     public List<Pair<Class<? extends Entity>, String>> getSubscriptionTopics() {
         return List.of(new Pair<>(Treasure.class, EntityWrapper.DELETED_EVENT));
+    }
+
+    @Override
+    public List<Pair<Class<? extends Entity>, IntegerProperty>> getProgressTopics() {
+        return List.of(new Pair<>(Treasure.class, progress()));
     }
 }

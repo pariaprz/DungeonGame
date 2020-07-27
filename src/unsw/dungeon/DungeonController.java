@@ -38,6 +38,7 @@ public class DungeonController {
                 .map(this::onEntityLoad)
                 .collect(Collectors.toUnmodifiableList());
 
+        goal.computeComplete(dungeon);
         goal.getCompleteProperty().addListener((ObservableValue<? extends Boolean> observable,
                                                 Boolean oldValue, Boolean newValue) -> {
             if (newValue) {
@@ -56,8 +57,7 @@ public class DungeonController {
      */
     public EntityWrapper onEntityLoad(Entity entity) {
         EntityWrapper entityWrapper = new EntityWrapper(entity);
-        entity.x().addListener((ObservableValue<? extends Number> observable,
-                                Number oldValue, Number newValue) -> {
+        entity.x().addListener((observable, oldValue, newValue) -> {
             if (!isWithinRange(newValue.intValue(), dungeon.getWidth())) {
                 if (isWithinRange(oldValue.intValue(), dungeon.getWidth())) {
                     entity.x().setValue(oldValue);
@@ -66,8 +66,7 @@ public class DungeonController {
                 entityWrapper.setPosition(entity.getPosition());
             }
         });
-        entity.y().addListener((ObservableValue<? extends Number> observable,
-                                Number oldValue, Number newValue) -> {
+        entity.y().addListener((observable, oldValue, newValue) -> {
             if (!isWithinRange(newValue.intValue(), dungeon.getHeight())) {
                 if (isWithinRange(oldValue.intValue(), dungeon.getHeight())) {
                     entity.y().setValue(oldValue);
@@ -76,8 +75,7 @@ public class DungeonController {
                 entityWrapper.setPosition(entity.getPosition());
             }
         });
-        entity.isDeletedProperty().addListener((ObservableValue<? extends Boolean> observable,
-                                                Boolean oldValue, Boolean newValue) -> {
+        entity.isDeletedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 this.dungeon.removeEntity(entity);
                 entityWrapper.setDeleted();
@@ -86,8 +84,7 @@ public class DungeonController {
                 }
             }
         });
-        entity.status().addListener((ObservableValue<? extends String> observable,
-                                     String oldValue, String newValue) -> entityWrapper.publishStatusUpdate(newValue));
+        entity.status().addListener((observable, oldValue, newValue) -> entityWrapper.publishStatusUpdate(newValue));
         if (entity instanceof Enemy) {
             timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(1),
                     actionEvent -> {

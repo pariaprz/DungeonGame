@@ -1,9 +1,15 @@
 package unsw.dungeon;
 
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.util.Pair;
 
 import java.beans.PropertyChangeEvent;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * This class is a wrapper for a GoalEngine.
@@ -12,9 +18,9 @@ import java.beans.PropertyChangeEvent;
  */
 public class Goal {
 
-    private BooleanProperty isComplete = new SimpleBooleanProperty(false);
+    private final BooleanProperty isComplete = new SimpleBooleanProperty(false);
 
-    private GoalEngine goalEngine;
+    private final GoalEngine goalEngine;
 
     public Goal(GoalEngine engine) {
         this.goalEngine = engine;
@@ -45,5 +51,9 @@ public class Goal {
                 .forEach(entry ->
                         entity.addObserver(entry.getValue(), (PropertyChangeEvent event) -> computeComplete(dungeon)
                 ));
+    }
+
+    public List<Pair<Class<? extends Entity>, IntegerProperty>> observeableTopics() {
+        return getGoalEngine().getProgressTopics();
     }
 }

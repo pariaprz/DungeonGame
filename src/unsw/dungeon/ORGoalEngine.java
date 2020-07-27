@@ -16,6 +16,6 @@ public class ORGoalEngine extends ComplexGoalEngine {
     }
 
     public boolean isComplete(Dungeon dungeon) {
-        return getChildGoals().stream().anyMatch(goal -> goal.computeComplete(dungeon));
+        return getNumCompleted(dungeon) > 0;
     }
 }
