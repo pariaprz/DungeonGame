@@ -69,10 +69,15 @@ public class DungeonView {
         int[] xPosition = { 0 };
         int yPosition = height+1;
         goals.forEach((entity, label) -> {
+            if (entity == Exit.class) return;
             squares.add(new ImageView(imageMap.get(entity).get(DEFAULT_IMG)), xPosition[0]++, yPosition);
-            squares.add(label, xPosition[0], yPosition, entity == Exit.class ? 5 : 2, 1);
-            xPosition[0] += entity == Exit.class ? 5 : 2;
+            squares.add(label, xPosition[0], yPosition, 2, 1);
+            xPosition[0] += 2;
         });
+        if (goals.get(Exit.class) != null) {
+            squares.add(new ImageView(imageMap.get(Exit.class).get(DEFAULT_IMG)), xPosition[0]++, yPosition);
+            squares.add(goals.get(Exit.class), xPosition[0], yPosition, 5, 1);
+        }
         squares.add(new ImageView(inv_1sec), 4, 0);
     }
 
