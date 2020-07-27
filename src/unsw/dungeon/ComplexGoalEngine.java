@@ -1,9 +1,11 @@
 package unsw.dungeon;
 
+import javafx.beans.property.IntegerProperty;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -29,11 +31,28 @@ public abstract class ComplexGoalEngine extends GoalEngine {
         return childGoals;
     }
 
+    public int getNumCompleted(Dungeon dungeon) {
+        return (int)getChildGoals()
+                .stream()
+                .filter(goal -> goal.computeComplete(dungeon))
+                .count();
+    }
+
     @Override
     public List<Pair<Class<? extends Entity>, String>> getSubscriptionTopics() {
         return getChildGoals()
                 .stream()
                 .flatMap(goal -> goal.getGoalEngine().getSubscriptionTopics().stream())
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Pair<Class<? extends Entity>, IntegerProperty>> getProgressTopics() {
+        return getChildGoals()
+                .stream()
+                .flatMap(goal -> goal.getGoalEngine().getProgressTopics().stream())
+                .distinct()
                 .collect(Collectors.toList());
     }
 }

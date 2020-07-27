@@ -4,10 +4,13 @@ import java.beans.PropertyChangeEvent;
 import java.util.*;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.util.Pair;
+import org.w3c.dom.Node;
 
 import java.io.File;
 
@@ -26,6 +29,8 @@ public class DungeonView {
     private final List<ImageView> entities;
     private final int height, width;
 
+    private final Map<Class<? extends Entity>, Label> goals;
+
     @FXML
     private GridPane squares;
 
@@ -35,12 +40,13 @@ public class DungeonView {
         this.controller = controller;
         this.initialEntities = initialEntities;
         imageMap = initialiseImageMap();
+        goals = initialiseGoalsMap(controller.getGoal());
         entities = new ArrayList<>();
     }
 
     public void onEntityLoad(EntityWrapper entity) {
         ImageView view = new ImageView(imageMap.get(entity.entityClass).get(DEFAULT_IMG));
-        track(entity, view);
+        trackEntities(entity, view);
         entities.add(view);
     }
 
@@ -60,6 +66,18 @@ public class DungeonView {
             squares.getChildren().add(entity);
         }
 
+        int[] xPosition = { 0 };
+        int yPosition = height+1;
+        goals.forEach((entity, label) -> {
+            if (entity == Exit.class) return;
+            squares.add(new ImageView(imageMap.get(entity).get(DEFAULT_IMG)), xPosition[0]++, yPosition);
+            squares.add(label, xPosition[0], yPosition, 2, 1);
+            xPosition[0] += 2;
+        });
+        if (goals.get(Exit.class) != null) {
+            squares.add(new ImageView(imageMap.get(Exit.class).get(DEFAULT_IMG)), xPosition[0]++, yPosition);
+            squares.add(goals.get(Exit.class), xPosition[0], yPosition, 5, 1);
+        }
         squares.add(new ImageView(inv_1sec), 4, 0);
     }
 
@@ -67,7 +85,7 @@ public class DungeonView {
     public void updateSquares(Entity entity, EntityWrapper wrappedEntity, Image image){
         ImageView newEntity = new ImageView(image);
         squares.getChildren().add(newEntity);
-        track(wrappedEntity, newEntity);
+        trackEntities(wrappedEntity, newEntity);
         entities.add(newEntity);
     }
     /**
@@ -80,7 +98,7 @@ public class DungeonView {
      * @param entity
      * @param node
      */
-    public void track(EntityWrapper entity, ImageView node) {
+    private void trackEntities(EntityWrapper entity, ImageView node) {
         GridPane.setColumnIndex(node, entity.getPosition().x);
         GridPane.setRowIndex(node, entity.getPosition().y);
         entity.addPositionObserver((PropertyChangeEvent event) -> {
@@ -103,6 +121,34 @@ public class DungeonView {
     @FXML
     public void handleKeyPress(KeyEvent event) {
         controller.handleKeyPress(event.getCode());
+    }
+
+    private Map<Class<? extends Entity>, Label> initialiseGoalsMap(Goal goal) {
+        Map<Class<? extends Entity>, Label> goalMap = new HashMap<>();
+        goal.observeableTopics().forEach((entry) -> {
+            if (goalMap.containsKey(entry.getKey())) {
+                return;
+            }
+
+            goalMap.put(entry.getKey(), new Label(String.valueOf(entry.getValue().get())));
+            if (entry.getKey() == Exit.class) {
+                goalMap.get(entry.getKey())
+                        .setText(goal.getGoalEngine() instanceof ANDGoalEngine ? "Complete other tasks" : "Get to the exit!");
+                return;
+            }
+            entry.getValue().addListener((observableValue, oldValue, newValue) -> {
+                goalMap.get(entry.getKey()).setText(String.valueOf((int)newValue == 0 ? "Complete" : newValue));
+                boolean onlyExitRemaining = goalMap.get(Exit.class) != null && goalMap.values().stream()
+                        .map(Label::getText)
+                        .filter(text -> !text.equalsIgnoreCase("Complete"))
+                        .count() <= 1;
+                if (onlyExitRemaining) {
+                    goalMap.get(Exit.class).setText("Get to the exit!");
+                }
+            });
+            goalMap.get(entry.getKey()).setText(String.valueOf(entry.getValue().get()));
+        });
+        return goalMap;
     }
 
     private static Map<Class<? extends Entity>, Map<String, Image>> initialiseImageMap() {

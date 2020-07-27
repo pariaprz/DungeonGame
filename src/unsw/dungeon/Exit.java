@@ -4,7 +4,7 @@ import javafx.scene.input.KeyCode;
 
 public class Exit extends Entity {
 
-    public static String EXIT_STATUS = "EXIT-EXITED";
+    public static String EXIT_STATUS = "EXITED";
 
     public Exit(int x, int y, Dungeon dungeon) {
         super(x, y, dungeon);
