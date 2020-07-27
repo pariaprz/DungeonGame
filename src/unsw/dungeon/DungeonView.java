@@ -121,8 +121,6 @@ public class DungeonView {
 
             goalMap.put(entry.getKey(), new Label(String.valueOf(entry.getValue().get())));
             if (entry.getKey() == Exit.class) {
-                entry.getValue().addListener((observableValue, oldValue, newValue) ->
-                    goalMap.get(entry.getKey()).setText((int) newValue == 1 ? "Complete" : "Get to the exit!"));
                 goalMap.get(entry.getKey())
                         .setText(goal.getGoalEngine() instanceof ANDGoalEngine ? "Complete other tasks" : "Get to the exit!");
                 return;
@@ -132,7 +130,7 @@ public class DungeonView {
                 boolean onlyExitRemaining = goalMap.get(Exit.class) != null && goalMap.values().stream()
                         .map(Label::getText)
                         .filter(text -> !text.equalsIgnoreCase("Complete"))
-                        .count() >= 1;
+                        .count() <= 1;
                 if (onlyExitRemaining) {
                     goalMap.get(Exit.class).setText("Get to the exit!");
                 }
