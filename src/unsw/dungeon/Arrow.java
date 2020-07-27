@@ -18,6 +18,10 @@ public class Arrow extends Moveable {
         super(x, y, dungeon);
     }
 
+    public Arrow(int x, int y){
+        super(x,y, null);
+    }
+
     public void handleMovement(Direction direction) {
         if (direction == null) {
             return;
@@ -34,22 +38,22 @@ public class Arrow extends Moveable {
                 entity.interact(this, Direction.toKeyCode(direction));
             });
 
+        } else {
+            this.delete();
         }
     }
 
     public void moveArrow(Direction nextDirection){
         Player player = getDungeon().getPlayer();
         if (player == null) return;
+
         handleMovement(nextDirection); 
     }
 
     @Override
-    public void interact(Entity actor, KeyCode keyCode) {
-        Direction movementDirection = Direction.fromKeyCode(keyCode);
-        if (actor instanceof Player && movementDirection != null) {
-            Position newPosition = movementDirection.fromPosition(getPosition());
-            moveToPosition(newPosition);
-            getDungeon().getEntitiesAt(getPosition()).forEach(entity -> entity.interact(this, keyCode));
-        }
+    public void interact(Entity actor, KeyCode keyCode) {  
+        if (actor instanceof Player){
+            System.out.println("HELLO THERE");
+        } 
     }
 }

@@ -119,6 +119,7 @@ public class DungeonView {
         imageMap.put(Invincibility.class, Map.of(DEFAULT_IMG, new Image((new File("images/brilliant_blue_new.png")).toURI().toString())));
         imageMap.put(WallWalker.class, Map.of(DEFAULT_IMG, new Image((new File("images/wallwalker.png")).toURI().toString())));
         imageMap.put(Bow.class, Map.of(DEFAULT_IMG, new Image((new File("images/bow.png")).toURI().toString())));
+        imageMap.put(Arrow_Consumable.class, Map.of(DEFAULT_IMG, new Image((new File("images/arrow_directions/arrow_right.png")).toURI().toString())));
         imageMap.put(Door.class, Map.of(
                 DEFAULT_IMG, new Image((new File("images/closed_door.png")).toURI().toString()),
                 Door.OPEN_STATUS, new Image((new File("images/open_door.png")).toURI().toString())

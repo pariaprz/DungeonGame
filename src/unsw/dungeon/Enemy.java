@@ -55,6 +55,9 @@ public class Enemy extends Moveable {
     public void interact(Entity actor, KeyCode keyCode) {
         if (actor instanceof Player){
             actor.interact(this, keyCode);
+        } else if (actor instanceof Arrow){
+            delete();
+            actor.delete();
         }
     }
 }

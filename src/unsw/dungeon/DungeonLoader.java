@@ -127,6 +127,9 @@ public class DungeonLoader {
         case "bow":
             entity = new Bow(x,y);
             break;
+        case "arrow":
+            entity = new Arrow_Consumable(x, y);
+            break;
         }
         if (entity != null) {
             dungeon.addEntity(entity);

@@ -109,7 +109,7 @@ public class DungeonController {
             timelineArrow.getKeyFrames().add(new KeyFrame(Duration.millis(25),
                     actionEvent -> {
                             ((Arrow) entity).moveArrow(getArrowDirection());
-                            System.out.println((entity.getPosition()));
+                            //System.out.println((entity.getPosition()));
                             
                         
        //                 }
@@ -150,12 +150,27 @@ public class DungeonController {
             } else if(player.hasBow() && player.getArrowCount() > 0){
                 arrowDirection = prevDirection;
                 System.out.println("Shooting arrow");
-                //player.shootArrow(prevDirection);
-                
-                Arrow arrow = new Arrow(player.getX()+1, player.getY(), player.getDungeon());
+                player.shootArrow();
+                Arrow arrow = new Arrow(player.getX(), player.getY(), player.getDungeon());
                 EntityWrapper wrappedArrow = onEntityLoad(arrow);
 
-                thisDungeonView().updateSquares(arrow, wrappedArrow, new Image((new File("images/arrow.png")).toURI().toString()));
+                switch (arrowDirection){
+                    case UP:
+                        thisDungeonView().updateSquares(arrow, wrappedArrow, new Image((new File("images/arrow_directions/arrow_down.png")).toURI().toString()));
+                        break;
+                    case DOWN:
+                        thisDungeonView().updateSquares(arrow, wrappedArrow, new Image((new File("images/arrow_directions/arrow_up.png")).toURI().toString()));
+                        break;
+                    case LEFT:
+                        thisDungeonView().updateSquares(arrow, wrappedArrow, new Image((new File("images/arrow_directions/arrow_left.png")).toURI().toString()));
+                        break;
+                    case RIGHT:
+                        thisDungeonView().updateSquares(arrow, wrappedArrow, new Image((new File("images/arrow_directions/arrow_right.png")).toURI().toString()));
+                        break;
+                    default:
+                        break;
+                }
+                
                 timelineArrow.play();
             }
             break;

@@ -16,9 +16,10 @@ public class Wall extends Entity {
                 if(getX() == 0 || getY() == 0 || getX() == getDungeonWidth()-1 || getY() == getDungeonHeight()-1){
                     return false;
                 }
-                return true;
+            return true;
             }    
-        }
-        return false;
-    }    
+        } 
+        return false;   
+    }
+
 }

@@ -21,7 +21,7 @@ public class Player extends Moveable {
 
     private int swordCount = 0;
     private int currArrowCount = 0;
-    private boolean hasBow = false;
+    private boolean Bow = false;
     private String key = null;
 
     private PlayerState state;
@@ -77,30 +77,32 @@ public class Player extends Moveable {
     }
 
     public boolean hasBow(){
-        return hasBow;
+        return Bow;
     }
 
     public void setBow(boolean bool){
-        hasBow = bool;
+        Bow = bool;
     }
 
     public void armBow(){
-        currArrowCount = ARROW_COUNT;
+        currArrowCount = currArrowCount + ARROW_COUNT;
         setStatus(RANGER_STATUS);
         setBow(true);
     }
 
     public void pickUpArrow(){
         currArrowCount++;
+        if (hasBow()) setStatus(RANGER_STATUS); 
     }
 
     public int getArrowCount(){
         return currArrowCount;
     }
 
-    //public void shootArrow(Direction direction){
-    //    new Arrow(getX()+1, getY()+1, getDungeon());
-    //}
+    public void shootArrow(){
+        currArrowCount--;
+        if(getArrowCount() == 0) setStatus(DEFAULT_STATUS);
+    }
 
     public boolean hasSword() {
         return swordCount > 0;
