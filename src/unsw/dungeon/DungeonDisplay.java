@@ -1,12 +1,15 @@
 package unsw.dungeon;
 
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -26,20 +29,22 @@ public class DungeonDisplay {
 
     private final Map<Class<? extends Entity>, Map<String, Image>> imageMap;
     private final int height, width;
+    private final Node menu;
+    boolean isDisplayed = false;
 
     private GridPane gridpane;
 
-    public DungeonDisplay(int height, int width, Map<Class<? extends Entity>, Map<String, Image>> imageMap, GridPane gridpane)  {
+    public DungeonDisplay(int height, int width, Map<Class<? extends Entity>, Map<String, Image>> imageMap)  {
         this.height = height;
         this.width = width;
         this.imageMap = imageMap;
-        this.gridpane = gridpane;
+        this.menu = createMenu();
     }
 
     public void initialize(List<ImageView> entities, Map<Class<? extends Entity>, Label> goals) {
         Image ground = new Image((new File("images/dirt_0_new.png")).toURI().toString());
         Image inv_1sec = new Image((new File("images/Invincibility_Time_Icons/invincibility_1sec.png")).toURI().toString());
-
+        gridpane.add(menu, 0, 0, width, height);
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 gridpane.add(new ImageView(ground), x, y);
@@ -62,6 +67,7 @@ public class DungeonDisplay {
             gridpane.add(new ImageView(imageMap.get(Exit.class).get(DEFAULT_IMG)), xPosition[0]++, yPosition);
             gridpane.add(goals.get(Exit.class), xPosition[0], yPosition, 5, 1);
         }
+
         gridpane.add(new ImageView(inv_1sec), 4, 0);
     }
 
@@ -69,9 +75,15 @@ public class DungeonDisplay {
         this.gridpane = gridpane;
     }
 
+    public void toggleMenu() {
+        if (isDisplayed) menu.toBack();
+        else menu.toFront();
+        isDisplayed = !isDisplayed;
+    }
+
     public void addFinalText(String text, String color) {
         Text completeText = new Text(text);
-        completeText.setFont(new Font("Verdana", 40));
+        completeText.setFont(new Font("VT323", 40));
         completeText.setFill(Color.web(color));
         completeText.setTextAlignment(TextAlignment.CENTER);
         gridpane.add(completeText, Math.max(width/2 - 5, 0), Math.max(height/2-3, height/2), width, 2);
@@ -79,6 +91,23 @@ public class DungeonDisplay {
 
     public void updateSquares(ImageView newEntity){
         gridpane.getChildren().add(newEntity);
+    }
+
+    private Node createMenu() {
+        int width = this.width*32;
+        int height = this.height*32;
+        Pane pane = new Pane();
+        Rectangle background = new Rectangle(width, height);
+        background.setFill(Color.web("0xEAD0A8"));
+
+        Label title = new Label("Dungeon Hunter");
+        title.setTextFill(Color.web("0x76552B"));
+        title.setLayoutX(width/2.0 - 170);
+        title.setLayoutY(64.0);
+        title.setId("hunter");
+
+        pane.getChildren().addAll(background, title);
+        return pane;
     }
 
 }

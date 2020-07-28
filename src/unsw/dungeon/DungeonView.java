@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -43,7 +44,7 @@ public class DungeonView {
         this.controller = controller;
         this.initialEntities = initialEntities;
         this.imageMap = initialiseImageMap();
-        this.display = new DungeonDisplay(height, width, imageMap, squares);
+        this.display = new DungeonDisplay(height, width, imageMap);
         this.goals = initialiseGoalsMap(controller.getGoal());
         this.entities = new ArrayList<>();
     }
@@ -104,7 +105,15 @@ public class DungeonView {
 
     @FXML
     public void handleKeyPress(KeyEvent event) {
-        controller.handleKeyPress(event.getCode());
+        switch (event.getCode()) {
+            case Q:
+                System.exit(0);
+            case P:
+                display.toggleMenu();
+                break;
+            default:
+                controller.handleKeyPress(event.getCode());
+        }
     }
 
     private Map<Class<? extends Entity>, Label> initialiseGoalsMap(Goal goal) {
@@ -118,10 +127,12 @@ public class DungeonView {
             if (entry.getKey() == Exit.class) {
                 goalMap.get(entry.getKey())
                         .setText(goal.getGoalEngine() instanceof ANDGoalEngine ? "Complete other tasks" : "Get to the exit!");
+                goalMap.get(entry.getKey()).setFont(new Font("Default", 5));
                 return;
             }
             entry.getValue().addListener((observableValue, oldValue, newValue) -> {
                 goalMap.get(entry.getKey()).setText(String.valueOf((int)newValue == 0 ? "Complete" : newValue));
+                goalMap.get(entry.getKey()).setFont(new Font("Default", 5));
                 boolean onlyExitRemaining = goalMap.get(Exit.class) != null && goalMap.values().stream()
                         .map(Label::getText)
                         .filter(text -> !text.equalsIgnoreCase("Complete"))
@@ -131,6 +142,7 @@ public class DungeonView {
                 }
             });
             goalMap.get(entry.getKey()).setText(String.valueOf(entry.getValue().get()));
+            goalMap.get(entry.getKey()).setFont(new Font("Default", 5));
         });
         goal.getCompleteProperty().addListener(((observableValue, oldValue, newValue) -> {
             if (newValue) {

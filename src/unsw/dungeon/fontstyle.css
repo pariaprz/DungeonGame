@@ -1,0 +1,18 @@
+@font-face {
+    font-family: 'VT323';
+    src: url('../../../../../fonts/VT323-Regular.ttf');
+}
+
+.label {
+    -fx-font-family: 'VT323';
+    -fx-font-size: 15;
+}
+
+#hunter {
+    -fx-font-family: 'VT323';
+    -fx-font-size: 60;
+}
+
+.button .text {
+    -fx-font-family: 'VT323';
+}

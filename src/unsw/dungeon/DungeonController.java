@@ -27,15 +27,14 @@ public class DungeonController {
     private final Timeline timeline;
     private final Timeline timelineArrow;
     private final List<EntityWrapper> initialEntities;
-    private Direction prevDirection = null;
-    private Direction arrowDirection = null;
+    private Direction prevDirection = Direction.RIGHT;
 
     public DungeonController(Dungeon dungeon, Goal goal) {
         this.dungeon = dungeon;
         this.goal = goal;
-        timeline = new Timeline(1);
+        timeline = new Timeline(20);
         timeline.setCycleCount(Timeline.INDEFINITE);
-        
+
         timelineArrow = new Timeline(40);
         timelineArrow.setCycleCount(Timeline.INDEFINITE);
 
@@ -93,7 +92,7 @@ public class DungeonController {
         });
         entity.status().addListener((observable, oldValue, newValue) -> entityWrapper.publishStatusUpdate(newValue));
         if (entity instanceof Enemy) {
-            timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(1),
+            timeline.getKeyFrames().add(new KeyFrame(Duration.millis(500),
                     actionEvent -> {
                         if (!entity.isDeleted()) {
                             ((Enemy) entity).moveEnemy();
@@ -135,14 +134,13 @@ public class DungeonController {
                 System.out.println("Swinging sword");
                 player.swingSword();
             } else if(player.hasBow() && player.getArrowCount() > 0){
-                arrowDirection = prevDirection;
                 System.out.println("Shooting arrow");
                 player.shootArrow();
-                Arrow arrow = new Arrow(player.getX(), player.getY(), arrowDirection, dungeon);
+                Arrow arrow = new Arrow(player.getX(), player.getY(), prevDirection, dungeon);
                 EntityWrapper wrappedArrow = onEntityLoad(arrow);
                 thisDungeonView().addEntity(wrappedArrow);
                 arrow.setDirectionStatus();
-                
+
                 timelineArrow.play();
             }
             break;

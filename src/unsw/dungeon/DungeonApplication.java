@@ -25,6 +25,8 @@ public class DungeonApplication extends Application {
         loader.setController(controller.loadDungeonView());
         Parent root = loader.load();
         Scene scene = new Scene(root);
+        System.out.println(getClass().getResource("fontstyle.css"));
+        scene.getStylesheets().add(getClass().getResource("./fontstyle.css").toExternalForm());
         root.requestFocus();
         primaryStage.setScene(scene);
         primaryStage.show();
