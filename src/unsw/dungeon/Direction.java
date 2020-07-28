@@ -101,5 +101,12 @@ public enum Direction {
         return null;
     }
 
+    @Override
+    public String toString() {
+        return "Direction{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }
 

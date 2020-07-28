@@ -14,15 +14,19 @@ public class Arrow extends Moveable {
      * @param x
      * @param y
      */
-    public Arrow(int x, int y, Dungeon dungeon) {
-        super(x, y, dungeon);
+    final static String UP = Direction.DOWN.toString();
+    final static String DOWN = Direction.UP.toString();
+    final static String RIGHT = Direction.RIGHT.toString();
+    final static String LEFT = Direction.LEFT.toString();
+
+    private final Direction direction;
+
+    public Arrow(int x, int y, Direction direction, Dungeon dungeon){
+        super(x,y, dungeon);
+        this.direction = direction;
     }
 
-    public Arrow(int x, int y){
-        super(x,y, null);
-    }
-
-    public void handleMovement(Direction direction) {
+    public void handleMovement() {
         if (direction == null) {
             return;
         }
@@ -43,11 +47,15 @@ public class Arrow extends Moveable {
         }
     }
 
-    public void moveArrow(Direction nextDirection){
+    public void moveArrow(){
         Player player = getDungeon().getPlayer();
         if (player == null) return;
 
-        handleMovement(nextDirection); 
+        handleMovement();
+    }
+
+    public void setDirectionStatus() {
+        setStatus(direction.toString());
     }
 
     @Override
