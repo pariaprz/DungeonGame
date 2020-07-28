@@ -106,12 +106,6 @@ public class DungeonController {
             timelineArrow.getKeyFrames().add(new KeyFrame(Duration.millis(25),
                     actionEvent -> {
                             ((Arrow) entity).moveArrow(getArrowDirection());
-                            //System.out.println((entity.getPosition()));
-                            
-                        
-       //                 }
-       //             }
-       //     ));
                     }
             ));
     }

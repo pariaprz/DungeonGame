@@ -96,7 +96,10 @@ public class Entity {
     public int getDungeonHeight(){
         return dungeon.getHeight();
     }
+
+
     /**
+     * 
      * The method to allow entities to interact with each other.
      * @param actor The entity attempting an interaction
      * @param keyCode The action attempted.
