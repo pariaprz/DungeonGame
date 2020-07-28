@@ -81,12 +81,10 @@ public class DungeonDisplay {
         isDisplayed = !isDisplayed;
     }
 
-    public void addFinalText(String text, String color) {
-        Text completeText = new Text(text);
+    public void addFinalText(Text completeText, String text, String color) {
+        completeText.setText(text);
         completeText.setFont(new Font("VT323", 40));
         completeText.setFill(Color.web(color));
-        completeText.setTextAlignment(TextAlignment.CENTER);
-        gridpane.add(completeText, Math.max(width/2 - 5, 0), Math.max(height/2-3, height/2), width, 2);
     }
 
     public void updateSquares(ImageView newEntity){
@@ -101,12 +99,19 @@ public class DungeonDisplay {
         background.setFill(Color.web("0xEAD0A8"));
 
         Label title = new Label("Dungeon Hunter");
-        title.setTextFill(Color.web("0x76552B"));
+        title.setTextFill(Color.web("0xEAD0A8"));
         title.setLayoutX(width/2.0 - 170);
         title.setLayoutY(64.0);
         title.setId("hunter");
 
-        pane.getChildren().addAll(background, title);
+        Text goal = new Text("Goal");
+        goal.setFill(Color.web("0x76552B"));
+        goal.setLayoutX(width/2.0 - 170);
+        goal.setLayoutY(64.0*3);
+        goal.setId("goal");
+
+
+        pane.getChildren().addAll(background, title, goal);
         return pane;
     }
 

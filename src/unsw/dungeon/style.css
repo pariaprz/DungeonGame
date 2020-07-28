@@ -8,9 +8,18 @@
     -fx-font-size: 15;
 }
 
-#hunter {
+#hunter, #complete {
     -fx-font-family: 'VT323';
     -fx-font-size: 60;
+}
+
+#goal {
+    -fx-font-family: 'VT323';
+    -fx-font-size: 30;
+}
+
+#main {
+    -fx-background-color: "#EAD0A8";
 }
 
 .button .text {

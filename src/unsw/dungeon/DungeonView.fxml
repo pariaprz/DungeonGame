@@ -3,15 +3,35 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.HBox?>
+<?import unsw.dungeon.LineBreak?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.TextFlow?>
+<?import javafx.scene.control.Separator?>
+<HBox alignment="CENTER" prefHeight="800.0" prefWidth="1200.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" onKeyPressed="#handleKeyPress" id="main">
+   <StackPane alignment="TOP_CENTER">
+      <TextFlow textAlignment="CENTER">
+         <Text textAlignment="CENTER" id="hunter" text="Dungeon Hunter"/>
+         <LineBreak/>
+         <Text textAlignment="CENTER" id="instructions">
+            Press arrow keys to move around. Press 'p' to pause or view the menu. Press 'q' to quit.
+         </Text>
+         <LineBreak/>
+         <Text textAlignment="CENTER" id="complete" fx:id="completeText"/>
+      </TextFlow>
+      <GridPane fx:id="squares" onKeyPressed="#handleKeyPress" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER">
+         <columnConstraints>
+            <ColumnConstraints />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints />
+         </rowConstraints>
+         <children>
 
-<GridPane fx:id="squares" onKeyPressed="#handleKeyPress" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
-   <columnConstraints>
-      <ColumnConstraints />
-   </columnConstraints>
-   <rowConstraints>
-      <RowConstraints />
-   </rowConstraints>
-   <children>
-
-   </children>
-</GridPane>
+         </children>
+      </GridPane>
+   </StackPane>
+</HBox>

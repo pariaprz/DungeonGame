@@ -37,6 +37,8 @@ public class DungeonView {
 
     @FXML
     private GridPane squares;
+    @FXML
+    private Text completeText;
 
     public DungeonView(int height, int width, DungeonController controller, List<EntityWrapper> initialEntities)  {
         this.height = height;
@@ -92,7 +94,7 @@ public class DungeonView {
             squares.getChildren().remove(node);
             entity.dropAllSubscribers();
             if (entity.entityClass.equals(Player.class)) {
-                display.addFinalText("You Died.", "0xF44336");
+                display.addFinalText(completeText, "You Died.", "0xF44336");
             }
         });
         entity.addStatusObserver((PropertyChangeEvent event) -> {
@@ -146,7 +148,7 @@ public class DungeonView {
         });
         goal.getCompleteProperty().addListener(((observableValue, oldValue, newValue) -> {
             if (newValue) {
-                display.addFinalText("Level Completed!", "0x408140");
+                display.addFinalText(completeText, "Level Completed!", "0x408140");
             }
         }));
         return goalMap;
