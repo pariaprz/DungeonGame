@@ -158,6 +158,16 @@ public class DungeonController {
         return goal;
     }
 
+    public void pause() {
+        timeline.pause();
+        timelineArrow.pause();
+    }
+
+    public void play() {
+        timeline.play();
+        timelineArrow.play();
+    }
+
     public DungeonView thisDungeonView(){
         return dungeonView;
     }

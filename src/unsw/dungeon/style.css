@@ -3,7 +3,7 @@
     src: url('../../../../../fonts/VT323-Regular.ttf');
 }
 
-.label {
+.label, #goal {
     -fx-font-family: 'VT323';
     -fx-font-size: 15;
 }
@@ -13,12 +13,12 @@
     -fx-font-size: 60;
 }
 
-#goal {
+#goal-title {
     -fx-font-family: 'VT323';
     -fx-font-size: 30;
 }
 
-#main {
+#main, #pause-menu{
     -fx-background-color: "#EAD0A8";
 }
 

@@ -9,11 +9,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextFlow;
 
 import java.io.File;
 
@@ -24,7 +26,7 @@ import java.io.File;
  *
  */
 public class DungeonView {
-    private static String DEFAULT_IMG = "DEFAULT_IMAGE";
+    public static String DEFAULT_IMG = "DEFAULT_IMAGE";
 
     private final Map<Class<? extends Entity>, Map<String, Image>> imageMap;
     private final DungeonController controller;
@@ -39,6 +41,8 @@ public class DungeonView {
     private GridPane squares;
     @FXML
     private Text completeText;
+    @FXML
+    private GridPane pauseMenu;
 
     public DungeonView(int height, int width, DungeonController controller, List<EntityWrapper> initialEntities)  {
         this.height = height;
@@ -63,6 +67,8 @@ public class DungeonView {
 
         display.setGridpane(squares);
         display.initialize(entities, goals);
+        display.addGoalIcons((FlowPane) pauseMenu.lookup("#goal-icons"), goals);
+        display.setGoalString((TextFlow) pauseMenu.lookup("#goal-list"), controller.getGoal());
     }
 
     @FXML
@@ -111,7 +117,13 @@ public class DungeonView {
             case Q:
                 System.exit(0);
             case P:
-                display.toggleMenu();
+                if (pauseMenu.isVisible()) {
+                    pauseMenu.setVisible(false);
+                    controller.play();
+                } else {
+                    pauseMenu.setVisible(true);
+                    controller.pause();
+                }
                 break;
             default:
                 controller.handleKeyPress(event.getCode());
