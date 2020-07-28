@@ -17,19 +17,17 @@ public class DungeonApplication extends Application {
     public void start(Stage primaryStage) throws IOException {
         primaryStage.setTitle("Dungeon");
 
-        JSONObject json = new JSONObject(new JSONTokener(new FileReader("dungeons/" + "fancy_goal.json")));
-        DungeonLoader dungeonLoader = new DungeonLoader(json);
-        DungeonController controller = new DungeonController(dungeonLoader.load(), dungeonLoader.loadGoal());
-
+        DungeonController controller = new DungeonController();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("DungeonView.fxml"));
         loader.setController(controller.loadDungeonView());
+
         Parent root = loader.load();
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("./style.css").toExternalForm());
         root.requestFocus();
+
         primaryStage.setScene(scene);
         primaryStage.show();
-
     }
 
     public static void main(String[] args) {

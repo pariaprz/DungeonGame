@@ -1,21 +1,23 @@
 package unsw.dungeon;
 
 import java.beans.PropertyChangeEvent;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.*;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
+import javafx.util.Pair;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.io.File;
 
@@ -28,14 +30,19 @@ import java.io.File;
 public class DungeonView {
     public static String DEFAULT_IMG = "DEFAULT_IMAGE";
 
+    private static List<Pair<String, String>> LEVELS = List.of(
+            new Pair<>("Maze", "maze.json"), new Pair<>("Boulders", "boulders.json"),
+            new Pair<>("Treasure Galore", "treasure_galore.json"), new Pair<>("Fancy!", "fancy_goal.json"),
+            new Pair<>("Test", "testing.json"));
     private final Map<Class<? extends Entity>, Map<String, Image>> imageMap;
     private final DungeonController controller;
     private DungeonDisplay display;
-    private final List<EntityWrapper> initialEntities;
-    private final List<ImageView> entities;
-    private final int height, width;
+    private String selectedLevel;
+    private List<EntityWrapper> initialEntities;
+    private List<ImageView> entities;
+    private int height, width;
 
-    private final Map<Class<? extends Entity>, Label> goals;
+    private Map<Class<? extends Entity>, Label> goals;
 
     @FXML
     private GridPane squares;
@@ -44,13 +51,21 @@ public class DungeonView {
     @FXML
     private GridPane pauseMenu;
 
-    public DungeonView(int height, int width, DungeonController controller, List<EntityWrapper> initialEntities)  {
+    @FXML
+    private GridPane mainMenu;
+
+    public DungeonView(DungeonController controller)  {
+        this.controller = controller;
+        imageMap = initialiseImageMap();
+        initialEntities = new ArrayList<>();
+        this.display = new DungeonDisplay(imageMap);
+
+    }
+
+    private void setup(int width, int height, List<EntityWrapper> initialEntities) {
         this.height = height;
         this.width = width;
-        this.controller = controller;
         this.initialEntities = initialEntities;
-        this.imageMap = initialiseImageMap();
-        this.display = new DungeonDisplay(height, width, imageMap);
         this.goals = initialiseGoalsMap(controller.getGoal());
         this.entities = new ArrayList<>();
     }
@@ -64,11 +79,8 @@ public class DungeonView {
     @FXML
     public void initialize() {
         initialEntities.forEach(this::onEntityLoad);
-
         display.setGridpane(squares);
-        display.initialize(entities, goals);
-        display.addGoalIcons((FlowPane) pauseMenu.lookup("#goal-icons"), goals);
-        display.setGoalString((TextFlow) pauseMenu.lookup("#goal-list"), controller.getGoal());
+        display.showMainMenu(mainMenu, LEVELS, this::selectDungeon);
     }
 
     @FXML
@@ -77,6 +89,29 @@ public class DungeonView {
         trackEntities(entity, newEntity);
         entities.add(newEntity);
         display.updateSquares(newEntity);
+    }
+
+    public void loadDungeon(int width, int height, List<EntityWrapper> initialEntities) {
+        setup(width, height, initialEntities);
+        initialEntities.forEach(this::onEntityLoad);
+        display.setGridpane(squares);
+        display.addGoalIcons((FlowPane) pauseMenu.lookup("#goal-icons"), goals);
+        display.setGoalString((TextFlow) pauseMenu.lookup("#goal-list"), controller.getGoal());
+        display.initializeDungeon(width, height, entities, goals);
+    }
+
+    public boolean selectDungeon(String dungeonName) {
+        String filename = "dungeons/" + dungeonName;
+        try {
+            JSONObject json = new JSONObject(new JSONTokener(new FileReader(filename)));
+            DungeonLoader dungeonLoader = new DungeonLoader(json);
+            controller.loadDungeon(dungeonLoader.load(), dungeonLoader.loadGoal());
+            selectedLevel = dungeonName;
+            return true;
+        } catch (FileNotFoundException e) {
+            System.out.println("Invalid dungeon name. Path: '" + filename + "' not found.");
+        }
+        return false;
     }
     /**
      * Set a node in a GridPane to have its position track the position of an
@@ -116,6 +151,14 @@ public class DungeonView {
         switch (event.getCode()) {
             case Q:
                 System.exit(0);
+            case M:
+                display.showMainMenu(mainMenu, LEVELS, this::selectDungeon);
+                break;
+            case R:
+                if (selectedLevel != null) {
+                    selectDungeon(selectedLevel);
+                }
+                break;
             case P:
                 if (pauseMenu.isVisible()) {
                     pauseMenu.setVisible(false);
@@ -126,6 +169,7 @@ public class DungeonView {
                 }
                 break;
             default:
+                if (pauseMenu.isVisible()) return;
                 controller.handleKeyPress(event.getCode());
         }
     }

@@ -1,24 +1,20 @@
 package unsw.dungeon;
 
-import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
+import javafx.util.Pair;
 
-import java.beans.PropertyChangeEvent;
 import java.io.File;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 /**
  * A DungeonLoader that also creates the necessary ImageViews for the UI,
@@ -28,18 +24,20 @@ import java.util.*;
  */
 public class DungeonDisplay {
     private final Map<Class<? extends Entity>, Map<String, Image>> imageMap;
-    private final int height, width;
-    boolean isDisplayed = false;
+    private int height, width;
+    private GridPane mainMenu;
 
     private GridPane gridpane;
 
-    public DungeonDisplay(int height, int width, Map<Class<? extends Entity>, Map<String, Image>> imageMap)  {
-        this.height = height;
-        this.width = width;
+    public DungeonDisplay(Map<Class<? extends Entity>, Map<String, Image>> imageMap)  {
         this.imageMap = imageMap;
     }
 
-    public void initialize(List<ImageView> entities, Map<Class<? extends Entity>, Label> goals) {
+    public void initializeDungeon(int width, int height, List<ImageView> entities, Map<Class<? extends Entity>, Label> goals) {
+        this.height = height;
+        this.width = width;
+        gridpane.getChildren().clear();
+
         Image ground = new Image((new File("images/dirt_0_new.png")).toURI().toString());
         Image inv_1sec = new Image((new File("images/Invincibility_Time_Icons/invincibility_1sec.png")).toURI().toString());
         for (int x = 0; x < width; x++) {
@@ -68,20 +66,42 @@ public class DungeonDisplay {
         gridpane.add(new ImageView(inv_1sec), 4, 0);
     }
 
+    public void showMainMenu(GridPane mainMenu, List<Pair<String, String>> levels,
+                             Function<String, Boolean> clickHandler) {
+        if (this.mainMenu == null) {
+            this.mainMenu = mainMenu;
+        }
+        mainMenu.setVisible(true);
+        TextFlow levelList = (TextFlow)mainMenu.lookup("#level-list");
+        levelList.getChildren().clear();
+        levelList.getChildren().add(new LineBreak());
+
+        levels.forEach((level) -> {
+            Text newLevel = new Text(level.getKey());
+            newLevel.setOnMouseClicked((event) -> {
+                if (clickHandler.apply(level.getValue())) {
+                    mainMenu.setVisible(false);
+                }
+            });
+            levelList.getChildren().addAll(newLevel, new LineBreak());
+        });
+    }
+
     public void setGridpane(GridPane gridpane) {
         this.gridpane = gridpane;
     }
 
     public void addGoalIcons(FlowPane goalIcons, Map<Class<? extends Entity>, Label> goals) {
+        goalIcons.getChildren().clear();
         for (Class<? extends Entity> entity : goals.keySet()) {
             goalIcons.getChildren().add(new ImageView(imageMap.get(entity).get(DungeonView.DEFAULT_IMG)));
         }
     }
 
     public void setGoalString(TextFlow goalList, Goal goal) {
+        goalList.getChildren().clear();
         String result = createGoalString(goal);
         String[] resultGoals = result.split("!");
-        String indentStr = "";
         int indent = 0;
         for (int i = 0; i < resultGoals.length; i++) {
             if (resultGoals[i].contains("(")) {
@@ -89,7 +109,7 @@ public class DungeonDisplay {
             }
             String textToAdd = resultGoals[i].replaceAll("[()]", "");
             if (textToAdd.length() > 1) {
-                Text newText = new Text(indentStr.repeat(indent) + textToAdd);
+                Text newText = new Text("- " + textToAdd);
                 newText.setTranslateX(16*indent);
                 goalList.getChildren().add(newText);
                 goalList.getChildren().add(new LineBreak());

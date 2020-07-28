@@ -27,7 +27,7 @@ public class TestDungeonController {
 
     @Test
     public void TestControllerInitialState() {
-        DungeonController controller = new DungeonController(dungeon, new Goal(new ExitGoalEngine()));
+        DungeonController controller = new DungeonController();
 
         assertEquals(controller.getGoal().getGoalEngine().getClass(), ExitGoalEngine.class);
         assertEquals(controller.getInitialEntities().size(), 3);
@@ -43,10 +43,11 @@ public class TestDungeonController {
         assertEquals(enemy.entityClass, Enemy.class);
         assertEquals(enemy.getPosition(), new Position(3, 3));
     }
-    
+
     @Test
     public void TestControllerPositionListener() {
-        DungeonController controller = new DungeonController(dungeon, new Goal(new ExitGoalEngine()));
+        DungeonController controller = new DungeonController();
+        controller.loadDungeon(dungeon, new Goal(new ExitGoalEngine()));
         EntityWrapper player = controller.getInitialEntities().get(0);
         PropertyChangeListener changeListener = (event) -> {
             Position newPosition = (Position)event.getNewValue();
@@ -89,7 +90,8 @@ public class TestDungeonController {
 
     @Test
     public void TestControllerDeleteListener() {
-        DungeonController controller = new DungeonController(dungeon, new Goal(new ExitGoalEngine()));
+        DungeonController controller = new DungeonController();
+        controller.loadDungeon(dungeon, new Goal(new ExitGoalEngine()));
         EntityWrapper enemy = controller.getInitialEntities().get(2);
 
         final int[] numCalls = {0};
@@ -106,7 +108,8 @@ public class TestDungeonController {
 
     @Test
     public void TestControllerStatusListener() {
-        DungeonController controller = new DungeonController(dungeon, new Goal(new ExitGoalEngine()));
+        DungeonController controller = new DungeonController();
+        controller.loadDungeon(dungeon, new Goal(new ExitGoalEngine()));
         EntityWrapper exit = controller.getInitialEntities().get(1);
 
         final int[] numCalls = {0};
@@ -133,7 +136,8 @@ public class TestDungeonController {
 
     @Test
     public void TestControllerGoalListener() {
-        DungeonController controller = new DungeonController(dungeon, new Goal(new ExitGoalEngine()));
+        DungeonController controller = new DungeonController();
+        controller.loadDungeon(dungeon, new Goal(new ExitGoalEngine()));
         Goal goal = controller.getGoal();
         assertFalse(controller.isGameComplete());
         goal.getCompleteProperty().setValue(true);
@@ -142,7 +146,8 @@ public class TestDungeonController {
 
     @Test
     public void TestControllerKeyPress() {
-        DungeonController controller = new DungeonController(dungeon, new Goal(new ExitGoalEngine()));
+        DungeonController controller = new DungeonController();
+        controller.loadDungeon(dungeon, new Goal(new ExitGoalEngine()));
         controller.handleKeyPress(KeyCode.LEFT);
         assertEquals(dungeon.getPlayer().getPosition(), new Position(1, 2));
         dungeon.getPlayer().armSword();

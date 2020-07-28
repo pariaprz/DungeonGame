@@ -18,7 +18,17 @@
     -fx-font-size: 30;
 }
 
-#main, #pause-menu{
+#level-title {
+    -fx-font-family: 'VT323';
+    -fx-font-size: 40;
+}
+
+.level-name {
+    -fx-font-family: 'VT323';
+    -fx-font-size: 25;
+}
+
+#main, #pause-menu, #main-menu {
     -fx-background-color: "#EAD0A8";
 }
 

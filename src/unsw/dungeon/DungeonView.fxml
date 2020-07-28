@@ -20,10 +20,9 @@
          <Text textAlignment="CENTER" id="hunter" text="Dungeon Hunter"/>
          <LineBreak/>
          <Text textAlignment="CENTER" id="instructions">
-            Press arrow keys to move around. Press 'p' to pause or view the menu. Press 'q' to quit.
+            Press arrow keys to move around. Press 'p' to pause/view goal. Press 'm' to return to main menu, or 'r' to replay.
          </Text>
          <LineBreak/>
-         <Text textAlignment="CENTER" id="complete" fx:id="completeText"/>
       </TextFlow>
       <GridPane fx:id="squares" onKeyPressed="#handleKeyPress" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER">
          <columnConstraints>
@@ -36,6 +35,11 @@
 
          </children>
       </GridPane>
+      <GridPane alignment="BOTTOM_CENTER">
+         <TextFlow textAlignment="CENTER">
+            <Text textAlignment="CENTER" id="complete" fx:id="completeText"/>
+         </TextFlow>
+      </GridPane>
       <GridPane alignment="TOP_CENTER" visible="false" fx:id="pauseMenu" id="pause-menu" maxWidth="400" maxHeight="200">
          <FlowPane alignment="TOP_CENTER">
             <TextFlow textAlignment="CENTER">
@@ -45,6 +49,16 @@
             </FlowPane>
             <TextFlow id="goal-list" translateY="20">
                <Text></Text>
+            </TextFlow>
+         </FlowPane>
+      </GridPane>
+      <GridPane alignment="TOP_CENTER" visible="false" fx:id="mainMenu" id="main-menu" maxWidth="800" maxHeight="620">
+         <FlowPane alignment="TOP_CENTER">
+            <TextFlow textAlignment="CENTER">
+               <Text textAlignment="CENTER" id="level-title"> Levels </Text>
+            </TextFlow>
+            <TextFlow id="level-list" translateY="20" styleClass="level-name">
+               <LineBreak/>
             </TextFlow>
          </FlowPane>
       </GridPane>
