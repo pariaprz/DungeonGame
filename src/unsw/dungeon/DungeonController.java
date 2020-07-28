@@ -6,9 +6,7 @@ import java.util.stream.Collectors;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.value.ObservableValue;
-import javafx.fxml.FXML;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
 import javafx.scene.image.Image;
 
@@ -104,9 +102,7 @@ public class DungeonController {
             ));
         } else if (entity instanceof Arrow){
             timelineArrow.getKeyFrames().add(new KeyFrame(Duration.millis(25),
-                    actionEvent -> {
-                            ((Arrow) entity).moveArrow(getArrowDirection());
-                    }
+                    actionEvent -> ((Arrow) entity).moveArrow()
             ));
     }
         goal.attachListener(entityWrapper, dungeon);
@@ -142,25 +138,10 @@ public class DungeonController {
                 arrowDirection = prevDirection;
                 System.out.println("Shooting arrow");
                 player.shootArrow();
-                Arrow arrow = new Arrow(player.getX(), player.getY(), player.getDungeon());
+                Arrow arrow = new Arrow(player.getX(), player.getY(), arrowDirection, dungeon);
                 EntityWrapper wrappedArrow = onEntityLoad(arrow);
-
-                switch (arrowDirection){
-                    case UP:
-                        thisDungeonView().updateSquares(arrow, wrappedArrow, new Image((new File("images/arrow_directions/arrow_down.png")).toURI().toString()));
-                        break;
-                    case DOWN:
-                        thisDungeonView().updateSquares(arrow, wrappedArrow, new Image((new File("images/arrow_directions/arrow_up.png")).toURI().toString()));
-                        break;
-                    case LEFT:
-                        thisDungeonView().updateSquares(arrow, wrappedArrow, new Image((new File("images/arrow_directions/arrow_left.png")).toURI().toString()));
-                        break;
-                    case RIGHT:
-                        thisDungeonView().updateSquares(arrow, wrappedArrow, new Image((new File("images/arrow_directions/arrow_right.png")).toURI().toString()));
-                        break;
-                    default:
-                        break;
-                }
+                thisDungeonView().addEntity(wrappedArrow);
+                arrow.setDirectionStatus();
                 
                 timelineArrow.play();
             }
@@ -177,10 +158,6 @@ public class DungeonController {
 
     public Goal getGoal() {
         return goal;
-    }
-
-    public Direction getArrowDirection(){
-        return arrowDirection;
     }
 
     public DungeonView thisDungeonView(){

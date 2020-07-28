@@ -27,6 +27,7 @@ public class DungeonView {
 
     private final Map<Class<? extends Entity>, Map<String, Image>> imageMap;
     private final DungeonController controller;
+    private DungeonDisplay display;
     private final List<EntityWrapper> initialEntities;
     private final List<ImageView> entities;
     private final int height, width;
@@ -41,9 +42,10 @@ public class DungeonView {
         this.width = width;
         this.controller = controller;
         this.initialEntities = initialEntities;
-        imageMap = initialiseImageMap();
-        goals = initialiseGoalsMap(controller.getGoal());
-        entities = new ArrayList<>();
+        this.imageMap = initialiseImageMap();
+        this.display = new DungeonDisplay(height, width, imageMap, squares);
+        this.goals = initialiseGoalsMap(controller.getGoal());
+        this.entities = new ArrayList<>();
     }
 
     public void onEntityLoad(EntityWrapper entity) {
@@ -54,41 +56,18 @@ public class DungeonView {
 
     @FXML
     public void initialize() {
-        Image ground = new Image((new File("images/dirt_0_new.png")).toURI().toString());
-        Image inv_1sec = new Image((new File("images/Invincibility_Time_Icons/invincibility_1sec.png")).toURI().toString());
-
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                squares.add(new ImageView(ground), x, y);
-            }
-        }
-
         initialEntities.forEach(this::onEntityLoad);
-        for (ImageView entity : entities) {
-            squares.getChildren().add(entity);
-        }
 
-        int[] xPosition = { 0 };
-        int yPosition = height+1;
-        goals.forEach((entity, label) -> {
-            if (entity == Exit.class) return;
-            squares.add(new ImageView(imageMap.get(entity).get(DEFAULT_IMG)), xPosition[0]++, yPosition);
-            squares.add(label, xPosition[0], yPosition, 2, 1);
-            xPosition[0] += 2;
-        });
-        if (goals.get(Exit.class) != null) {
-            squares.add(new ImageView(imageMap.get(Exit.class).get(DEFAULT_IMG)), xPosition[0]++, yPosition);
-            squares.add(goals.get(Exit.class), xPosition[0], yPosition, 5, 1);
-        }
-        squares.add(new ImageView(inv_1sec), 4, 0);
+        display.setGridpane(squares);
+        display.initialize(entities, goals);
     }
 
     @FXML
-    public void updateSquares(Entity entity, EntityWrapper wrappedEntity, Image image){
-        ImageView newEntity = new ImageView(image);
-        squares.getChildren().add(newEntity);
-        trackEntities(wrappedEntity, newEntity);
+    public void addEntity(EntityWrapper entity){
+        ImageView newEntity = new ImageView(imageMap.get(entity.entityClass).get(DEFAULT_IMG));
+        trackEntities(entity, newEntity);
         entities.add(newEntity);
+        display.updateSquares(newEntity);
     }
     /**
      * Set a node in a GridPane to have its position track the position of an
@@ -112,7 +91,7 @@ public class DungeonView {
             squares.getChildren().remove(node);
             entity.dropAllSubscribers();
             if (entity.entityClass.equals(Player.class)) {
-                addFinalText("You Died.", "0xF44336");
+                display.addFinalText("You Died.", "0xF44336");
             }
         });
         entity.addStatusObserver((PropertyChangeEvent event) -> {
@@ -126,14 +105,6 @@ public class DungeonView {
     @FXML
     public void handleKeyPress(KeyEvent event) {
         controller.handleKeyPress(event.getCode());
-    }
-
-    private void addFinalText(String text, String color) {
-        Text completeText = new Text(text);
-        completeText.setFont(new Font("Verdana", 40));
-        completeText.setFill(Color.web(color));
-        completeText.setTextAlignment(TextAlignment.CENTER);
-        squares.add(completeText, Math.max(width/2 - 5, 0), Math.max(height/2-3, height/2), width, 2);
     }
 
     private Map<Class<? extends Entity>, Label> initialiseGoalsMap(Goal goal) {
@@ -163,7 +134,7 @@ public class DungeonView {
         });
         goal.getCompleteProperty().addListener(((observableValue, oldValue, newValue) -> {
             if (newValue) {
-                addFinalText("Level Completed!", "0x408140");
+                display.addFinalText("Level Completed!", "0x408140");
             }
         }));
         return goalMap;
@@ -194,6 +165,13 @@ public class DungeonView {
                 Player.ARMED_STATUS, new Image((new File("images/player_with_sword.png")).toURI().toString()),
                 Player.WALLWALKER_STATUS, new Image((new File("images/wallwalker_player.png")).toURI().toString()),
                 Player.RANGER_STATUS, new Image((new File("images/ranger.png")).toURI().toString())
+        ));
+        imageMap.put(Arrow.class, Map.of(
+                DEFAULT_IMG, new Image((new File("images/arrow_directions/arrow_right.png")).toURI().toString()),
+                Arrow.RIGHT, new Image((new File("images/arrow_directions/arrow_right.png")).toURI().toString()),
+                Arrow.LEFT, new Image((new File("images/arrow_directions/arrow_left.png")).toURI().toString()),
+                Arrow.UP, new Image((new File("images/arrow_directions/arrow_up.png")).toURI().toString()),
+                Arrow.DOWN, new Image((new File("images/arrow_directions/arrow_down.png")).toURI().toString())
         ));
 
         return imageMap;
