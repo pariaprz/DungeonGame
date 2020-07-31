@@ -2,13 +2,13 @@ package unsw.dungeon;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.stream.Collectors;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.input.KeyCode;
-import javafx.util.Duration;
 
 /**
  * A controller for the dungeon.
@@ -22,26 +22,19 @@ public class DungeonController {
     private Dungeon dungeon;
     private Goal goal;
     private boolean isGameComplete = false;
-    private final Timeline timeline;
-    private final Timeline timelineArrow;
-    private final Timeline timelineDog;
+    private Timer timeline;
+    private boolean pause = true;
     private List<EntityWrapper> initialEntities;
     private Direction prevDirection = Direction.RIGHT;
 
     public DungeonController() {
-        timeline = new Timeline(20);
-        timelineArrow = new Timeline(40);
-        timelineDog = new Timeline(20);
+        timeline = new Timer("Slayable");
         initialEntities = new ArrayList<>();
     }
 
     private void setup(Dungeon dungeon, Goal goal) {
         this.dungeon = dungeon;
         this.goal = goal;
-
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timelineArrow.setCycleCount(Timeline.INDEFINITE);
-        timelineDog.setCycleCount(Timeline.INDEFINITE);
 
         initialEntities = this.dungeon
                 .getEntities()
@@ -54,11 +47,24 @@ public class DungeonController {
                                                 Boolean oldValue, Boolean newValue) -> {
             if (newValue) {
                 System.out.println("Level Complete");
-                timeline.stop();
-                timelineDog.stop();
+                pause = true;
                 isGameComplete = true;
             }
         });
+    }
+
+    private void addScheduledEvent(Runnable f, int timeInMillis) {
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    if (!pause) {
+                        f.run();
+                    }
+                });
+            }
+        };
+        timeline.scheduleAtFixedRate(task, timeInMillis, timeInMillis);
     }
 
     /**
@@ -93,32 +99,23 @@ public class DungeonController {
                 entityWrapper.setDeleted();
                 if (entityWrapper.entityClass.equals(Player.class)) {
                     System.out.println("Player Died.");
+                    pause();
                 }
             }
         });
         entity.status().addListener((observable, oldValue, newValue) -> entityWrapper.publishStatusUpdate(newValue));
-        if (entity instanceof Dog){
-            timelineDog.getKeyFrames().add(new KeyFrame(Duration.millis(250),
-
-                actionEvent -> {
-                    if (!entity.isDeleted()) {
-                        ((Dog) entity).moveEnemy();
-                    }
+        if (entity instanceof Slayable){
+            addScheduledEvent(() -> {
+                if (!entity.isDeleted()) {
+                    ((Slayable) entity).move();
                 }
-            ));
-        } else if (entity instanceof Enemy) {
-            timeline.getKeyFrames().add(new KeyFrame(Duration.millis(500),
-            
-                    actionEvent -> {
-                        if (!entity.isDeleted()) {
-                            ((Enemy) entity).moveEnemy();
-                        }
-                    }
-            ));
+            }, ((Slayable) entity).getSpeedInMillis());
         } else if (entity instanceof Arrow){
-            timelineArrow.getKeyFrames().add(new KeyFrame(Duration.millis(25),
-                    actionEvent -> ((Arrow) entity).moveArrow()
-            ));
+            addScheduledEvent(() -> {
+                if (!entity.isDeleted()) {
+                    ((Arrow) entity).moveArrow();
+                }
+            }, 25);
         }
         goal.attachListener(entityWrapper, dungeon);
         return entityWrapper;
@@ -156,8 +153,7 @@ public class DungeonController {
                 EntityWrapper wrappedArrow = onEntityLoad(arrow);
                 thisDungeonView().addEntity(wrappedArrow);
                 arrow.setDirectionStatus();
-
-                timelineArrow.play();
+                play();
             }
                 
             break;
@@ -178,22 +174,18 @@ public class DungeonController {
     }
 
     public void pause() {
-        timeline.pause();
-        timelineArrow.pause();
-        timelineDog.pause();
+        pause = true;
     }
 
     public void play() {
-        timeline.play();
-        timelineArrow.play();
-        timelineDog.play();
+        pause = false;
     }
 
     public void loadDungeon(Dungeon dungeon, Goal goal) {
         this.initialEntities.forEach(EntityWrapper::dropAllSubscribers);
-        this.timelineArrow.getKeyFrames().clear();
-        this.timelineDog.getKeyFrames().clear();
-        this.timeline.getKeyFrames().clear();
+        this.timeline.cancel();
+        this.timeline.purge();
+        this.timeline = new Timer();
         this.isGameComplete = false;
 
         setup(dungeon, goal);

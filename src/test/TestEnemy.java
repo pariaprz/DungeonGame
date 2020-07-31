@@ -38,22 +38,22 @@ public class TestEnemy {
 
         assertEquals(new Position(2, 1), enemy.getPosition());
 
-        enemy.moveEnemy();
+        enemy.move();
         assertEquals(new Position(1, 1), enemy.getPosition());
         assertFalse(player.isDeleted());
 
         player.moveToPosition(new Position(3, 1));
-        enemy.moveEnemy();
+        enemy.move();
         assertEquals(new Position(2, 1), enemy.getPosition());
         assertFalse(player.isDeleted());
 
         player.moveToPosition(new Position(2, 3));
-        enemy.moveEnemy();
+        enemy.move();
         assertEquals(new Position(2, 2), enemy.getPosition());
         assertFalse(player.isDeleted());
 
         player.moveToPosition(new Position(2, 1));
-        enemy.moveEnemy();
+        enemy.move();
         assertEquals(new Position(2, 1), enemy.getPosition());
         assertTrue(player.isDeleted());
     }
@@ -66,22 +66,22 @@ public class TestEnemy {
 
         assertEquals(new Position(2, 1), enemy.getPosition());
 
-        enemy.moveEnemy();
+        enemy.move();
         assertEquals(new Position(3, 1), enemy.getPosition());
         assertFalse(player.isDeleted());
 
         player.moveToPosition(new Position(4, 1));
-        enemy.moveEnemy();
+        enemy.move();
         assertEquals(new Position(2, 1), enemy.getPosition());
         assertFalse(player.isDeleted());
 
         player.moveToPosition(new Position(2, 0));
-        enemy.moveEnemy();
+        enemy.move();
         assertEquals(new Position(2, 2), enemy.getPosition());
         assertFalse(player.isDeleted());
 
         player.moveToPosition(new Position(2, 3));
-        enemy.moveEnemy();
+        enemy.move();
         assertEquals(new Position(2, 1), enemy.getPosition());
         assertFalse(player.isDeleted());
     }

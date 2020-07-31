@@ -36,7 +36,7 @@ public class WallWalkerPlayerState implements PlayerState {
 
 
     @Override
-    public void interactWithEnemy(Enemy enemy) {
+    public void interactWithEnemy(Slayable enemy) {
         player.playerDied();
     }
 

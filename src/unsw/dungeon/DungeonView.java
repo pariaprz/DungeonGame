@@ -98,6 +98,7 @@ public class DungeonView {
         display.addGoalIcons((FlowPane) pauseMenu.lookup("#goal-icons"), goals);
         display.setGoalString((TextFlow) pauseMenu.lookup("#goal-list"), controller.getGoal());
         display.initializeDungeon(width, height, entities, goals);
+        pauseMenu.setVisible(false);
     }
 
     public boolean selectDungeon(String dungeonName) {
@@ -153,10 +154,12 @@ public class DungeonView {
                 System.exit(0);
             case M:
                 display.showMainMenu(mainMenu, LEVELS, this::selectDungeon);
+                controller.pause();
                 break;
             case R:
                 if (selectedLevel != null) {
                     selectDungeon(selectedLevel);
+                    pauseMenu.setVisible(false);
                 }
                 break;
             case P:
@@ -212,8 +215,9 @@ public class DungeonView {
 
     private static Map<Class<? extends Entity>, Map<String, Image>> initialiseImageMap() {
         Map<Class<? extends Entity>, Map<String, Image>> imageMap = new HashMap<>();
-        imageMap.put(Key.class, Map.of(DEFAULT_IMG, new Image((new File("images/key.png")).toURI().toString())));
+        imageMap.put(Dog.class, Map.of(DEFAULT_IMG, new Image((new File("images/hound.png")).toURI().toString())));
         imageMap.put(Exit.class, Map.of(DEFAULT_IMG, new Image((new File("images/exit.png")).toURI().toString())));
+        imageMap.put(Key.class, Map.of(DEFAULT_IMG, new Image((new File("images/key.png")).toURI().toString())));
         imageMap.put(Portal.class, Map.of(DEFAULT_IMG, new Image((new File("images/portal.png")).toURI().toString())));
         imageMap.put(Boulder.class, Map.of(DEFAULT_IMG, new Image((new File("images/boulder.png")).toURI().toString())));
         imageMap.put(Treasure.class, Map.of(DEFAULT_IMG, new Image((new File("images/gold_pile.png")).toURI().toString())));
@@ -221,6 +225,7 @@ public class DungeonView {
         imageMap.put(Switch.class, Map.of(DEFAULT_IMG, new Image((new File("images/pressure_plate.png")).toURI().toString())));
         imageMap.put(Sword.class, Map.of(DEFAULT_IMG, new Image((new File("images/greatsword_1_new.png")).toURI().toString())));
         imageMap.put(Enemy.class, Map.of(DEFAULT_IMG, new Image((new File("images/deep_elf_master_archer.png")).toURI().toString())));
+        imageMap.put(Slayable.class, Map.of(DEFAULT_IMG, new Image((new File("images/deep_elf_master_archer.png")).toURI().toString())));
         imageMap.put(Invincibility.class, Map.of(DEFAULT_IMG, new Image((new File("images/brilliant_blue_new.png")).toURI().toString())));
         imageMap.put(WallWalker.class, Map.of(DEFAULT_IMG, new Image((new File("images/wallwalker.png")).toURI().toString())));
         imageMap.put(Bow.class, Map.of(DEFAULT_IMG, new Image((new File("images/bow.png")).toURI().toString())));
@@ -243,8 +248,6 @@ public class DungeonView {
                 Arrow.UP, new Image((new File("images/arrow_directions/arrow_up.png")).toURI().toString()),
                 Arrow.DOWN, new Image((new File("images/arrow_directions/arrow_down.png")).toURI().toString())
         ));
-        imageMap.put(Dog.class, Map.of(
-                DEFAULT_IMG, new Image((new File("images/hound.png")).toURI().toString())));
         return imageMap;
     }
 

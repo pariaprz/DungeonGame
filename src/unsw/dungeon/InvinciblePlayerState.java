@@ -14,6 +14,7 @@ public class InvinciblePlayerState implements PlayerState {
 
     public static String STATE_NAME = "Invincible";
     public static int TIME_LEFT = 5;
+    public static int MAX_TIME = 5;
 
     public InvinciblePlayerState(Player player) {
         this.player = player;
@@ -23,7 +24,7 @@ public class InvinciblePlayerState implements PlayerState {
         player.setState(this);
         int delay = 1000;
         int period = 1000;
-
+        TIME_LEFT = MAX_TIME;
         taskTimer = new Timer();
         InvinciblePlayerState thisState = this;
         TimerTask task = new TimerTask() {
@@ -48,8 +49,8 @@ public class InvinciblePlayerState implements PlayerState {
     }
 
     @Override
-    public void interactWithEnemy(Enemy enemy) {
-        enemy.delete();
+    public void interactWithEnemy(Slayable enemy) {
+        enemy.registerHit(enemy.getHealth()); // Kills them.
     }
 
     @Override

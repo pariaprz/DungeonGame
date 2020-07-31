@@ -122,8 +122,8 @@ public class Player extends Moveable {
         );
         areaOfEffect.forEach(position ->
                 getDungeon().getEntitiesAt(position).forEach(entity -> {
-                    if (entity instanceof Enemy) {
-                        entity.delete();
+                    if (entity instanceof Slayable) {
+                        ((Slayable) entity).registerHit(1);
                     }
                 })
         );
@@ -161,7 +161,7 @@ public class Player extends Moveable {
         System.out.println(hasSword() + " " +  hasBow() + " " + getArrowCount());
         if (hasSword() && hasBow() && getArrowCount() > 0){
             if (status().get().equals(ARMED_STATUS)){
-                System.out.println("CHANING STATUS");
+                System.out.println("CHANGING STATUS");
                 setStatus(RANGER_STATUS);
             } else {
                 setStatus(ARMED_STATUS);
@@ -179,8 +179,8 @@ public class Player extends Moveable {
 
     @Override
     public void interact(Entity actor, KeyCode keyCode) {
-        if (actor instanceof Enemy) {
-            getPlayerState().interactWithEnemy((Enemy) actor);
+        if (actor instanceof Slayable) {
+            getPlayerState().interactWithEnemy((Slayable) actor);
         }
     }
 }

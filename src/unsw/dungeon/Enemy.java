@@ -9,63 +9,20 @@ import javafx.scene.input.KeyCode;
  * @author Robert Clifton-Everest
  *
  */
-public class Enemy extends Moveable {
+public class Enemy extends Slayable {
 
+    public static final int MAX_HEALTH = 1;
     /**
      * Create a player positioned in square (x,y)
      * @param x
      * @param y
      */
     public Enemy(int x, int y, Dungeon dungeon) {
-        super(x, y, dungeon);
+        super(x, y, dungeon, MAX_HEALTH);
     }
-
-
-    public void handleMovement(Direction direction) {
-        if (direction == null) {
-            return;
-        }
-        Position nextPos = direction.fromPosition(getPosition());
-        List<Entity> entities = getDungeon().getEntitiesAt(nextPos);
-
-        boolean canMove = entities
-                .stream()
-                .allMatch(entity -> entity.canEntityMoveHere(this));
-        if (canMove) {
-            moveToPosition(nextPos);
-            entities.forEach(entity -> {
-                entity.interact(this, Direction.toKeyCode(direction));
-            });
-
-        }
-    }
-
-    public void moveEnemy() {
-        Player player = getDungeon().getPlayer();
-        if (player == null) return;
-
-        Direction towardsPlayer = Direction.fromPositions(getPosition(), player.getPosition());
-        Direction nextDirection = player.attractEnemies() || towardsPlayer == null ?
-                towardsPlayer : towardsPlayer.invert();
-        handleMovement(nextDirection); // TODO: Run away.
-    }
-
 
     @Override
-    public void interact(Entity actor, KeyCode keyCode) {
-        if (actor instanceof Player){
-            actor.interact(this, keyCode);
-        } else if (actor instanceof Arrow){
-            delete();
-            actor.delete();
-        }
-    }
-    
-    @Override
-    public boolean canEntityMoveHere(Entity entity){
-        if (entity instanceof Enemy){
-            return false;
-        }
-        return true;
+    public int getSpeedInMillis() {
+        return 500;
     }
 }

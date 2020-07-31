@@ -72,4 +72,12 @@ public class EntityWrapper {
         Arrays.stream(this.changeSupport.getPropertyChangeListeners(POSITION_EVENT))
                 .forEach(this::unsubscribePosition);
     }
+
+    @Override
+    public String toString() {
+        return "EntityWrapper{" +
+                "entityClass=" + entityClass +
+                ", position=" + position +
+                '}';
+    }
 }
