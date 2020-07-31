@@ -243,7 +243,8 @@ public class DungeonView {
                 Arrow.UP, new Image((new File("images/arrow_directions/arrow_up.png")).toURI().toString()),
                 Arrow.DOWN, new Image((new File("images/arrow_directions/arrow_down.png")).toURI().toString())
         ));
-
+        imageMap.put(Dog.class, Map.of(
+                DEFAULT_IMG, new Image((new File("images/hound.png")).toURI().toString())));
         return imageMap;
     }
 

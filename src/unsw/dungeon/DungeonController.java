@@ -24,12 +24,14 @@ public class DungeonController {
     private boolean isGameComplete = false;
     private final Timeline timeline;
     private final Timeline timelineArrow;
+    private final Timeline timelineDog;
     private List<EntityWrapper> initialEntities;
     private Direction prevDirection = Direction.RIGHT;
 
     public DungeonController() {
         timeline = new Timeline(20);
         timelineArrow = new Timeline(40);
+        timelineDog = new Timeline(20);
         initialEntities = new ArrayList<>();
     }
 
@@ -39,6 +41,7 @@ public class DungeonController {
 
         timeline.setCycleCount(Timeline.INDEFINITE);
         timelineArrow.setCycleCount(Timeline.INDEFINITE);
+        timelineDog.setCycleCount(Timeline.INDEFINITE);
 
         initialEntities = this.dungeon
                 .getEntities()
@@ -52,6 +55,7 @@ public class DungeonController {
             if (newValue) {
                 System.out.println("Level Complete");
                 timeline.stop();
+                timelineDog.stop();
                 isGameComplete = true;
             }
         });
@@ -93,8 +97,18 @@ public class DungeonController {
             }
         });
         entity.status().addListener((observable, oldValue, newValue) -> entityWrapper.publishStatusUpdate(newValue));
-        if (entity instanceof Enemy) {
+        if (entity instanceof Dog){
+            timelineDog.getKeyFrames().add(new KeyFrame(Duration.millis(250),
+
+                actionEvent -> {
+                    if (!entity.isDeleted()) {
+                        ((Dog) entity).moveEnemy();
+                    }
+                }
+            ));
+        } else if (entity instanceof Enemy) {
             timeline.getKeyFrames().add(new KeyFrame(Duration.millis(500),
+            
                     actionEvent -> {
                         if (!entity.isDeleted()) {
                             ((Enemy) entity).moveEnemy();
@@ -132,10 +146,10 @@ public class DungeonController {
             prevDirection = Direction.fromKeyCode(keyCode);
             break;
         case SPACE:
-            if (player.hasSword()){
+            if (player.status().get().equals(Player.ARMED_STATUS)){
                 System.out.println("Swinging sword");
                 player.swingSword();
-            } else if(player.hasBow() && player.getArrowCount() > 0){
+            } else if (player.status().get().equals(Player.RANGER_STATUS)){
                 System.out.println("Shooting arrow");
                 player.shootArrow();
                 Arrow arrow = new Arrow(player.getX(), player.getY(), prevDirection, dungeon);
@@ -145,7 +159,10 @@ public class DungeonController {
 
                 timelineArrow.play();
             }
+                
             break;
+        case Z:
+            player.changeWeapons();
         default:
             break;
         }
@@ -163,16 +180,19 @@ public class DungeonController {
     public void pause() {
         timeline.pause();
         timelineArrow.pause();
+        timelineDog.pause();
     }
 
     public void play() {
         timeline.play();
         timelineArrow.play();
+        timelineDog.play();
     }
 
     public void loadDungeon(Dungeon dungeon, Goal goal) {
         this.initialEntities.forEach(EntityWrapper::dropAllSubscribers);
         this.timelineArrow.getKeyFrames().clear();
+        this.timelineDog.getKeyFrames().clear();
         this.timeline.getKeyFrames().clear();
         this.isGameComplete = false;
 

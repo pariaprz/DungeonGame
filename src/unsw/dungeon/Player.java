@@ -156,6 +156,19 @@ public class Player extends Moveable {
         state = playerState;
     }
 
+    public void changeWeapons(){
+        System.out.println("CHANGING WEAPONS");
+        System.out.println(hasSword() + " " +  hasBow() + " " + getArrowCount());
+        if (hasSword() && hasBow() && getArrowCount() > 0){
+            if (status().get().equals(ARMED_STATUS)){
+                System.out.println("CHANING STATUS");
+                setStatus(RANGER_STATUS);
+            } else {
+                setStatus(ARMED_STATUS);
+            }
+        }
+    }
+
     public void playerDied() {
         this.delete();
     }

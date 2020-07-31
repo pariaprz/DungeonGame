@@ -130,7 +130,10 @@ public class DungeonLoader {
         case "arrow":
             entity = new Arrow_Consumable(x, y);
             break;
+        case "dog":
+            entity = new Dog(x,y, dungeon);
         }
+
         if (entity != null) {
             dungeon.addEntity(entity);
         } else {

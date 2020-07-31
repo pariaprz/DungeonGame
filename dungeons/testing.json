@@ -16,7 +16,22 @@
           "x": 6,
           "y": 6,
           "type": "arrow"
-      }
+      },
+      {
+          "x": 10,
+          "y": 7, 
+          "type": "dog"
+      },
+      {
+        "x": 11,
+        "y": 7, 
+        "type": "sword"
+    },
+    {
+      "x": 1,
+      "y": 1,
+      "type": "invincibility"
+    }
     ],
     "goal-condition": {
         "goal": "boulders"

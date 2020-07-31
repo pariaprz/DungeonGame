@@ -60,4 +60,12 @@ public class Enemy extends Moveable {
             actor.delete();
         }
     }
+    
+    @Override
+    public boolean canEntityMoveHere(Entity entity){
+        if (entity instanceof Enemy){
+            return false;
+        }
+        return true;
+    }
 }
