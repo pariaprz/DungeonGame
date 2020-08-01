@@ -123,7 +123,7 @@ public class Player extends Moveable {
         areaOfEffect.forEach(position ->
                 getDungeon().getEntitiesAt(position).forEach(entity -> {
                     if (entity instanceof Slayable) {
-                        ((Slayable) entity).registerHit(1);
+                        ((Slayable) entity).registerHit(2);
                     }
                 })
         );

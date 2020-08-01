@@ -1,30 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.HBox?>
-<?import unsw.dungeon.LineBreak?>
-<?import javafx.scene.shape.Rectangle?>
-<?import javafx.scene.text.Text?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.text.TextFlow?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.control.ListCell?>
 <?import javafx.scene.layout.FlowPane?>
-<HBox alignment="CENTER" prefHeight="800.0" prefWidth="1200.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" onKeyPressed="#handleKeyPress" id="main">
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+<?import unsw.dungeon.*?>
+
+<HBox id="main" alignment="CENTER" onKeyPressed="#handleKeyPress" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <StackPane>
       <TextFlow textAlignment="CENTER">
-         <Text textAlignment="CENTER" id="hunter" text="Dungeon Hunter"/>
-         <LineBreak/>
-         <Text textAlignment="CENTER" id="instructions">
-            Press arrow keys to move around. Press 'p' to pause/view goal. Press 'm' to return to main menu, or 'r' to replay.
-         </Text>
-         <LineBreak/>
+         <Text id="hunter" text="Dungeon Hunter" textAlignment="CENTER" />
       </TextFlow>
-      <GridPane fx:id="squares" onKeyPressed="#handleKeyPress" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER">
+      <GridPane fx:id="squares" alignment="CENTER" onKeyPressed="#handleKeyPress" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
          <columnConstraints>
             <ColumnConstraints />
          </columnConstraints>
@@ -37,30 +30,53 @@
       </GridPane>
       <GridPane alignment="BOTTOM_CENTER">
          <TextFlow textAlignment="CENTER">
-            <Text textAlignment="CENTER" id="complete" fx:id="completeText"/>
+            <Text id="complete" fx:id="completeText" textAlignment="CENTER" />
          </TextFlow>
+         <columnConstraints>
+            <ColumnConstraints />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints />
+         </rowConstraints>
       </GridPane>
-      <GridPane alignment="TOP_CENTER" visible="false" fx:id="pauseMenu" id="pause-menu" maxWidth="400" maxHeight="200">
+      <GridPane id="pause-menu" fx:id="pauseMenu" alignment="TOP_CENTER" maxHeight="200" maxWidth="400" visible="false">
          <FlowPane alignment="TOP_CENTER">
             <TextFlow textAlignment="CENTER">
-               <Text textAlignment="CENTER" id="goal-title"> GOALS </Text>
+               <Text id="goal-title" textAlignment="CENTER"> GOALS </Text>
             </TextFlow>
-            <FlowPane id="goal-icons" translateY="10" alignment="TOP_CENTER">
+            <FlowPane id="goal-icons" alignment="TOP_CENTER" translateY="10">
             </FlowPane>
             <TextFlow id="goal-list" translateY="20">
-               <Text></Text>
+               <Text />
             </TextFlow>
          </FlowPane>
+         <columnConstraints>
+            <ColumnConstraints />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints />
+         </rowConstraints>
       </GridPane>
-      <GridPane alignment="TOP_CENTER" visible="false" fx:id="mainMenu" id="main-menu" maxWidth="800" maxHeight="620">
+      <GridPane id="main-menu" fx:id="mainMenu" alignment="TOP_CENTER" maxHeight="620" maxWidth="800" visible="false">
          <FlowPane alignment="TOP_CENTER">
             <TextFlow textAlignment="CENTER">
-               <Text textAlignment="CENTER" id="level-title"> Levels </Text>
+               <Text id="level-title" textAlignment="CENTER"> Levels </Text>
             </TextFlow>
-            <TextFlow id="level-list" translateY="20" styleClass="level-name">
-               <LineBreak/>
+            <TextFlow id="level-list" styleClass="level-name" translateY="20">
+               <LineBreak />
             </TextFlow>
          </FlowPane>
+         <columnConstraints>
+            <ColumnConstraints />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints />
+         </rowConstraints>
       </GridPane>
    </StackPane>
+   <Pane prefHeight="800.0" prefWidth="166.0">
+      <children>
+         <Button fx:id="instructions" layoutX="43.0" layoutY="42.0" mnemonicParsing="false" onAction="#handleInstructions" text="Instructions" />
+      </children>
+   </Pane>
 </HBox>

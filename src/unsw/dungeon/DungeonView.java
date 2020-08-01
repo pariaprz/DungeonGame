@@ -1,12 +1,14 @@
 package unsw.dungeon;
 
 import java.beans.PropertyChangeEvent;
+import java.io.IOException;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.*;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -54,6 +56,9 @@ public class DungeonView {
     @FXML
     private GridPane mainMenu;
 
+    @FXML
+    private Button instructions;
+
     public DungeonView(DungeonController controller)  {
         this.controller = controller;
         imageMap = initialiseImageMap();
@@ -89,6 +94,11 @@ public class DungeonView {
         trackEntities(entity, newEntity);
         entities.add(newEntity);
         display.updateSquares(newEntity);
+    }
+
+    @FXML
+    public void handleInstructions(ActionEvent event) throws IOException{
+        controller.getInstructionScreen().start();
     }
 
     public void loadDungeon(int width, int height, List<EntityWrapper> initialEntities) {
