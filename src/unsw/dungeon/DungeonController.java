@@ -172,7 +172,7 @@ public class DungeonController {
         this.isGameComplete = false;
 
         setup(dungeon, goal);
-        dungeonView.loadDungeon(dungeon.getWidth(), dungeon.getHeight(), initialEntities);
+        dungeonView.loadDungeon(dungeon.getWidth(), dungeon.getHeight(), initialEntities, dungeon.getPlayer().getInventory());
         play();
     }
 

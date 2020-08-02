@@ -1,27 +1,58 @@
 package unsw.dungeon;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.util.Pair;
 
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
 public class PlayerInventory {
-    List<Pair<Collectable, Integer>> items;
-    private static final int UNEQUIPPED = -1;
+    private final ListProperty<Pair<Collectable, Integer>> items;
+    public static final int UNEQUIPPED = -1;
     private final Player player;
-    private int equippedIndex = UNEQUIPPED;
+    private final IntegerProperty equippedIndex = new SimpleIntegerProperty(UNEQUIPPED);
+    private final IntegerProperty usableIndex = new SimpleIntegerProperty(equippedIndex.get());
+
 
     public PlayerInventory(Player player) {
-        items = new ArrayList<>();
+        ObservableList<Pair<Collectable, Integer>> observableList = FXCollections.observableArrayList(new ArrayList<>());
+        items = new SimpleListProperty<>(observableList);
         this.player = player;
         player.status().addListener((observableValue, old, newVal) -> {
             if (newVal.equals(DefaultPlayerState.STATE_NAME)) {
-                if (equippedIndex != UNEQUIPPED) {
+                if (equippedIndex.get() != UNEQUIPPED) {
                     player.setStatus(getEquipped().getClass().toString());
                 }
             }
         });
+        equippedIndex.addListener((observableValue, old, newVal) -> {
+            if ((int)newVal == UNEQUIPPED) {
+                usableIndex.setValue(UNEQUIPPED);
+                return;
+            }
+            int usableCount = 0;
+            for (int i = 0; i < equippedIndex.get(); i++) {
+                if (items.get(i).getKey().canUse(this)) {
+                    usableCount += 1;
+                }
+            }
+            usableIndex.setValue(usableCount);
+        });
+    }
+
+    public ListProperty<Pair<Collectable, Integer>> getItems() {
+        return items;
+    }
+
+    public IntegerProperty getUsableIndex() {
+        return usableIndex;
     }
 
     public void addIfNotPresent(Collectable entity) {
@@ -38,10 +69,10 @@ public class PlayerInventory {
     }
 
     private void equipFirst() {
-        equippedIndex = IntStream.range(0, items.size())
+        equippedIndex.setValue(IntStream.range(0, items.size())
                 .filter(i -> items.get(i).getKey().canUse(this))
                 .findFirst()
-                .orElse(-1);
+                .orElse(-1));
         if (!isUnequipped() && player.getPlayerState() instanceof DefaultPlayerState) {
             player.setStatus(getEquipped().getClass().toString());
         } else if (player.getPlayerState() instanceof DefaultPlayerState) {
@@ -51,21 +82,21 @@ public class PlayerInventory {
 
     public void cycleInventory() {
         if (items.stream().noneMatch(p -> p.getKey().canUse(this))) {
-            equippedIndex = UNEQUIPPED;
+            equippedIndex.setValue(UNEQUIPPED);
             player.setStatus(Player.DEFAULT_STATUS);
             return;
         }
-        if (equippedIndex == UNEQUIPPED || !getEquipped().canUse(this)) {
+        if (equippedIndex.get() == UNEQUIPPED || !getEquipped().canUse(this)) {
             equipFirst();
             return;
         }
 
-        int initial = equippedIndex;
+        int initial = equippedIndex.get();
         int i = initial;
         do {
             i = (i + 1) % items.size();
             if (items.get(i).getKey().canUse(this)) {
-                equippedIndex = i;
+                equippedIndex.setValue(i);
                 break;
             }
         } while (i != initial);
@@ -77,12 +108,12 @@ public class PlayerInventory {
     }
 
     public boolean isUnequipped() {
-        return equippedIndex == UNEQUIPPED;
+        return equippedIndex.get() == UNEQUIPPED;
     }
 
     public void useEquipped() {
         if (!isUnequipped() && player.getPlayerState() instanceof DefaultPlayerState) {
-            items.get(equippedIndex).getKey().use(player);
+            items.get(equippedIndex.get()).getKey().use(player);
         }
     }
 
@@ -100,7 +131,7 @@ public class PlayerInventory {
             items.add(new Pair<>(entity, num));
         }
         if (isUnequipped() && player.getPlayerState() instanceof DefaultPlayerState) {
-            equippedIndex = UNEQUIPPED;
+            equippedIndex.setValue(UNEQUIPPED);
             cycleInventory();
         }
     }
@@ -110,7 +141,7 @@ public class PlayerInventory {
                 new Pair<>(obj.getKey(), obj.getValue() -1) : obj);
         boolean removed = items.removeIf(p -> p.getValue() <= 0);
         if (removed && player.getPlayerState() instanceof DefaultPlayerState) {
-            equippedIndex = UNEQUIPPED;
+            equippedIndex.setValue(UNEQUIPPED);
             cycleInventory();
         }
     }
@@ -120,8 +151,8 @@ public class PlayerInventory {
     }
 
     public Collectable getEquipped() {
-        if (equippedIndex == UNEQUIPPED) return null;
-        return items.get(equippedIndex).getKey();
+        if (equippedIndex.get() == UNEQUIPPED) return null;
+        return items.get(equippedIndex.get()).getKey();
     }
 
     public int getCount(Collectable entity) {
@@ -149,7 +180,7 @@ public class PlayerInventory {
                 .orElse(null);
         items.removeIf(p -> p.getKey().getClass() == entity.getClass());
         if (result != null && player.getPlayerState() instanceof DefaultPlayerState) {
-            equippedIndex = UNEQUIPPED;
+            equippedIndex.setValue(UNEQUIPPED);
             cycleInventory();
         }
         return result;

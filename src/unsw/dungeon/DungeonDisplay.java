@@ -1,13 +1,18 @@
 package unsw.dungeon;
 
+import javafx.collections.transformation.FilteredList;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 import javafx.util.Pair;
 
@@ -15,6 +20,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 
 /**
  * A DungeonLoader that also creates the necessary ImageViews for the UI,
@@ -33,7 +39,7 @@ public class DungeonDisplay {
         this.imageMap = imageMap;
     }
 
-    public void initializeDungeon(int width, int height, List<ImageView> entities, Map<Class<? extends Entity>, Label> goals) {
+    public void initialiseDungeon(int width, int height, List<ImageView> entities, Map<Class<? extends Entity>, Label> goals) {
         this.height = height;
         this.width = width;
         gridpane.getChildren().clear();
@@ -98,6 +104,63 @@ public class DungeonDisplay {
         }
     }
 
+    public void initialiseInventory(PlayerInventory inventory) {
+        IntStream.range(0, height).forEach(i -> {
+            Rectangle r = new Rectangle(32, 32);
+            r.setStrokeType(StrokeType.INSIDE);
+            r.setFill(Color.web("0xEAD0A8"));
+            gridpane.add(r, width, i);
+            Rectangle r2 = new Rectangle(32, 32);
+            r2.setFill(Color.web("0xEAD0A8"));
+            gridpane.add(r2, width+1, i);
+        });
+
+        inventory.getUsableIndex().addListener(((observableValue, oldInt, newInt) -> {
+            // TODO: add indicator.
+            if ((int)oldInt != PlayerInventory.UNEQUIPPED) {
+                ((Rectangle)gridpane.getChildren()
+                        .filtered(n ->
+                        GridPane.getColumnIndex(n) == width &&
+                                GridPane.getRowIndex(n) == height-1-(int)oldInt && n instanceof Rectangle
+                        ).get(0)).setFill(Color.web("0xEAD0A8"));
+            }
+            if ((int)newInt != PlayerInventory.UNEQUIPPED) {
+                ((Rectangle)gridpane.getChildren()
+                        .filtered(n ->
+                                GridPane.getColumnIndex(n) == width &&
+                                        GridPane.getRowIndex(n) == height-1-(int)newInt && n instanceof Rectangle
+                        ).get(0)).setFill(Color.web("0xFFCF40"));
+            }
+        }));
+
+        inventory.getItems().addListener(((observableValue, oldList, newList) -> {
+            gridpane.getChildren().removeIf(n -> GridPane.getColumnIndex(n) >= width && !(n instanceof Rectangle));
+            FilteredList<Pair<Collectable, Integer>> usable = newList.filtered(p -> p.getKey().canUse(inventory));
+            FilteredList<Pair<Collectable, Integer>> unUsable = newList.filtered(p -> !p.getKey().canUse(inventory));
+            if (usable.isEmpty() && unUsable.isEmpty()) {
+                gridpane.add(new ImageView(), width, 0);
+                gridpane.add(new ImageView(), width+1, 0);
+            }
+            IntStream.range(0, usable.size()).forEach(i -> {
+                ImageView newView = new ImageView(imageMap.get(usable.get(i).getKey().getClass()).get(DungeonView.DEFAULT_IMG));
+                gridpane.add(newView, width, height-1-i);
+                Label label = new Label(usable.get(i).getValue().toString());
+                label.setPadding(new Insets(0, 0, 0, 12));
+                label.setMinWidth(32);
+                gridpane.add(label, width+1, height-1-i);
+            });
+
+            IntStream.range(0, unUsable.size()).forEach(i -> {
+                ImageView newView = new ImageView(imageMap.get(unUsable.get(i).getKey().getClass()).get(DungeonView.DEFAULT_IMG));
+                gridpane.add(newView, width, i);
+                Label label = new Label(unUsable.get(i).getValue().toString());
+                label.setPadding(new Insets(0, 0, 0, 12));
+                label.setMinWidth(32);
+                gridpane.add(label, width+1, i);
+            });
+        }));
+    }
+
     public void setGoalString(TextFlow goalList, Goal goal) {
         goalList.getChildren().clear();
         String result = createGoalString(goal);
@@ -158,5 +221,4 @@ public class DungeonDisplay {
     public void updateSquares(ImageView newEntity){
         gridpane.getChildren().add(newEntity);
     }
-
 }

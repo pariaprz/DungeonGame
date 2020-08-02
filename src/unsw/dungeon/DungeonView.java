@@ -101,13 +101,14 @@ public class DungeonView {
         controller.getInstructionScreen().start();
     }
 
-    public void loadDungeon(int width, int height, List<EntityWrapper> initialEntities) {
+    public void loadDungeon(int width, int height, List<EntityWrapper> initialEntities, PlayerInventory inventory) {
         setup(width, height, initialEntities);
         initialEntities.forEach(this::onEntityLoad);
         display.setGridpane(squares);
         display.addGoalIcons((FlowPane) pauseMenu.lookup("#goal-icons"), goals);
         display.setGoalString((TextFlow) pauseMenu.lookup("#goal-list"), controller.getGoal());
-        display.initializeDungeon(width, height, entities, goals);
+        display.initialiseDungeon(width, height, entities, goals);
+        display.initialiseInventory(inventory);
         pauseMenu.setVisible(false);
     }
 
@@ -157,20 +158,27 @@ public class DungeonView {
         });
     }
 
+    public void initialiseInventory() {
+
+    }
+
     @FXML
     public void handleKeyPress(KeyEvent event) {
         switch (event.getCode()) {
             case Q:
                 System.exit(0);
+                display.addFinalText(completeText, "", "0x000000");
             case M:
                 display.showMainMenu(mainMenu, LEVELS, this::selectDungeon);
                 controller.pause();
+                display.addFinalText(completeText, "", "0x000000");
                 break;
             case R:
                 if (selectedLevel != null) {
                     selectDungeon(selectedLevel);
                     pauseMenu.setVisible(false);
                 }
+                display.addFinalText(completeText, "", "0x000000");
                 break;
             case P:
                 if (pauseMenu.isVisible()) {

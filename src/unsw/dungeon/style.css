@@ -5,7 +5,7 @@
 
 .label, #goal {
     -fx-font-family: 'VT323';
-    -fx-font-size: 15;
+    -fx-font-size: 20;
 }
 
 #hunter, #complete {

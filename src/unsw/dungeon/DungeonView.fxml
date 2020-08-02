@@ -17,7 +17,7 @@
       <TextFlow textAlignment="CENTER">
          <Text id="hunter" text="Dungeon Hunter" textAlignment="CENTER" />
       </TextFlow>
-      <GridPane fx:id="squares" alignment="CENTER" onKeyPressed="#handleKeyPress" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+      <GridPane fx:id="squares" alignment="CENTER" onKeyPressed="#handleKeyPress" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" translateX="64">
          <columnConstraints>
             <ColumnConstraints />
          </columnConstraints>
