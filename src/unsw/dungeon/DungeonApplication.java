@@ -18,11 +18,20 @@ public class DungeonApplication extends Application {
         primaryStage.setTitle("Dungeon");
 
         DungeonController controller = new DungeonController();
+        InstructionScreen instrScreen = new InstructionScreen(primaryStage);
+        controller.setInstructionScreen(instrScreen);
+
+        instrScreen.getInstructionController().setStage(primaryStage);
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("DungeonView.fxml"));
         loader.setController(controller.loadDungeonView());
 
+
+
         Parent root = loader.load();
         Scene scene = new Scene(root);
+        instrScreen.getInstructionController().setScene(scene);
+
         scene.getStylesheets().add(getClass().getResource("./style.css").toExternalForm());
         root.requestFocus();
 

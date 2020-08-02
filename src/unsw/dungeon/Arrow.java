@@ -62,6 +62,7 @@ public class Arrow extends Moveable {
     public void interact(Entity actor, KeyCode keyCode) {
         if (actor instanceof Slayable) {
             ((Slayable) actor).registerHit(2);
+            delete();
         }
     }
 }

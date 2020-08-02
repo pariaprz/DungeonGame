@@ -19,6 +19,7 @@ import javafx.scene.input.KeyCode;
 public class DungeonController {
 
     private DungeonView dungeonView;
+    private InstructionScreen instructionScreen;
     private Dungeon dungeon;
     private Goal goal;
     private boolean isGameComplete = false;
@@ -184,6 +185,14 @@ public class DungeonController {
     public void addRuntimeEntity(Entity entity) {
         EntityWrapper wrappedEntity = onEntityLoad(entity);
         dungeonView.addEntity(wrappedEntity);
+    }
+
+    public void setInstructionScreen(InstructionScreen instructionScreen){
+        this.instructionScreen = instructionScreen;
+    }
+
+    public InstructionScreen getInstructionScreen(){
+        return instructionScreen;
     }
 }
 
