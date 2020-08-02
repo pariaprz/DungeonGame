@@ -45,7 +45,7 @@ public class DungeonDisplay {
         gridpane.getChildren().clear();
 
         Image ground = new Image((new File("images/dirt_0_new.png")).toURI().toString());
-        Image inv_1sec = new Image((new File("images/Invincibility_Time_Icons/invincibility_1sec.png")).toURI().toString());
+
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 gridpane.add(new ImageView(ground), x, y);
@@ -56,20 +56,37 @@ public class DungeonDisplay {
             gridpane.getChildren().add(entity);
         }
 
-        int[] xPosition = { 0 };
-        int yPosition = height+1;
+        int[] xPosition = {0};
         goals.forEach((entity, label) -> {
-            if (entity == Exit.class) return;
-            gridpane.add(new ImageView(imageMap.get(entity).get(DungeonView.DEFAULT_IMG)), xPosition[0]++, yPosition);
-            gridpane.add(label, xPosition[0], yPosition, 2, 1);
+        if (entity == Exit.class) return;
+            gridpane.add(new ImageView(imageMap.get(entity).get(DungeonView.DEFAULT_IMG)), xPosition[0]++, height);
+            gridpane.add(label, xPosition[0], height, 2, 1);
             xPosition[0] += 2;
         });
         if (goals.get(Exit.class) != null) {
-            gridpane.add(new ImageView(imageMap.get(Exit.class).get(DungeonView.DEFAULT_IMG)), xPosition[0]++, yPosition);
-            gridpane.add(goals.get(Exit.class), xPosition[0], yPosition, 5, 1);
+            gridpane.add(new ImageView(imageMap.get(Exit.class).get(DungeonView.DEFAULT_IMG)), xPosition[0]++, height);
+            gridpane.add(goals.get(Exit.class), xPosition[0], height, 5, 1);
         }
 
-        gridpane.add(new ImageView(inv_1sec), 4, 0);
+        initialisePlayerStateTimer();
+    }
+
+    private void initialisePlayerStateTimer() {
+        PlayerState.stateName.addListener((observableValue, oldState, newState) -> {
+            gridpane.getChildren().removeIf(n -> GridPane.getRowIndex(n) == height && GridPane.getColumnIndex(n) == width-1);
+            if (newState.equals(InvinciblePlayerState.STATE_NAME)) {
+                gridpane.add(new ImageView(imageMap.get(Invincibility.class).get(DungeonView.DEFAULT_IMG)), width-1, height);
+            } else if (newState.equals(WallWalkerPlayerState.STATE_NAME)) {
+                gridpane.add(new ImageView(imageMap.get(WallWalker.class).get(DungeonView.DEFAULT_IMG)), width-1, height);
+            }
+        });
+        PlayerState.timeRemaining.addListener((observableValue, oldTime, newTime) -> {
+            gridpane.getChildren().removeIf(n -> GridPane.getRowIndex(n) == height
+                    && GridPane.getColumnIndex(n) == width-1 && n instanceof Text);
+            Text text = new Text(String.valueOf(newTime));
+            text.setId("state-timer");
+            gridpane.add(text, width-1, height);
+        });
     }
 
     public void showMainMenu(GridPane mainMenu, List<Pair<String, String>> levels,
@@ -95,13 +112,6 @@ public class DungeonDisplay {
 
     public void setGridpane(GridPane gridpane) {
         this.gridpane = gridpane;
-    }
-
-    public void addGoalIcons(FlowPane goalIcons, Map<Class<? extends Entity>, Label> goals) {
-        goalIcons.getChildren().clear();
-        for (Class<? extends Entity> entity : goals.keySet()) {
-            goalIcons.getChildren().add(new ImageView(imageMap.get(entity).get(DungeonView.DEFAULT_IMG)));
-        }
     }
 
     public void initialiseInventory(PlayerInventory inventory) {
@@ -159,6 +169,13 @@ public class DungeonDisplay {
                 gridpane.add(label, width+1, i);
             });
         }));
+    }
+
+    public void addGoalIcons(FlowPane goalIcons, Map<Class<? extends Entity>, Label> goals) {
+        goalIcons.getChildren().clear();
+        for (Class<? extends Entity> entity : goals.keySet()) {
+            goalIcons.getChildren().add(new ImageView(imageMap.get(entity).get(DungeonView.DEFAULT_IMG)));
+        }
     }
 
     public void setGoalString(TextFlow goalList, Goal goal) {

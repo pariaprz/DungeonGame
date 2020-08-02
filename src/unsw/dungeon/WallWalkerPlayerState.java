@@ -8,25 +8,21 @@ import java.util.TimerTask;
  * Entity consumed only by the player. Makes the player be able to walk through walls.
  * It is deleted once it is consumed.
  */
-public class WallWalkerPlayerState implements PlayerState {
+public class WallWalkerPlayerState extends PlayerState {
     private final Player player;
     private Timer taskTimer;
 
     public static String STATE_NAME = "Wallwalker";
+    public static int MAX_TIME = 3;
     public WallWalkerPlayerState(Player player) {
         this.player = player;
     }
 
     public void startWallWalker() {
+        setState();
         player.setState(this);
         taskTimer = new Timer();
-        WallWalkerPlayerState thisState = this;
-        TimerTask task = new TimerTask() {
-            public void run(){
-                thisState.expireState();
-            }
-        };
-        taskTimer.schedule(task, 3*1000);                   //Time in milliseconds
+        PlayerState.scheduleState(this, taskTimer, MAX_TIME);
     }
 
     @Override

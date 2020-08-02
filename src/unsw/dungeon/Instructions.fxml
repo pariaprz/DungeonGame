@@ -111,7 +111,9 @@
       <Line endX="228.76287841796875" endY="42.58184814453125" layoutX="130.0" layoutY="613.0" startX="15.708755493164062" startY="79.00140380859375" />
       <Text layoutX="91.0" layoutY="706.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Swap items" />
       <Line endX="293.4228515625" endY="80.35943603515625" layoutX="207.0" layoutY="608.0" startX="293.4228820800781" startY="127.2725830078125" />
-      <Text layoutX="469.0" layoutY="765.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Use items" />
+      <Text layoutX="469.0" layoutY="757.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Use items" />
+      <Line endX="355.4228515625" endY="48.35943603515625" layoutX="207.0" layoutY="608.0" startX="380.4228820800781" startY="127.2725830078125" />
+      <Text layoutX="565.0" layoutY="757.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Main menu" />
       <Line endX="693.142333984375" endY="44.43359375" layoutX="150.0" layoutY="633.0" startX="720.4569702148438" startY="109.98870849609375" />
       <Text layoutX="857.0" layoutY="757.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Move" />
       <Text layoutX="171.0" layoutY="573.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Quit" />

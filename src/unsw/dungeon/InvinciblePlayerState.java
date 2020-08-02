@@ -1,6 +1,9 @@
 package unsw.dungeon;
 
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -8,12 +11,11 @@ import java.util.TimerTask;
  * Entity consumed only by the player. Makes the player invincible.
  * It is deleted once it is consumed.
  */
-public class InvinciblePlayerState implements PlayerState {
+public class InvinciblePlayerState extends PlayerState {
     private final Player player;
     private Timer taskTimer;
 
     public static String STATE_NAME = "Invincible";
-    public static int TIME_LEFT = 5;
     public static int MAX_TIME = 5;
 
     public InvinciblePlayerState(Player player) {
@@ -21,26 +23,10 @@ public class InvinciblePlayerState implements PlayerState {
     }
 
     public void startInvincibility() {
+        setState();
         player.setState(this);
-        int delay = 1000;
-        int period = 1000;
-        TIME_LEFT = MAX_TIME;
         taskTimer = new Timer();
-        InvinciblePlayerState thisState = this;
-        TimerTask task = new TimerTask() {
-            public void run(){
-                thisState.expireState();
-            }
-        };
-        taskTimer.schedule(task, 5*1000);                   //Time in milliseconds
-        
-        taskTimer.scheduleAtFixedRate(new TimerTask(){
-            public void run(){
-                TIME_LEFT--;
-                System.out.println(TIME_LEFT);
-            }
-        }, delay, period);
-    
+        PlayerState.scheduleState(this, taskTimer, MAX_TIME);
     }
 
     @Override
