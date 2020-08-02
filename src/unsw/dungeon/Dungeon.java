@@ -19,6 +19,7 @@ public class Dungeon {
 
     private final int width, height;
     private final List<Entity> entities;
+    private DungeonController controller;
 
     public Dungeon(int width, int height) {
         this.width = width;
@@ -46,11 +47,20 @@ public class Dungeon {
         return entities;
     }
 
+    public void setController(DungeonController controller) {
+        this.controller = controller;
+    }
+
     public<T extends Entity> List<T> getEntities(Class<T> objClass) {
         return entities.stream()
                 .filter(objClass::isInstance)
                 .map(objClass::cast)
                 .collect(Collectors.toList());
+    }
+
+    public void createRuntimeEntity(Entity entity) {
+        this.addEntity(entity);
+        controller.addRuntimeEntity(entity);
     }
 
     public List<Entity> getEntitiesAt(Position p) {
@@ -59,7 +69,6 @@ public class Dungeon {
 
     public void removeEntity(Entity entity) {
         entities.remove(entity);
-        
     }
 
     public List<Entity> getEntitiesAt(int x, int y) {
