@@ -28,82 +28,82 @@
       <Button fx:id="Return" layoutX="1107.0" layoutY="27.0" mnemonicParsing="false" onAction="#handleReturn" text="Return" />
       <ImageView layoutX="500.0" layoutY="153.0">
          <image>
-            <Image url="@../../../../../images/brilliant_blue_new.png" />
+            <Image url="@./images/brilliant_blue_new.png" />
          </image>
       </ImageView>
       <ImageView layoutX="528.0" layoutY="180.0">
          <image>
-            <Image url="@../../../../../images/wallwalker.png" />
+            <Image url="@./images/wallwalker.png" />
          </image>
       </ImageView>
       <ImageView layoutX="858.0" layoutY="229.0">
          <image>
-            <Image url="@../../../../../images/portal.png" />
+            <Image url="@./images/portal.png" />
          </image>
       </ImageView>
       <ImageView layoutX="810.0" layoutY="321.0">
          <image>
-            <Image url="@../../../../../images/pressure_plate.png" />
+            <Image url="@.images/pressure_plate.png" />
          </image>
       </ImageView>
       <ImageView layoutX="846.0" layoutY="276.0">
          <image>
-            <Image url="@../../../../../images/boulder.png" />
+            <Image url="@./images/boulder.png" />
          </image>
       </ImageView>
       <ImageView layoutX="879.0" layoutY="395.0">
          <image>
-            <Image url="@../../../../../images/deep_elf_master_archer.png" />
+            <Image url="@./images/deep_elf_master_archer.png" />
          </image>
       </ImageView>
       <ImageView layoutX="909.0" layoutY="395.0">
          <image>
-            <Image url="@../../../../../images/hound.png" />
+            <Image url="@./images/hound.png" />
          </image>
       </ImageView>
       <ImageView layoutX="460.0" layoutY="110.0">
          <image>
-            <Image url="@../../../../../images/human_new.png" />
+            <Image url="@./images/human_new.png" />
          </image>
       </ImageView>
       <ImageView layoutX="774.0" layoutY="358.0">
          <image>
-            <Image url="@../../../../../images/key.png" />
+            <Image url="@./images/key.png" />
          </image>
       </ImageView>
       <ImageView layoutX="695.0" layoutY="358.0">
          <image>
-            <Image url="@../../../../../images/bow.png" />
+            <Image url="@./images/bow.png" />
          </image>
       </ImageView>
       <ImageView layoutX="728.0" layoutY="357.0">
          <image>
-            <Image url="@../../../../../images/greatsword_1_new.png" />
+            <Image url="@./images/greatsword_1_new.png" />
          </image>
       </ImageView>
       <ImageView layoutX="861.0" layoutY="445.0">
          <image>
-            <Image url="@../../../../../images/player_with_sword.png" />
+            <Image url="@./images/player_with_sword.png" />
          </image>
       </ImageView>
       <ImageView layoutX="895.0" layoutY="445.0">
          <image>
-            <Image url="@../../../../../images/ranger.png" />
+            <Image url="@./images/ranger.png" />
          </image>
       </ImageView>
       <ImageView layoutX="945.0" layoutY="480.0">
          <image>
-            <Image url="@../../../../../images/open_door.png" />
+            <Image url="@./images/open_door.png" />
          </image>
       </ImageView>
       <ImageView layoutX="905.0" layoutY="480.0">
          <image>
-            <Image url="@../../../../../images/closed_door.png" />
+            <Image url="@./images/closed_door.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="202.0" fitWidth="646.0" layoutX="261.0" layoutY="516.0">
          <image>
-            <Image url="@../../../../../images/keyboard.png" />
+            <Image url="@./images/keyboard.png" />
          </image>
       </ImageView>
       <Line endX="320.706787109375" endY="-3.86834716796875" layoutX="120.0" layoutY="603.0" startX="98.54777526855469" startY="17.98333740234375" />
