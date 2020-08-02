@@ -76,6 +76,12 @@ public class Player extends Moveable {
         setStatus(ARMED_STATUS);
     }
 
+    public boolean isRanger(){
+        if (hasBow() && getArrowCount() > 0){
+            return true;
+        }
+        return false;
+    }
     public boolean hasBow(){
         return Bow;
     }
@@ -101,7 +107,13 @@ public class Player extends Moveable {
 
     public void shootArrow(){
         currArrowCount--;
-        if(getArrowCount() == 0) setStatus(DEFAULT_STATUS);
+        if(getArrowCount() == 0){
+            if (hasSword()){
+                setStatus(ARMED_STATUS);
+            } else {
+                setStatus(DEFAULT_STATUS);
+            }
+        }
     }
 
     public boolean hasSword() {
@@ -128,7 +140,13 @@ public class Player extends Moveable {
                 })
         );
         swordCount--;
-        if (swordCount == 0) setStatus(DEFAULT_STATUS);
+        if (swordCount == 0) {
+            if (isRanger()){
+                setStatus(RANGER_STATUS);
+            } else {
+            setStatus(DEFAULT_STATUS);
+            }
+        }    
     }
 
     public PlayerState getPlayerState() {
@@ -145,7 +163,7 @@ public class Player extends Moveable {
             setStatus(INVINCIBLE_STATUS);
         } else if (hasSword()) {
             setStatus(ARMED_STATUS);
-        } else if (hasBow() && currArrowCount > 0){
+        } else if (isRanger()){
             setStatus(RANGER_STATUS);
         } else if (playerState instanceof WallWalkerPlayerState){
             setStatus(WALLWALKER_STATUS);
