@@ -16,7 +16,6 @@ public class WallWalker extends Consumable {
     @Override
     public void interact(Entity actor, KeyCode keyCode) {
         if (actor instanceof Player) {
-            System.out.println("YOU CAN WALK THROUGH WALLS NOW");
             consume();
 
             new WallWalkerPlayerState((Player) actor).startWallWalker();

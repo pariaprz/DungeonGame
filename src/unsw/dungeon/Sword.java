@@ -29,7 +29,6 @@ public class Sword extends Consumable implements Collectable {
     @Override
     public void use(Player player) {
         if (player.getInventory().contains(this)) {
-            System.out.println("Using sword");
             List<Position> areaOfEffect = List.of(
                     Direction.UP.fromPosition(player.getPosition()),
                     Direction.DOWN.fromPosition(player.getPosition()),

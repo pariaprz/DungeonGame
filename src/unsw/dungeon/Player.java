@@ -68,7 +68,6 @@ public class Player extends Moveable {
     
     public void setState(PlayerState playerState) {
         this.state.expireState();
-        setStatus(playerState.getStateName());
         state = playerState;
         setStatus(playerState.getStateName());
     }

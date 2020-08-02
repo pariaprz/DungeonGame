@@ -153,7 +153,6 @@ public class DungeonView {
         entity.addStatusObserver((PropertyChangeEvent event) -> {
             String update = Optional.of((String)(event.getNewValue())).orElse(DEFAULT_IMG);
             Image defaultImg = imageMap.get(entity.entityClass).get(DEFAULT_IMG);
-            System.out.println("getting img: " + update);
             node.setImage(imageMap.get(entity.entityClass).getOrDefault(update, defaultImg));
         });
     }

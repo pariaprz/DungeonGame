@@ -23,9 +23,9 @@ public class InvinciblePlayerState extends PlayerState {
     }
 
     public void startInvincibility() {
-        setState();
         player.setState(this);
         taskTimer = new Timer();
+        setState();
         PlayerState.scheduleState(this, taskTimer, MAX_TIME);
     }
 

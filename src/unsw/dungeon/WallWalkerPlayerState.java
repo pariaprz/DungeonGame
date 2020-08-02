@@ -19,9 +19,9 @@ public class WallWalkerPlayerState extends PlayerState {
     }
 
     public void startWallWalker() {
-        setState();
         player.setState(this);
         taskTimer = new Timer();
+        setState();
         PlayerState.scheduleState(this, taskTimer, MAX_TIME);
     }
 

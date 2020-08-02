@@ -78,6 +78,8 @@ public class DungeonDisplay {
                 gridpane.add(new ImageView(imageMap.get(Invincibility.class).get(DungeonView.DEFAULT_IMG)), width-1, height);
             } else if (newState.equals(WallWalkerPlayerState.STATE_NAME)) {
                 gridpane.add(new ImageView(imageMap.get(WallWalker.class).get(DungeonView.DEFAULT_IMG)), width-1, height);
+            } else {
+                System.out.println("Switching to default.");
             }
         });
         PlayerState.timeRemaining.addListener((observableValue, oldTime, newTime) -> {
