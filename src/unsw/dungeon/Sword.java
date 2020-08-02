@@ -39,7 +39,7 @@ public class Sword extends Consumable implements Collectable {
             areaOfEffect.forEach(position ->
                     player.getDungeon().getEntitiesAt(position).forEach(entity -> {
                         if (entity instanceof Slayable) {
-                            ((Slayable) entity).registerHit();
+                            ((Slayable) entity).registerHit(2);
                         }
                     }));
             player.getInventory().decrementIfExists(this);

@@ -28,6 +28,7 @@ public class InstructionScreen {
 
         Parent root = loader.load();
         scene = new Scene(root);
+        root.requestFocus();
     }
 
     public void start(){

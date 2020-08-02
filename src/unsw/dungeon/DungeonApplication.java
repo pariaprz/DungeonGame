@@ -31,7 +31,8 @@ public class DungeonApplication extends Application {
         Parent root = loader.load();
         Scene scene = new Scene(root);
         instrScreen.getInstructionController().setScene(scene);
-
+        instrScreen.getInstructionController().setRoot(root);
+        
         scene.getStylesheets().add(getClass().getResource("./style.css").toExternalForm());
         root.requestFocus();
 

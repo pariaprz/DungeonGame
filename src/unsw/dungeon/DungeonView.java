@@ -35,7 +35,7 @@ public class DungeonView {
     private static List<Pair<String, String>> LEVELS = List.of(
             new Pair<>("Maze", "maze.json"), new Pair<>("Boulders", "boulders.json"),
             new Pair<>("Treasure Galore", "treasure_galore.json"), new Pair<>("Fancy!", "fancy_goal.json"),
-            new Pair<>("Test", "testing.json"));
+            new Pair<>("Test", "testing.json"), new Pair<>("Portals'R'Us", "portals'R'Us.json"));
     private final Map<Class<? extends Entity>, Map<String, Image>> imageMap;
     private final DungeonController controller;
     private DungeonDisplay display;
