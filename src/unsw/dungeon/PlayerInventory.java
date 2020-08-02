@@ -8,9 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.util.Pair;
 
-import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.IntStream;
 
 public class PlayerInventory {
@@ -63,7 +61,7 @@ public class PlayerInventory {
                         items.add(new Pair<>(entity, 1))
                 );
         items.removeIf(pair -> pair.getKey().getClass() == entity.getClass() && pair.getValue() <= 0);
-        if (isUnequipped() && player.getPlayerState() instanceof DefaultPlayerState) {
+        if (isUnequipped()) {
             cycleInventory();
         }
     }
@@ -83,7 +81,9 @@ public class PlayerInventory {
     public void cycleInventory() {
         if (items.stream().noneMatch(p -> p.getKey().canUse(this))) {
             equippedIndex.setValue(UNEQUIPPED);
-            player.setStatus(Player.DEFAULT_STATUS);
+            if (player.getPlayerState() instanceof DefaultPlayerState) {
+                player.setStatus(Player.DEFAULT_STATUS);
+            }
             return;
         }
         if (equippedIndex.get() == UNEQUIPPED || !getEquipped().canUse(this)) {
@@ -130,7 +130,7 @@ public class PlayerInventory {
         if (!found[0]) {
             items.add(new Pair<>(entity, num));
         }
-        if (isUnequipped() && player.getPlayerState() instanceof DefaultPlayerState) {
+        if (isUnequipped()) {
             equippedIndex.setValue(UNEQUIPPED);
             cycleInventory();
         }
@@ -179,7 +179,7 @@ public class PlayerInventory {
                 .findFirst()
                 .orElse(null);
         items.removeIf(p -> p.getKey().getClass() == entity.getClass());
-        if (result != null && player.getPlayerState() instanceof DefaultPlayerState) {
+        if (result != null) {
             equippedIndex.setValue(UNEQUIPPED);
             cycleInventory();
         }

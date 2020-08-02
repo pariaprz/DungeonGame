@@ -1,30 +1,122 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: EAD0A8;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Text layoutX="5.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="INSTRUCTIONS" textAlignment="CENTER" wrappingWidth="1202.5059661865234" AnchorPane.bottomAnchor="696.953125" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="0.3511766706194521" AnchorPane.topAnchor="1.5625">
+      <Text id="instruction-title" layoutX="5.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: VT323;" text="INSTRUCTIONS" textAlignment="CENTER" wrappingWidth="1202.5059661865234" AnchorPane.bottomAnchor="696.953125" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="0.3511766706194521" AnchorPane.topAnchor="1.5625">
          <font>
             <Font name="Colonna MT" size="96.0" />
          </font>
       </Text>
-      <Text layoutX="162.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Use the arrow keys to move yourself around the dungeon" wrappingWidth="339.8509521484375" />
-      <Text layoutX="162.0" layoutY="170.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Consuming the blue potion will make you invincible for 5 seconds" wrappingWidth="479.2795104980469" />
-      <Text layoutX="162.0" layoutY="201.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Consuming the red potion will let you walk through walls for 3 seconds" wrappingWidth="391.8509216308594" />
-      <Text layoutX="162.0" layoutY="391.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Just picked up that shiny sword? No problems. Just press the SPACE bar to swing that bad boy and watch your enemies disappear" wrappingWidth="707.8509216308594" />
-      <Text layoutX="162.0" layoutY="421.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wow! That's a nice bow you got there Legolas. If only you could shoot enemies from distance. OH WAIT, YOU CAN! SPACE Bar. Just remember, dogs take 2 arrows to kill" wrappingWidth="707.8509216308594" />
-      <Text layoutX="162.0" layoutY="469.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Can't decide between decapitation or imapling your enemy with an arrow? No dramas. Just press Z to toggle between a sword and bow when you have both in your inventory" wrappingWidth="707.8509216308594" />
-      <Text layoutX="162.0" layoutY="525.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What's that? Just got ripped apart by one of the dogs and blaming it on the game? It's ok buddy. You're definitely right. Just press R to restart the level" wrappingWidth="707.8509216308594" />
-      <Text layoutX="162.0" layoutY="576.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Had enough of this level? No worries pal. It's definitely not because you suck and can't finish the level. Just press M to return to the Main Menu" wrappingWidth="707.8509216308594" />
-      <Text layoutX="162.0" layoutY="624.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Oh no! Your mum just pulled into the driveway and you forgot to hang out that washing she told you to do about 3 hours ago but you're also about to be killed by one of those low resolution enemy dudes. We got you. Just press P to pause the game" wrappingWidth="707.8509216308595" />
-      <Text layoutX="162.0" layoutY="677.0" strokeType="OUTSIDE" strokeWidth="0.0" text="AHAHAHAH! You just lost for the 5th time in a row. Wow you really are bad. Just stop playing. Please. Just Press Q to exit the game" wrappingWidth="707.8509216308595" />
-      <Text layoutX="162.0" layoutY="350.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Those floor switches look real suspecious don't you think? If only there was something heavy that you could put on them?" wrappingWidth="707.8509216308594" />
-      <Text layoutX="162.0" layoutY="297.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Alright hercules, time to muscle up! See those boulders over there? You can move them just by moving into them. But don't get too excited, you can only move 1 at a time. " wrappingWidth="707.8509216308594" />
-      <Text layoutX="162.0" layoutY="245.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Round and round that portal goes. Where will it teleport you to? Nobody Knows! (Unless there's only 1 set of portals in the level in which case, I'm sure you can take a wild guess)" wrappingWidth="707.8509216308594" />
+      <Text layoutX="162.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: VT323;" text="Use the arrow keys to move yourself around the dungeon" wrappingWidth="377.8509521484375" />
+      <Text layoutX="159.0" layoutY="169.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: VT323;" text="Consuming the blue potion will make you invincible for 5 seconds" wrappingWidth="410.0824279785156" />
+      <Text layoutX="160.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: VT323;" text="Consuming the red potion will let you walk through walls for 3 seconds" wrappingWidth="439.1963195800781" />
+      <Text layoutX="162.0" layoutY="376.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: VT323;" text="Just equipped an item in you inventory? Nice! Just press the SPACE bar to use it and see what it does" wrappingWidth="707.8509216308594" />
+      <Text layoutX="162.0" layoutY="414.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: VT323;" text="Wondering what to do with that nice bow and cool sword? Well there are plenty of creatures that want to hurt you. Teach them not to mess with you." wrappingWidth="707.8509216308594" />
+      <Text layoutX="162.0" layoutY="460.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: VT323;" text="Can't decide between decapitation or imapling your enemy with an arrow? No dramas. Just press Z to toggle between the items in your inventory" wrappingWidth="707.8509216308594" />
+      <Text layoutX="162.0" layoutY="337.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: VT323;" text="Those floor switches look real suspicious don't you think? If only there was something heavy that you could put on them?" wrappingWidth="707.8509216308594" />
+      <Text layoutX="162.0" layoutY="291.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: VT323;" text="Alright hercules, time to muscle up! See those boulders over there? You can move them just by moving into them. But don't get too excited, you can only move 1 at a time. " wrappingWidth="707.8509216308594" />
+      <Text layoutX="162.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: VT323;" text="Round and round that portal goes. Where will it teleport you to? Nobody Knows! (Unless there's only 1 set of portals in the level in which case, I'm sure you can take a wild guess)" wrappingWidth="707.8509216308594" />
+      <Text layoutX="162.0" layoutY="500.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: VT323;" text="Got a shiny key, and tired of stupid doors? Equip your key and use it when near a door. Hint: Only a specific key will unlock a specific door" />
       <Button fx:id="Return" layoutX="1107.0" layoutY="27.0" mnemonicParsing="false" onAction="#handleReturn" text="Return" />
+      <ImageView layoutX="500.0" layoutY="153.0">
+         <image>
+            <Image url="@../../../../../images/brilliant_blue_new.png" />
+         </image>
+      </ImageView>
+      <ImageView layoutX="528.0" layoutY="180.0">
+         <image>
+            <Image url="@../../../../../images/wallwalker.png" />
+         </image>
+      </ImageView>
+      <ImageView layoutX="858.0" layoutY="229.0">
+         <image>
+            <Image url="@../../../../../images/portal.png" />
+         </image>
+      </ImageView>
+      <ImageView layoutX="810.0" layoutY="321.0">
+         <image>
+            <Image url="@../../../../../images/pressure_plate.png" />
+         </image>
+      </ImageView>
+      <ImageView layoutX="846.0" layoutY="276.0">
+         <image>
+            <Image url="@../../../../../images/boulder.png" />
+         </image>
+      </ImageView>
+      <ImageView layoutX="879.0" layoutY="395.0">
+         <image>
+            <Image url="@../../../../../images/deep_elf_master_archer.png" />
+         </image>
+      </ImageView>
+      <ImageView layoutX="909.0" layoutY="395.0">
+         <image>
+            <Image url="@../../../../../images/hound.png" />
+         </image>
+      </ImageView>
+      <ImageView layoutX="460.0" layoutY="110.0">
+         <image>
+            <Image url="@../../../../../images/human_new.png" />
+         </image>
+      </ImageView>
+      <ImageView layoutX="774.0" layoutY="358.0">
+         <image>
+            <Image url="@../../../../../images/key.png" />
+         </image>
+      </ImageView>
+      <ImageView layoutX="695.0" layoutY="358.0">
+         <image>
+            <Image url="@../../../../../images/bow.png" />
+         </image>
+      </ImageView>
+      <ImageView layoutX="728.0" layoutY="357.0">
+         <image>
+            <Image url="@../../../../../images/greatsword_1_new.png" />
+         </image>
+      </ImageView>
+      <ImageView layoutX="861.0" layoutY="445.0">
+         <image>
+            <Image url="@../../../../../images/player_with_sword.png" />
+         </image>
+      </ImageView>
+      <ImageView layoutX="895.0" layoutY="445.0">
+         <image>
+            <Image url="@../../../../../images/ranger.png" />
+         </image>
+      </ImageView>
+      <ImageView layoutX="945.0" layoutY="480.0">
+         <image>
+            <Image url="@../../../../../images/open_door.png" />
+         </image>
+      </ImageView>
+      <ImageView layoutX="905.0" layoutY="480.0">
+         <image>
+            <Image url="@../../../../../images/closed_door.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="202.0" fitWidth="646.0" layoutX="261.0" layoutY="516.0">
+         <image>
+            <Image url="@../../../../../images/keyboard.png" />
+         </image>
+      </ImageView>
+      <Line endX="320.706787109375" endY="-3.86834716796875" layoutX="120.0" layoutY="603.0" startX="98.54777526855469" startY="17.98333740234375" />
+      <Text layoutX="160.0" layoutY="626.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restart" />
+      <Line endX="228.76287841796875" endY="42.58184814453125" layoutX="130.0" layoutY="613.0" startX="15.708755493164062" startY="79.00140380859375" />
+      <Text layoutX="91.0" layoutY="706.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Swap items" />
+      <Line endX="293.4228515625" endY="80.35943603515625" layoutX="207.0" layoutY="608.0" startX="293.4228820800781" startY="127.2725830078125" />
+      <Text layoutX="469.0" layoutY="765.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Use items" />
+      <Line endX="693.142333984375" endY="44.43359375" layoutX="150.0" layoutY="633.0" startX="720.4569702148438" startY="109.98870849609375" />
+      <Text layoutX="857.0" layoutY="757.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Move" />
+      <Text layoutX="171.0" layoutY="573.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Quit" />
+      <Line endX="205.0902099609375" endY="-13.86834716796875" layoutX="130.0" layoutY="613.0" startX="81.26387023925781" startY="-43.00396728515625" />
+      <Text layoutX="927.0" layoutY="566.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pause" />
+      <Line endX="517.40283203125" endY="-23.86834716796875" layoutX="140.0" layoutY="623.0" startX="787.0" startY="-61.5" />
    </children>
 </AnchorPane>
