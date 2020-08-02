@@ -1,11 +1,6 @@
 package unsw.dungeon;
 
-
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-
 import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Entity consumed only by the player. Makes the player invincible.

@@ -1,13 +1,6 @@
 package unsw.dungeon;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.util.Pair;
-
-import static javafx.scene.input.KeyCode.K;
-import static javafx.scene.input.KeyCode.UP;
 
 /**
  * The direction of a motion of an object.

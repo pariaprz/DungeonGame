@@ -1,71 +1,71 @@
-package test;
+// package test;
 
-import javafx.scene.input.KeyCode;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import unsw.dungeon.*;
+// import javafx.scene.input.KeyCode;
+// import org.junit.jupiter.api.BeforeAll;
+// import org.junit.jupiter.api.BeforeEach;
+// import org.junit.jupiter.api.Test;
+// import org.junit.jupiter.api.TestInstance;
+// import unsw.dungeon.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+// import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class TestWall {
+// @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+// public class TestWall {
 
-    private Dungeon dungeon;
+//     private Dungeon dungeon;
 
-    @BeforeEach
-    public void BeforeEach() {
-        dungeon = new Dungeon(10, 10);
-        dungeon.addEntity(new Wall(4, 4, dungeon));
-    }
+//     @BeforeEach
+//     public void BeforeEach() {
+//         dungeon = new Dungeon(10, 10);
+//         dungeon.addEntity(new Wall(4, 4, dungeon));
+//     }
 
-    @Test
-    public void PlayerWallInteraction(){
-        Player p1 = new Player(3, 4, dungeon);      //Test movement from the left of wall into the wall
-        Player p2 = new Player(5, 4, dungeon);      //Test movement from the right of wall into the wall
-        Player p3 = new Player(4, 3, dungeon);      //Test movement from above the wall into the wall
-        Player p4 = new Player(4, 5, dungeon);      //Test movement from below the wall into the wall
+//     @Test
+//     public void PlayerWallInteraction(){
+//         Player p1 = new Player(3, 4, dungeon);      //Test movement from the left of wall into the wall
+//         Player p2 = new Player(5, 4, dungeon);      //Test movement from the right of wall into the wall
+//         Player p3 = new Player(4, 3, dungeon);      //Test movement from above the wall into the wall
+//         Player p4 = new Player(4, 5, dungeon);      //Test movement from below the wall into the wall
 
-        p1.handleDirectionKey(KeyCode.RIGHT);
-        assertEquals(3, p1.getX());
+//         p1.handleDirectionKey(KeyCode.RIGHT);
+//         assertEquals(3, p1.getX());
 
-        p2.handleDirectionKey(KeyCode.LEFT);
-        assertEquals(5, p2.getX());
+//         p2.handleDirectionKey(KeyCode.LEFT);
+//         assertEquals(5, p2.getX());
 
-        p3.handleDirectionKey(KeyCode.DOWN);
-        assertEquals(3, p3.getY());
+//         p3.handleDirectionKey(KeyCode.DOWN);
+//         assertEquals(3, p3.getY());
 
-        p4.handleDirectionKey(KeyCode.UP);
-        assertEquals(5, p4.getY());
+//         p4.handleDirectionKey(KeyCode.UP);
+//         assertEquals(5, p4.getY());
 
-    }
+//     }
 
-    @Test
-    public void EnemyWallInteraction(){
-        Enemy e1 = new Enemy(3, 4, dungeon);      //Test movement from the left of wall into the wall
-        Enemy e2 = new Enemy(5, 4, dungeon);      //Test movement from the right of wall into the wall
-        Enemy e3 = new Enemy(4, 3, dungeon);      //Test movement from above the wall into the wall
-        Enemy e4 = new Enemy(4, 5, dungeon);      //Test movement from below the wall into the wall
+//     @Test
+//     public void EnemyWallInteraction(){
+//         Enemy e1 = new Enemy(3, 4, dungeon);      //Test movement from the left of wall into the wall
+//         Enemy e2 = new Enemy(5, 4, dungeon);      //Test movement from the right of wall into the wall
+//         Enemy e3 = new Enemy(4, 3, dungeon);      //Test movement from above the wall into the wall
+//         Enemy e4 = new Enemy(4, 5, dungeon);      //Test movement from below the wall into the wall
 
-        e1.handleMovement(Direction.RIGHT);
-        assertEquals(3, e1.getX());
+//         e1.handleMovement(Direction.RIGHT);
+//         assertEquals(3, e1.getX());
 
-        e2.handleMovement(Direction.LEFT);
-        assertEquals(5, e2.getX());
+//         e2.handleMovement(Direction.LEFT);
+//         assertEquals(5, e2.getX());
 
-        e3.handleMovement(Direction.DOWN);
-        assertEquals(2, e3.getY());
+//         e3.handleMovement(Direction.DOWN);
+//         assertEquals(2, e3.getY());
 
-        e4.handleMovement(Direction.UP);
-        assertEquals(6, e4.getY());
-    }
+//         e4.handleMovement(Direction.UP);
+//         assertEquals(6, e4.getY());
+//     }
 
-    @Test
-    public void BoulderWallInteraction(){
-        assertEquals(new Boulder(3, 4, dungeon).canEntityMoveHere(new Player(2, 4, dungeon)), false);
-        assertEquals(new Boulder(5, 4, dungeon).canEntityMoveHere(new Player(6, 4, dungeon)), false);
-        assertEquals(new Boulder(4, 3, dungeon).canEntityMoveHere(new Player(4, 2, dungeon)), false);
-        assertEquals(new Boulder(4, 5, dungeon).canEntityMoveHere(new Player(4, 6, dungeon)), false);
-    }
-}
+//     @Test
+//     public void BoulderWallInteraction(){
+//         assertEquals(new Boulder(3, 4, dungeon).canEntityMoveHere(new Player(2, 4, dungeon)), false);
+//         assertEquals(new Boulder(5, 4, dungeon).canEntityMoveHere(new Player(6, 4, dungeon)), false);
+//         assertEquals(new Boulder(4, 3, dungeon).canEntityMoveHere(new Player(4, 2, dungeon)), false);
+//         assertEquals(new Boulder(4, 5, dungeon).canEntityMoveHere(new Player(4, 6, dungeon)), false);
+//     }
+// }
