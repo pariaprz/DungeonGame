@@ -60,10 +60,8 @@ public class Arrow extends Moveable {
 
     @Override
     public void interact(Entity actor, KeyCode keyCode) {
-        System.out.println("Arrow interact");
         if (actor instanceof Slayable) {
-            System.out.println("Damage 2");
-            ((Slayable) actor).registerHit(1);
+            ((Slayable) actor).registerHit(2);
             delete();
         }
     }

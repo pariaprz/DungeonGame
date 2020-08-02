@@ -246,10 +246,12 @@ public class DungeonView {
         ));
         imageMap.put(Player.class, Map.of(
                 DEFAULT_IMG, new Image((new File("images/human_new.png")).toURI().toString()),
-                Player.INVINCIBLE_STATUS, new Image((new File("images/gnome.png")).toURI().toString()),
-                Player.ARMED_STATUS, new Image((new File("images/player_with_sword.png")).toURI().toString()),
-                Player.WALLWALKER_STATUS, new Image((new File("images/wallwalker_player.png")).toURI().toString()),
-                Player.RANGER_STATUS, new Image((new File("images/ranger.png")).toURI().toString())
+                InvinciblePlayerState.STATE_NAME, new Image((new File("images/gnome.png")).toURI().toString()),
+                WallWalkerPlayerState.STATE_NAME, new Image((new File("images/wallwalker_player.png")).toURI().toString()),
+                Key.class.toString(), new Image((new File("images/player_with_key.png")).toURI().toString()),
+                Sword.class.toString(), new Image((new File("images/player_with_sword.png")).toURI().toString()),
+                Bow.class.toString(), new Image((new File("images/ranger.png")).toURI().toString())
+
         ));
         imageMap.put(Arrow.class, Map.of(
                 DEFAULT_IMG, new Image((new File("images/arrow_directions/arrow_right.png")).toURI().toString()),

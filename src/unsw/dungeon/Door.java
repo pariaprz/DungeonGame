@@ -11,22 +11,20 @@ public class Door extends Entity {
         this.id = id;
     }
 
+    public boolean canUnlock(Key key) {
+        return id.equals(key.getId());
+    }
+
     @Override
     public boolean canEntityMoveHere(Entity entity) {
-        if (isUnlocked) {
-            return true;
-        } else if (entity instanceof Player) {
-            return id.equals(((Player) entity).getKey());
-        }
-        return false;
+        return isUnlocked;
     }
 
     @Override
     public void interact(Entity actor, KeyCode keyCode) {
-        if (actor instanceof Player) {
-            if (id.equals(((Player) actor).getKey())) {
+        if (actor instanceof Key) {
+            if (id.equals(((Key) actor).getId())) {
                 isUnlocked = true;
-                ((Player) actor).dropKey();
                 setStatus(OPEN_STATUS);
             }
         }

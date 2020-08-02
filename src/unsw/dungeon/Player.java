@@ -16,13 +16,10 @@ public class Player extends Moveable {
     public static String DEFAULT_STATUS = "default";
     public static String WALLWALKER_STATUS = "wallwalker";
     public static String RANGER_STATUS = "ranger";
-    public static int NUM_SWORD_SWINGS = 5;
-    public static int ARROW_COUNT = 3;
 
-    private int swordCount = 0;
-    private int currArrowCount = 0;
-    private boolean Bow = false;
-    private String key = null;
+    private Direction previousDirection = Direction.RIGHT;
+
+    private final PlayerInventory inventory;
 
     private PlayerState state;
 
@@ -33,6 +30,7 @@ public class Player extends Moveable {
      */
     public Player(int x, int y, Dungeon dungeon) {
         super(x, y, dungeon);
+        this.inventory = new PlayerInventory(this);
         this.state = new DefaultPlayerState(this);
     }
 
@@ -41,6 +39,7 @@ public class Player extends Moveable {
         if (direction == null) {
             return;
         }
+        previousDirection = direction;
         Position nextPos = direction.fromPosition(getPosition());
         List<Entity> entities = getDungeon().getEntitiesAt(nextPos);
 
@@ -55,98 +54,8 @@ public class Player extends Moveable {
         }
     }
 
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public boolean holdsKey() {
-        return !(key == null);
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void dropKey() {
-        setKey(null);
-    }
-
-    public void armSword() {
-        swordCount = NUM_SWORD_SWINGS;
-        setStatus(ARMED_STATUS);
-    }
-
-    public boolean isRanger(){
-        if (hasBow() && getArrowCount() > 0){
-            return true;
-        }
-        return false;
-    }
-    public boolean hasBow(){
-        return Bow;
-    }
-
-    public void setBow(boolean bool){
-        Bow = bool;
-    }
-
-    public void armBow(){
-        currArrowCount = currArrowCount + ARROW_COUNT;
-        setStatus(RANGER_STATUS);
-        setBow(true);
-    }
-
-    public void pickUpArrow(){
-        currArrowCount++;
-        if (hasBow()) setStatus(RANGER_STATUS); 
-    }
-
-    public int getArrowCount(){
-        return currArrowCount;
-    }
-
-    public void shootArrow(){
-        currArrowCount--;
-        if(getArrowCount() == 0){
-            if (hasSword()){
-                setStatus(ARMED_STATUS);
-            } else {
-                setStatus(DEFAULT_STATUS);
-            }
-        }
-    }
-
-    public boolean hasSword() {
-        return swordCount > 0;
-    }
-
-    public int getSwordCount() {
-        return swordCount;
-    }
-
-    public void swingSword() {
-        if (!hasSword()) return;
-        List<Position> areaOfEffect = List.of(
-                Direction.UP.fromPosition(getPosition()),
-                Direction.DOWN.fromPosition(getPosition()),
-                Direction.RIGHT.fromPosition(getPosition()),
-                Direction.LEFT.fromPosition(getPosition())
-        );
-        areaOfEffect.forEach(position ->
-                getDungeon().getEntitiesAt(position).forEach(entity -> {
-                    if (entity instanceof Slayable) {
-                        ((Slayable) entity).registerHit(2);
-                    }
-                })
-        );
-        swordCount--;
-        if (swordCount == 0) {
-            if (isRanger()){
-                setStatus(RANGER_STATUS);
-            } else {
-            setStatus(DEFAULT_STATUS);
-            }
-        }    
+    public PlayerInventory getInventory() {
+        return inventory;
     }
 
     public PlayerState getPlayerState() {
@@ -159,32 +68,17 @@ public class Player extends Moveable {
     
     public void setState(PlayerState playerState) {
         this.state.expireState();
-        if (playerState instanceof InvinciblePlayerState) {
-            setStatus(INVINCIBLE_STATUS);
-        } else if (hasSword()) {
-            setStatus(ARMED_STATUS);
-        } else if (isRanger()){
-            setStatus(RANGER_STATUS);
-        } else if (playerState instanceof WallWalkerPlayerState){
-            setStatus(WALLWALKER_STATUS);
-        } else {
-            setStatus(DEFAULT_STATUS);
-        }
-        System.out.println("Setting instance: " + playerState);
+        setStatus(playerState.getStateName());
         state = playerState;
+        setStatus(playerState.getStateName());
     }
 
-    public void changeWeapons(){
-        System.out.println("CHANGING WEAPONS");
-        System.out.println(hasSword() + " " +  hasBow() + " " + getArrowCount());
-        if (hasSword() && hasBow() && getArrowCount() > 0){
-            if (status().get().equals(ARMED_STATUS)){
-                System.out.println("CHANGING STATUS");
-                setStatus(RANGER_STATUS);
-            } else {
-                setStatus(ARMED_STATUS);
-            }
-        }
+    public Direction getPreviousDirection() {
+        return previousDirection;
+    }
+
+    public void changeWeapons() {
+        inventory.cycleInventory();
     }
 
     public void playerDied() {
@@ -200,5 +94,9 @@ public class Player extends Moveable {
         if (actor instanceof Slayable) {
             getPlayerState().interactWithEnemy((Slayable) actor);
         }
+    }
+
+    public void useWeapon() {
+        this.inventory.useEquipped();
     }
 }

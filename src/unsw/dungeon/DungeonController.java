@@ -26,7 +26,6 @@ public class DungeonController {
     private Timer timeline;
     private boolean pause = true;
     private List<EntityWrapper> initialEntities;
-    private Direction prevDirection = Direction.RIGHT;
 
     public DungeonController() {
         timeline = new Timer("Slayable");
@@ -36,6 +35,7 @@ public class DungeonController {
     private void setup(Dungeon dungeon, Goal goal) {
         this.dungeon = dungeon;
         this.goal = goal;
+        dungeon.setController(this);
 
         initialEntities = this.dungeon
                 .getEntities()
@@ -141,33 +141,15 @@ public class DungeonController {
         case LEFT:
         case RIGHT:
             player.handleDirectionKey(keyCode);
-            prevDirection = Direction.fromKeyCode(keyCode);
             break;
         case SPACE:
-            if (player.status().get().equals(Player.ARMED_STATUS)){
-                System.out.println("Swinging sword");
-                player.swingSword();
-            } else if (player.status().get().equals(Player.RANGER_STATUS)){
-                System.out.println("Shooting arrow");
-                player.shootArrow();
-                Arrow arrow = new Arrow(player.getX(), player.getY(), prevDirection, dungeon);
-                EntityWrapper wrappedArrow = onEntityLoad(arrow);
-                thisDungeonView().addEntity(wrappedArrow);
-                arrow.setDirectionStatus();
-                play();
-            }
-                
+            player.useWeapon();
             break;
         case Z:
             player.changeWeapons();
         default:
             break;
         }
-        System.out.println("Facing" + prevDirection);
-    }
-
-    public List<EntityWrapper> getInitialEntities() {
-        return initialEntities;
     }
 
     public Goal getGoal() {
@@ -194,14 +176,15 @@ public class DungeonController {
         play();
     }
 
-    public DungeonView thisDungeonView(){
-        return dungeonView;
-    }
-
     public DungeonView loadDungeonView() {
         dungeonView = new DungeonView(this);
         play();
         return dungeonView;
+    }
+
+    public void addRuntimeEntity(Entity entity) {
+        EntityWrapper wrappedEntity = onEntityLoad(entity);
+        dungeonView.addEntity(wrappedEntity);
     }
 
     public void setInstructionScreen(InstructionScreen instructionScreen){
