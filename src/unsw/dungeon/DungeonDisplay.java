@@ -100,6 +100,7 @@ public class DungeonDisplay {
         TextFlow levelList = (TextFlow)mainMenu.lookup("#level-list");
         levelList.getChildren().clear();
         levelList.getChildren().add(new LineBreak());
+        gridpane.getChildren().clear();
 
         levels.forEach((level) -> {
             Text newLevel = new Text(level.getKey());
