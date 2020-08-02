@@ -49,11 +49,11 @@ public class Goal {
                 .stream()
                 .filter(entry -> entry.getKey().equals(entity.entityClass))
                 .forEach(entry ->
-                        entity.addObserver(entry.getValue(), (PropertyChangeEvent event) -> computeComplete(dungeon)
+                        entity.addObserver(entry.getValue(), (event) -> computeComplete(dungeon)
                 ));
     }
 
-    public List<Pair<Class<? extends Entity>, IntegerProperty>> observeableTopics() {
+    public List<Pair<Class<? extends Entity>, IntegerProperty>> observableTopics() {
         return getGoalEngine().getProgressTopics();
     }
 }

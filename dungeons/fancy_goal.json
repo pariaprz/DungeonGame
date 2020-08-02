@@ -688,13 +688,13 @@
         "goal": "enemies"
       },
       {
-        "goal": "OR",
+        "goal": "AND",
         "subgoals": [
           {
             "goal": "exit"
           },
           {
-            "goal": "AND",
+            "goal": "OR",
             "subgoals": [
               {
                 "goal" : "treasure"

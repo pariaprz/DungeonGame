@@ -196,7 +196,7 @@ public class DungeonView {
 
     private Map<Class<? extends Entity>, Label> initialiseGoalsMap(Goal goal) {
         Map<Class<? extends Entity>, Label> goalMap = new HashMap<>();
-        goal.observeableTopics().forEach((entry) -> {
+        goal.observableTopics().forEach((entry) -> {
             if (goalMap.containsKey(entry.getKey())) {
                 return;
             }
