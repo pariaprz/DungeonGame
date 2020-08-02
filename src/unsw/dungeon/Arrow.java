@@ -61,7 +61,7 @@ public class Arrow extends Moveable {
     @Override
     public void interact(Entity actor, KeyCode keyCode) {
         if (actor instanceof Slayable) {
-            ((Slayable) actor).registerHit(2);
+            ((Slayable) actor).registerHit(1);
             delete();
         }
     }

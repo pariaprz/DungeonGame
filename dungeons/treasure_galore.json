@@ -1,6 +1,6 @@
 {
     "width": 17,
-    "height": 17,
+      "height": 17,
     "entities": [
       {
         "x": 0,
@@ -711,7 +711,7 @@
       {
         "x": 5,
         "y": 6,
-        "type": "enemy"
+        "type": "dog"
       },
       {
         "x": 5,
@@ -721,7 +721,7 @@
       {
         "x": 10,
         "y": 1,
-        "type": "enemy"
+        "type": "dog"
       },
       {
         "x": 10,
@@ -736,7 +736,7 @@
       {
         "x": 14,
         "y": 10,
-        "type": "dog"
+        "type": "enemy"
       },
       {
         "x": 2,
@@ -811,12 +811,32 @@
       {
         "x": 4,
         "y": 15,
-        "type": "sword"
+        "type": "bow"
       },
       {
         "x": 1,
         "y": 1,
         "type": "player"
+      },
+      {
+        "x": 10,
+        "y": 15,
+        "type": "arrow"
+      },
+      {
+        "x": 11,
+        "y": 15,
+        "type": "arrow"
+      },
+      {
+        "x": 12,
+        "y": 15,
+        "type": "arrow"
+      },
+      {
+        "x": 13,
+        "y": 15,
+        "type": "arrow"
       }
     ],
     "goal-condition": {
